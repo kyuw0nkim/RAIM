@@ -1,8 +1,8 @@
-# [스크립트 이름]
+# teachable-machine
 
 이 프로젝트는 **Tampermonkey**로 실행하는 사용자 스크립트(UserScript)입니다. 별도의 프로그램을 설치하지 않고, 지원하는 웹페이지에서 스크립트의 기능을 사용할 수 있습니다.
 
-> **설치 전 안내:** 아래의 `YOUR_USERNAME`, `YOUR_REPO`, `my-script.user.js`를 실제 GitHub 계정명, 저장소명, 스크립트 파일명으로 바꿔 주세요.
+> **설치 전 안내:** 아래의 `YOUR_USERNAME`, `YOUR_REPO`, `teachable-machine.user.js`를 실제 GitHub 계정명, 저장소명, 스크립트 파일명으로 바꿔 주세요.
 
 ## 1. 처음 설치하기 (사용자용)
 
@@ -29,7 +29,7 @@
 
 다음 링크를 클릭합니다.
 
-**▶ [스크립트 설치하기](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/my-script.user.js)**
+**▶ [스크립트 설치하기](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/teachable-machine.user.js)**
 
 1. Tampermonkey의 스크립트 설치 화면이 열리면 스크립트 이름과 권한을 확인합니다.
 2. **설치(Install)**를 클릭합니다.
@@ -57,16 +57,16 @@
 GitHub에서 새 저장소(Repository)를 생성하고 공개 범위를 **Public**으로 설정합니다. 예를 들어 다음과 같이 구성합니다.
 
 ```text
-YOUR_REPO/
+RAIM/
 ├── README.md
-└── my-script.user.js
+└── teachable-machine.user.js
 ```
 
 스크립트 파일의 확장자는 반드시 **`.user.js`**로 끝나게 해 주세요.
 
 ### STEP 2. 스크립트 메타데이터 설정
 
-`my-script.user.js` 파일 맨 위에 다음 설정을 넣습니다. `YOUR_USERNAME`, `YOUR_REPO`, 파일명, `@match` 주소는 실제 환경에 맞게 바꿉니다.
+`teachable-machine.user.js` 파일 맨 위에 다음 설정을 넣습니다. `YOUR_USERNAME`, `YOUR_REPO`, 파일명, `@match` 주소는 실제 환경에 맞게 바꿉니다.
 
 ```javascript
 // ==UserScript==
@@ -76,8 +76,8 @@ YOUR_REPO/
 // @description  [스크립트가 하는 일]
 // @match        https://example.com/*
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/my-script.user.js
-// @downloadURL  https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/my-script.user.js
+// @updateURL    https://raw.githubusercontent.com/kyuw0nkim/RAIM/main/teachable-machine.user.js
+// @downloadURL  https://raw.githubusercontent.com/kyuw0nkim/RAIM/main/teachable-machine.user.js
 // ==/UserScript==
 
 (function () {
@@ -100,12 +100,12 @@ YOUR_REPO/
 
 ### STEP 3. 업로드 및 설치 테스트
 
-1. `my-script.user.js`와 `README.md`를 GitHub 저장소의 `main` 브랜치에 업로드(Commit)합니다.
-2. `my-script.user.js` 파일을 열고 **Raw**를 클릭합니다.
+1. `teachable-machine.user.js`와 `README.md`를 GitHub 저장소의 `main` 브랜치에 업로드(Commit)합니다.
+2. `teachable-machine.user.js` 파일을 열고 **Raw**를 클릭합니다.
 3. 주소가 아래 형식인지 확인합니다.
 
 ```text
-https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/my-script.user.js
+https://raw.githubusercontent.com/kyuw0nkim/RAIM/main/teachable-machine.user.js
 ```
 
 4. Tampermonkey가 설치된 브라우저에서 링크를 열고 설치를 테스트합니다.
@@ -115,7 +115,7 @@ https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/my-script.user.js
 
 배포된 스크립트를 수정할 때마다 다음 절차를 따릅니다.
 
-1. `my-script.user.js` 파일의 코드를 수정합니다.
+1. `teachable-machine.user.js` 파일의 코드를 수정합니다.
 2. 파일 맨 위 `@version`을 올립니다. 예: `1.0.0` → `1.0.1`.
 3. 변경 사항을 GitHub의 **같은 파일 경로와 `main` 브랜치**에 Commit/Push합니다.
 4. GitHub Raw 링크로 새 버전이 표시되는지 확인합니다.

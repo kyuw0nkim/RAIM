@@ -27,7 +27,7 @@
 
 다음 링크를 클릭합니다.
 
-**▶ [스크립트 설치하기](https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/teachable-machine.user.js)**
+**▶ [스크립트 설치하기](https://raw.githubusercontent.com/kyuw0nkim/RAIM/main/teachable-machine.user.js)**
 
 1. Tampermonkey의 스크립트 설치 화면이 열리면 스크립트 이름과 권한을 확인합니다.
 2. **설치(Install)**를 클릭합니다.
@@ -64,12 +64,12 @@ RAIM/
 
 ### STEP 2. 스크립트 메타데이터 설정
 
-`teachable-machine.user.js` 파일 맨 위에 다음 설정을 넣습니다. `YOUR_USERNAME`, `YOUR_REPO`, 파일명, `@match` 주소는 실제 환경에 맞게 바꿉니다.
+`teachable-machine.user.js` 파일 맨 위에 다음 설정을 넣습니다. `kyuw0nkim`, `RAIM`, 파일명, `@match` 주소는 실제 환경에 맞게 바꿉니다.
 
 ```javascript
 // ==UserScript==
 // @name         [스크립트 이름]
-// @namespace    https://github.com/YOUR_USERNAME/YOUR_REPO
+// @namespace    https://github.com/kyuw0nkim/RAIM
 // @version      1.0.0
 // @description  [스크립트가 하는 일]
 // @match        https://example.com/*

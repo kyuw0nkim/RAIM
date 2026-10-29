@@ -1,10 +1,12 @@
 // ==UserScript==
-// @name         Teachable Machine 자동 클래스 설정 v5
-// @namespace    tm-class-auto
-// @version      5.0
+// @name         Teachable Machine 자동 클래스 설정
+// @namespace    https://github.com/kyuw0nkim/RAIM
+// @version      1.0.0
+// @description  Teachable Machine 자동 클래스 설정
 // @match        https://teachablemachine.withgoogle.com/*
-// @run-at       document-idle
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/kyuw0nkim/RAIM/main/teachable-machine.user.js
+// @downloadURL  https://raw.githubusercontent.com/kyuw0nkim/RAIM/main/teachable-machine.user.js
 // ==/UserScript==
 
 (function () {

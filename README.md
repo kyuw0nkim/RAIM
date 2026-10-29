@@ -2,8 +2,6 @@
 
 이 프로젝트는 **Tampermonkey**로 실행하는 사용자 스크립트(UserScript)입니다. 별도의 프로그램을 설치하지 않고, 지원하는 웹페이지에서 스크립트의 기능을 사용할 수 있습니다.
 
-> **설치 전 안내:** 아래의 `YOUR_USERNAME`, `YOUR_REPO`, `teachable-machine.user.js`를 실제 GitHub 계정명, 저장소명, 스크립트 파일명으로 바꿔 주세요.
-
 ## 1. 처음 설치하기 (사용자용)
 
 ### STEP 1. Tampermonkey 설치

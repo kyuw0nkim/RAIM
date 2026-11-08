@@ -184,13 +184,6 @@ export function ExhibitView({
               </div>
             )}
 
-            {/* 체험이 어려울 때의 우회 경로 (PRD §4.3) — 하단 버튼 줄이 좁아지지 않게 본문에 둠 */}
-            {stage === "experience" && (
-              <button className="btn text small bypass" onClick={() => goTo(idx + 1, "skipped")}>
-                {t(UI.bypass)} →
-              </button>
-            )}
-
             {stage === "experience" && exhibit.quiz && (
               <Quiz exhibit={exhibit} lang={lang} answers={quizAnswers} setAnswers={setQuizAnswers} track={track} />
             )}

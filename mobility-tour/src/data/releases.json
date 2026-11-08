@@ -1,6 +1,26 @@
 {
   "releases": [
     {
+      "version": "0.5.1",
+      "date": "2026-11-08",
+      "title": "TAP 표시 원래 디자인 복원 + outer glow, 모서리 라운딩 축소",
+      "summary": "v0.5.0의 유리 구슬 TAP 표시를 원래 디자인으로 되돌리고 은은한 빛 효과만 더했습니다.",
+      "changes": [
+        {
+          "type": "changed",
+          "text": "TAP 표시를 원래 디자인(청록 원 + TAP 표시)으로 복원하고, 퍼지는 링 대신 은은한 outer glow 적용 (전시물 이름은 계속 제외)"
+        },
+        {
+          "type": "removed",
+          "text": "체험 단계의 'Can't try it now? See the explanation' 링크 삭제"
+        },
+        {
+          "type": "changed",
+          "text": "패널·카드·선택지 등 박스의 모서리 라운딩 축소 (패널 28→16px, 안쪽 박스 18~22→10~12px)"
+        }
+      ]
+    },
+    {
       "version": "0.5.0",
       "date": "2026-11-08",
       "title": "빛나는 TAP 표시, 완료 체크, 벽화 영상·실물 관람 안내",

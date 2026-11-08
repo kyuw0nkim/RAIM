@@ -158,9 +158,10 @@ export function MapScene({
                 if (!pressed) select(o.id);
               }}
             >
-              <span className="marker-orb" aria-hidden>
-                {completed.has(o.id) ? "✓" : UI.tap[lang]}
+              <span className="marker-dot" aria-hidden>
+                {completed.has(o.id) ? "✓" : ""}
               </span>
+              <span className="marker-tap">{UI.tap[lang]}</span>
             </button>
           ))}
       </div>

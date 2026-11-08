@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EXHIBITS } from "@/content/exhibits";
-import { ROOM } from "@/content/map";
+import { MAP_OBJECTS, ROOM } from "@/content/map";
 import { UI } from "@/content/ui";
 import type { ExhibitId, Locale } from "@/content/types";
 import { track, type EventType, type TrackPayload } from "@/lib/analytics";
 import { ExhibitView } from "./ExhibitView";
 import { MapScene } from "./MapScene";
+import { ApproachCard } from "./ApproachCard";
 import { VisitorForm, type VisitorEntry } from "./VisitorForm";
 import { applyPendingUpdate } from "./ServiceWorker";
 
@@ -25,6 +26,9 @@ export function TourApp() {
   const [sessionId, setSessionId] = useState("");
   const [visitors, setVisitors] = useState<VisitorEntry[]>([]);
   const [exhibitId, setExhibitId] = useState<ExhibitId | null>(null);
+  /** 지도 위 Approach(만나기) 카드가 열린 전시물 */
+  const [focusId, setFocusId] = useState<ExhibitId | null>(null);
+  const approachAt = useRef(0);
   const [visited, setVisited] = useState<Set<ExhibitId>>(new Set());
   const [confirmEnd, setConfirmEnd] = useState(false);
   const [idleLeft, setIdleLeft] = useState<number | null>(null);
@@ -46,6 +50,7 @@ export function TourApp() {
       setSessionId("");
       setVisitors([]);
       setExhibitId(null);
+      setFocusId(null);
       setVisited(new Set());
       setConfirmEnd(false);
       setIdleLeft(null);
@@ -106,11 +111,42 @@ export function TourApp() {
     setScreen("visitors");
   };
 
-  const openExhibit = (id: ExhibitId) => {
-    tr("exhibit_selected", { exhibitId: id });
-    setExhibitId(id);
+  /** 1단계 Approach: 지도 위에서 해당 전시물만 밝히고 카드 표시 */
+  const showApproach = (id: ExhibitId, viaMap: boolean) => {
+    if (viaMap) tr("exhibit_selected", { exhibitId: id });
+    tr("stage_viewed", { exhibitId: id, stageKey: "approach" });
+    approachAt.current = Date.now();
+    setFocusId(id);
     setVisited((v) => new Set(v).add(id));
+    setScreen("map");
+  };
+
+  const closeApproach = () => {
+    if (!focusId) return;
+    tr("stage_completed", {
+      exhibitId: focusId,
+      stageKey: "approach",
+      metadata: { duration_ms: Date.now() - approachAt.current, exit: true },
+    });
+    setFocusId(null);
+  };
+
+  /** Approach → Engage: 상세 화면으로 */
+  const enterDetail = (id: ExhibitId) => {
+    tr("cta_clicked", { exhibitId: id, stageKey: "approach", targetId: "approach-cta" });
+    tr("stage_completed", {
+      exhibitId: id,
+      stageKey: "approach",
+      metadata: { duration_ms: Date.now() - approachAt.current },
+    });
+    setExhibitId(id);
+    setFocusId(null);
     setScreen("exhibit");
+  };
+
+  const onTapObject = (id: ExhibitId) => {
+    if (id === focusId) enterDetail(id); // 밝혀진 전시물을 다시 누르면 다음 단계로
+    else showApproach(id, true);
   };
 
   const langToggle = (
@@ -161,7 +197,7 @@ export function TourApp() {
             <div className="glass-chip title-chip">
               <strong>{t(UI.appTitle)}</strong>
             </div>
-            <div className="glass-chip tap-hint">👆 {t(UI.tapExhibit)}</div>
+            {!focusId && <div className="glass-chip tap-hint">👆 {t(UI.tapExhibit)}</div>}
             <div className="topbar-right">
               {langToggle}
               <button className="btn ghost" onClick={() => setConfirmEnd(true)}>
@@ -170,7 +206,23 @@ export function TourApp() {
             </div>
           </header>
 
-          <MapScene lang={lang} visited={visited} onSelect={openExhibit} />
+          <MapScene
+            lang={lang}
+            visited={visited}
+            focused={focusId}
+            onTapObject={onTapObject}
+            onTapEmpty={closeApproach}
+          />
+          {focusId && (
+            <ApproachCard
+              key={focusId}
+              exhibit={EXHIBITS[focusId]}
+              placement={MAP_OBJECTS.find((o) => o.id === focusId)!.card}
+              lang={lang}
+              onContinue={() => enterDetail(focusId)}
+              onClose={closeApproach}
+            />
+          )}
         </main>
       )}
 
@@ -182,7 +234,8 @@ export function TourApp() {
           langToggle={langToggle}
           track={tr}
           onMap={() => setScreen("map")}
-          onSelect={openExhibit}
+          onApproach={() => showApproach(exhibitId, false)}
+          onSelect={(id) => showApproach(id, false)}
           visited={visited}
         />
       )}

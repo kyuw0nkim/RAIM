@@ -47,11 +47,16 @@ function opaqueAt(mask: AlphaMask | undefined, u: number, v: number) {
 export function MapScene({
   lang,
   visited,
-  onSelect,
+  focused,
+  onTapObject,
+  onTapEmpty,
 }: {
   lang: Locale;
   visited: Set<ExhibitId>;
-  onSelect: (id: ExhibitId) => void;
+  /** Approach 단계: 선택한 전시물만 밝게, 나머지는 딤 처리 */
+  focused: ExhibitId | null;
+  onTapObject: (id: ExhibitId) => void;
+  onTapEmpty: () => void;
 }) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const masks = useRef<Partial<Record<ExhibitId, AlphaMask>>>({});
@@ -67,10 +72,11 @@ export function MapScene({
     );
   }, []);
 
-  /** 화면 좌표 → 위에 있는 전시물부터 불투명 픽셀 검사 */
+  /** 화면 좌표 → 위에 있는 전시물부터 불투명 픽셀 검사 (선택된 전시물이 가장 위) */
   const hitTest = (clientX: number, clientY: number): ExhibitId | null => {
     const rect = sceneRef.current?.getBoundingClientRect();
     if (!rect) return null;
+    const order = [...MAP_OBJECTS].reverse().sort((a, b) => Number(b.id === focused) - Number(a.id === focused));
     const offsets: [number, number][] = [[0, 0]];
     for (let a = 0; a < 8; a++) {
       offsets.push([Math.cos((a * Math.PI) / 4) * TOUCH_SLOP, Math.sin((a * Math.PI) / 4) * TOUCH_SLOP]);
@@ -78,8 +84,7 @@ export function MapScene({
     for (const [dx, dy] of offsets) {
       const sx = ((clientX + dx - rect.left) / rect.width) * 100;
       const sy = ((clientY + dy - rect.top) / rect.height) * 100;
-      for (let i = MAP_OBJECTS.length - 1; i >= 0; i--) {
-        const o = MAP_OBJECTS[i];
+      for (const o of order) {
         if (opaqueAt(masks.current[o.id], (sx - o.x) / o.w, (sy - o.y) / o.h)) return o.id;
       }
     }
@@ -88,17 +93,18 @@ export function MapScene({
 
   const select = (id: ExhibitId) => {
     setPressed(id);
-    // 짧은 시각 피드백 후 이동
+    // 짧은 시각 피드백 후 전달
     window.setTimeout(() => {
       setPressed(null);
-      onSelect(id);
-    }, 160);
+      onTapObject(id);
+    }, 140);
   };
 
   const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
     if (pressed) return;
     const id = hitTest(e.clientX, e.clientY);
     if (id) select(id);
+    else onTapEmpty();
   };
 
   const box = (o: MapObject) => ({ left: `${o.x}%`, top: `${o.y}%`, width: `${o.w}%`, height: `${o.h}%` });
@@ -107,14 +113,20 @@ export function MapScene({
     <div className="scene-wrap">
       <div
         ref={sceneRef}
-        className="scene"
+        className={`scene ${focused ? "has-focus" : ""}`}
         style={{ aspectRatio: `${ROOM.width} / ${ROOM.height}` }}
         onPointerUp={onPointerUp}
       >
         <img className="scene-bg" src={ROOM.src} alt="" draggable={false} fetchPriority="high" />
 
         {MAP_OBJECTS.map((o, i) => (
-          <div key={o.id} className={`scene-object ${pressed === o.id ? "pressed" : ""}`} style={box(o)}>
+          <div
+            key={o.id}
+            className={`scene-object ${o.grounded ? "grounded" : ""} ${pressed === o.id ? "pressed" : ""} ${
+              focused === o.id ? "focused" : ""
+            }`}
+            style={box(o)}
+          >
             {/* 강조 효과: 윤곽을 따라 빛나는 레이어 (opacity만 애니메이션 → 태블릿 부담 적음) */}
             <img
               className="object-glow"
@@ -127,19 +139,23 @@ export function MapScene({
           </div>
         ))}
 
-        {MAP_OBJECTS.map((o) => (
-          // 이름표는 그 자체로 버튼 (키보드·스크린리더 접근도 여기서 처리)
-          <button
-            key={`label-${o.id}`}
-            className={`scene-label ${visited.has(o.id) ? "visited" : ""}`}
-            style={{ left: `${o.label.x}%`, top: `${o.label.y}%` }}
-            onPointerUp={(e) => e.stopPropagation()}
-            onClick={() => select(o.id)}
-          >
-            {visited.has(o.id) && <span className="check">✓ </span>}
-            {EXHIBITS[o.id].name[lang]}
-          </button>
-        ))}
+        {/* 선택한 전시물 외에는 어둡게 */}
+        <div className="scene-dim" aria-hidden />
+
+        {!focused &&
+          MAP_OBJECTS.map((o) => (
+            // 이름표는 그 자체로 버튼 (키보드·스크린리더 접근도 여기서 처리)
+            <button
+              key={`label-${o.id}`}
+              className={`scene-label ${visited.has(o.id) ? "visited" : ""}`}
+              style={{ left: `${o.label.x}%`, top: `${o.label.y}%` }}
+              onPointerUp={(e) => e.stopPropagation()}
+              onClick={() => select(o.id)}
+            >
+              {visited.has(o.id) && <span className="check">✓ </span>}
+              {EXHIBITS[o.id].name[lang]}
+            </button>
+          ))}
       </div>
     </div>
   );

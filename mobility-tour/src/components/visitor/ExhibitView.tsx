@@ -13,6 +13,7 @@ export function ExhibitView({
   langToggle,
   track,
   onMap,
+  onApproach,
   onSelect,
   visited,
 }: {
@@ -21,12 +22,14 @@ export function ExhibitView({
   langToggle: ReactNode;
   track: Tracker;
   onMap: () => void;
+  /** 1단계(만나기)는 지도 위 카드에서 진행 → 상세 화면은 2단계부터 */
+  onApproach: () => void;
   onSelect: (id: ExhibitId) => void;
   visited: Set<ExhibitId>;
 }) {
   const t = (l: Record<Locale, string>) => l[lang];
-  const [idx, setIdx] = useState(0);
-  const [maxReached, setMaxReached] = useState(0);
+  const [idx, setIdx] = useState(1);
+  const [maxReached, setMaxReached] = useState(1);
   const [hintOpen, setHintOpen] = useState(false);
   const [hotspot, setHotspot] = useState<string | null>(null);
   const [seenHotspots, setSeenHotspots] = useState<Set<string>>(new Set());
@@ -47,6 +50,10 @@ export function ExhibitView({
 
   const goTo = (next: number, how: "completed" | "skipped" | "back" | "jump") => {
     const duration_ms = Date.now() - enteredAt.current;
+    if (next === 0) {
+      leave(onApproach);
+      return;
+    }
     if (how === "completed") {
       track("cta_clicked", { ...ctx, targetId: `${stage}-cta` });
       track("stage_completed", { ...ctx, metadata: { duration_ms } });
@@ -65,8 +72,6 @@ export function ExhibitView({
   const hs = exhibit.hotspots?.find((h) => h.id === hotspot);
   const img = EXHIBIT_IMAGE[exhibit.id];
   const muralMode = stage === "experience" && !!exhibit.hotspots;
-  // 가로로 긴 전시물(디오라마·벽화)은 이미지를 위쪽 전체 폭으로 배치
-  const wide = img.width / img.height > 2;
 
   return (
     <main className="exhibit">
@@ -91,14 +96,14 @@ export function ExhibitView({
         <div className="topbar-right">{langToggle}</div>
       </header>
 
-      <div className={`exhibit-body ${wide ? "wide" : ""} ${muralMode ? "mural-mode" : ""}`}>
-        {/* 전시물 시각 영역 — 벽화 체험 단계에서는 실제 벽화 위에 핫스팟을 크게 표시 */}
-        <section className="exhibit-visual glass-soft">
+      <div className={`exhibit-body ${muralMode ? "mural-mode" : ""}`}>
+        {/* 왼쪽: 딤 처리된 교육장 위에 전시물 이미지만 띄움 (박스 없음) — 벽화 체험 단계에서는 핫스팟 */}
+        <section className={`exhibit-visual visual-${exhibit.id}`}>
           {muralMode && exhibit.hotspots ? (
             <div
               className="hotspot-canvas"
-              // 높이 46vh 안에 들어가도록 폭을 제한해 비율 유지 (핫스팟 좌표가 어긋나지 않게)
-              style={{ aspectRatio: `${img.width} / ${img.height}`, width: `min(100%, calc(46vh * ${img.width / img.height}))` }}
+              // 비율을 고정해 핫스팟 좌표가 어긋나지 않게
+              style={{ aspectRatio: `${img.width} / ${img.height}` }}
             >
               <img src={img.src} alt={t(exhibit.name)} draggable={false} />
               {exhibit.hotspots.map((h) => (
@@ -131,8 +136,7 @@ export function ExhibitView({
                 draggable={false}
                 style={{ aspectRatio: `${img.width} / ${img.height}` }}
               />
-              <h2>{t(exhibit.name)}</h2>
-              <p>{t(exhibit.tagline)}</p>
+              <p className="hero-name">{t(exhibit.name)}</p>
             </div>
           )}
         </section>
@@ -164,6 +168,13 @@ export function ExhibitView({
                   </button>
                 )}
               </div>
+            )}
+
+            {/* 체험이 어려울 때의 우회 경로 (PRD §4.3) — 하단 버튼 줄이 좁아지지 않게 본문에 둠 */}
+            {stage === "experience" && (
+              <button className="btn text small bypass" onClick={() => goTo(idx + 1, "skipped")}>
+                {t(UI.bypass)} →
+              </button>
             )}
 
             {stage === "experience" && exhibit.quiz && (
@@ -225,18 +236,9 @@ export function ExhibitView({
           </div>
 
           <div className="stage-actions">
-            {idx > 0 ? (
-              <button className="btn ghost lg" onClick={() => goTo(idx - 1, "back")}>
-                ← {t(UI.back)}
-              </button>
-            ) : (
-              <span />
-            )}
-            {stage === "experience" && (
-              <button className="btn text small" onClick={() => goTo(idx + 1, "skipped")}>
-                {t(UI.bypass)}
-              </button>
-            )}
+            <button className="btn ghost lg" onClick={() => goTo(idx - 1, "back")}>
+              ← {t(UI.back)}
+            </button>
             {stage === "disengage" ? (
               <button className="btn primary lg" onClick={() => leave(onMap)}>
                 {t(UI.map)}

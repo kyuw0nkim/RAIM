@@ -28,6 +28,8 @@ export const UI = {
   cancel: { ko: "취소", en: "Cancel" },
   map: { ko: "전체 전시", en: "All Exhibits" },
   back: { ko: "이전", en: "Back" },
+  next: { ko: "다음", en: "Next" },
+  close: { ko: "닫기", en: "Close" },
   hint: { ko: "힌트 보기", en: "Show Hint" },
   bypass: { ko: "지금 체험이 어렵나요? 설명 먼저 보기", en: "Can't try it now? See the explanation" },
   faq: { ko: "자주 묻는 질문", en: "FAQ" },

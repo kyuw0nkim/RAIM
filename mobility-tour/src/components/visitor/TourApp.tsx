@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EXHIBITS } from "@/content/exhibits";
-import { MAP_OBJECTS, ROOM_IMAGE } from "@/content/map";
+import { ROOM } from "@/content/map";
 import { UI } from "@/content/ui";
 import type { ExhibitId, Locale } from "@/content/types";
 import { track, type EventType, type TrackPayload } from "@/lib/analytics";
 import { ExhibitView } from "./ExhibitView";
+import { MapScene } from "./MapScene";
 import { VisitorForm, type VisitorEntry } from "./VisitorForm";
 import { applyPendingUpdate } from "./ServiceWorker";
 
@@ -124,11 +125,10 @@ export function TourApp() {
 
   return (
     <div className="tour" key={sessionKey} lang={lang}>
-      <div
-        className="room-bg"
-        style={ROOM_IMAGE ? { backgroundImage: `url(${ROOM_IMAGE})` } : undefined}
-        aria-hidden
-      />
+      {/* 지도 화면 외에는 교육장 사진을 흐리게 깔아 패널 가독성 확보 */}
+      {screen !== "map" && (
+        <div className="room-bg" style={{ backgroundImage: `url(${ROOM.src})` }} aria-hidden />
+      )}
 
       {screen === "start" && (
         <main className="start">
@@ -161,6 +161,7 @@ export function TourApp() {
             <div className="glass-chip title-chip">
               <strong>{t(UI.appTitle)}</strong>
             </div>
+            <div className="glass-chip tap-hint">👆 {t(UI.tapExhibit)}</div>
             <div className="topbar-right">
               {langToggle}
               <button className="btn ghost" onClick={() => setConfirmEnd(true)}>
@@ -169,37 +170,7 @@ export function TourApp() {
             </div>
           </header>
 
-          <div className="map-stage">
-            {MAP_OBJECTS.map((o) => {
-              const ex = EXHIBITS[o.id];
-              return (
-                <button
-                  key={o.id}
-                  className={`map-object ${visited.has(o.id) ? "visited" : ""}`}
-                  style={{ left: `${o.x}%`, top: `${o.y}%`, width: `${o.w}%` }}
-                  onClick={() => openExhibit(o.id)}
-                  aria-label={t(ex.name)}
-                >
-                  {o.image ? (
-                    // 투명 PNG: 버튼 자체가 터치 영역이며 이미지는 pointer-events: none
-                    <img src={o.image} alt="" draggable={false} />
-                  ) : (
-                    <span className="placeholder-object">
-                      <span className="placeholder-icon">{ex.icon}</span>
-                    </span>
-                  )}
-                  <span className="map-label">
-                    {visited.has(o.id) && <span className="check">✓ </span>}
-                    {t(ex.name)}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          <footer className="map-footer">
-            <div className="glass-chip">👆 {t(UI.tapExhibit)}</div>
-          </footer>
+          <MapScene lang={lang} visited={visited} onSelect={openExhibit} />
         </main>
       )}
 

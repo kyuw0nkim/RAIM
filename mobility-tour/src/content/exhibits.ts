@@ -86,10 +86,10 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
     tagline: { ko: "자율주행의 단계를 퀴즈로 알아봐요.", en: "Learn the levels of self-driving with a quiz." },
     stages: {
       approach: {
-        title: { ko: "자율주행 퀴즈", en: "Autonomous Driving Quiz" },
+        title: { ko: "나도 자율주행 전문가", en: "I'm a Self-Driving Expert, Too" },
         body: {
-          ko: "이동식 퀴즈 디스플레이를 찾아보세요. 화면 속 문제를 함께 풀어 볼 거예요.",
-          en: "Find the mobile quiz display. We'll solve its questions together.",
+          ko: "교육장 왼쪽의 큰 퀴즈 화면을 찾아보세요. 전시를 보고 퀴즈를 풀며 자율주행차에 대한 지식을 확인해 볼 거예요.",
+          en: "Find the large quiz screen on the left side of the room. Look around the exhibits, then test what you know about self-driving cars.",
         },
         cta: { ko: "시작하기", en: "Let's Start" },
       },
@@ -221,30 +221,52 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         },
       },
     },
+    // 좌표는 벽화 이미지(mural.webp) 기준 %
     hotspots: [
       {
         id: "mural-pbv",
-        x: 22, y: 62,
-        label: { ko: "PBV", en: "PBV" },
-        desc: { ko: "용도에 맞게 실내 공간을 바꾸는 목적 기반 차량이에요.", en: "A purpose-built vehicle whose cabin changes for each job." },
+        x: 46.5, y: 63,
+        label: { ko: "자율주행 셔틀 (PBV)", en: "Self-Driving Shuttle (PBV)" },
+        desc: {
+          ko: "운전석 없이 실내를 용도에 맞게 꾸민 차량이에요. 전용 도로를 따라 스스로 달려요. 이런 차량을 목적 기반 모빌리티(PBV)라고 불러요.",
+          en: "A vehicle with no driver's seat whose cabin is designed for a purpose. It drives itself along a dedicated lane. This is called a Purpose-Built Vehicle (PBV).",
+        },
       },
       {
-        id: "mural-uam",
-        x: 64, y: 22,
-        label: { ko: "도심 항공 모빌리티", en: "Urban Air Mobility" },
-        desc: { ko: "도시 위를 나는 전기 비행체로, 막히는 도로를 피해 이동해요.", en: "Electric aircraft that fly over the city, avoiding traffic jams." },
+        id: "mural-raim",
+        x: 63, y: 50,
+        label: { ko: "서울로봇인공지능과학관", en: "Seoul Robot & AI Museum" },
+        desc: {
+          ko: "바로 여러분이 있는 이곳! 벽화 속 미래 도시에도 과학관이 그려져 있어요.",
+          en: "That's where you are right now! The museum appears in the future city, too.",
+        },
       },
       {
-        id: "mural-robot",
-        x: 80, y: 70,
-        label: { ko: "배송 로봇", en: "Delivery Robot" },
-        desc: { ko: "보도를 따라 스스로 물건을 배달하는 작은 로봇이에요.", en: "A small robot that delivers packages along the sidewalk by itself." },
+        id: "mural-speed",
+        x: 74.6, y: 21,
+        label: { ko: "속도 제한 표지판", en: "Speed Limit Sign" },
+        desc: {
+          ko: "자율주행차는 카메라로 표지판을 읽고 제한 속도를 지켜요. 사람이 많은 곳에서는 더 천천히 달려요.",
+          en: "Self-driving cars read signs with cameras and keep to the speed limit, driving more slowly where there are many people.",
+        },
       },
       {
-        id: "mural-station",
-        x: 44, y: 48,
-        label: { ko: "모빌리티 허브", en: "Mobility Hub" },
-        desc: { ko: "버스·공유 차량·비행체를 한곳에서 갈아타는 환승 공간이에요.", en: "A hub where you switch between buses, shared cars and air taxis." },
+        id: "mural-parking",
+        x: 87.5, y: 30,
+        label: { ko: "스마트 주차", en: "Smart Parking" },
+        desc: {
+          ko: "센서로 빈자리를 찾아 차가 스스로 주차해요. 주차장을 찾느라 도로를 빙빙 도는 차가 줄어들어요.",
+          en: "Cars use sensors to find an empty space and park themselves, so fewer cars circle around looking for parking.",
+        },
+      },
+      {
+        id: "mural-crosswalk",
+        x: 91.5, y: 76,
+        label: { ko: "보행자 보호", en: "Pedestrian Safety" },
+        desc: {
+          ko: "자율주행차는 횡단보도의 사람을 감지하면 멈춰요. 디오라마 자동차의 장애물 센서와 같은 원리예요.",
+          en: "Self-driving cars stop when they detect people at a crosswalk — the same idea as the obstacle sensor on the diorama car.",
+        },
       },
     ],
     faqs: [

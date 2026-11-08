@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { EXHIBITS } from "@/content/exhibits";
+import { EXHIBIT_IMAGE } from "@/content/map";
 import { STAGE_LABEL, UI } from "@/content/ui";
 import { STAGES, type Exhibit, type ExhibitId, type Locale, type StageKey } from "@/content/types";
 import type { Tracker } from "./TourApp";
@@ -28,6 +29,7 @@ export function ExhibitView({
   const [maxReached, setMaxReached] = useState(0);
   const [hintOpen, setHintOpen] = useState(false);
   const [hotspot, setHotspot] = useState<string | null>(null);
+  const [seenHotspots, setSeenHotspots] = useState<Set<string>>(new Set());
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
 
   const stage: StageKey = STAGES[idx];
@@ -61,6 +63,10 @@ export function ExhibitView({
   };
 
   const hs = exhibit.hotspots?.find((h) => h.id === hotspot);
+  const img = EXHIBIT_IMAGE[exhibit.id];
+  const muralMode = stage === "experience" && !!exhibit.hotspots;
+  // 가로로 긴 전시물(디오라마·벽화)은 이미지를 위쪽 전체 폭으로 배치
+  const wide = img.width / img.height > 2;
 
   return (
     <main className="exhibit">
@@ -85,30 +91,46 @@ export function ExhibitView({
         <div className="topbar-right">{langToggle}</div>
       </header>
 
-      <div className="exhibit-body">
-        {/* 왼쪽: 전시물 시각 영역 (벽화 체험 단계에서는 핫스팟 이미지) */}
+      <div className={`exhibit-body ${wide ? "wide" : ""} ${muralMode ? "mural-mode" : ""}`}>
+        {/* 전시물 시각 영역 — 벽화 체험 단계에서는 실제 벽화 위에 핫스팟을 크게 표시 */}
         <section className="exhibit-visual glass-soft">
-          {stage === "experience" && exhibit.hotspots ? (
-            <div className="hotspot-canvas">
-              <div className="mural-placeholder" aria-hidden>
-                🏙️
-              </div>
+          {muralMode && exhibit.hotspots ? (
+            <div
+              className="hotspot-canvas"
+              // 높이 46vh 안에 들어가도록 폭을 제한해 비율 유지 (핫스팟 좌표가 어긋나지 않게)
+              style={{ aspectRatio: `${img.width} / ${img.height}`, width: `min(100%, calc(46vh * ${img.width / img.height}))` }}
+            >
+              <img src={img.src} alt={t(exhibit.name)} draggable={false} />
               {exhibit.hotspots.map((h) => (
                 <button
                   key={h.id}
-                  className={`hotspot ${hotspot === h.id ? "active" : ""}`}
+                  className={`hotspot ${hotspot === h.id ? "active" : ""} ${seenHotspots.has(h.id) ? "seen" : ""}`}
                   style={{ left: `${h.x}%`, top: `${h.y}%` }}
                   aria-label={t(h.label)}
+                  aria-pressed={hotspot === h.id}
                   onClick={() => {
                     setHotspot(h.id);
+                    setSeenHotspots((s) => new Set(s).add(h.id));
                     track("image_hotspot_selected", { ...ctx, targetId: h.id });
                   }}
                 />
               ))}
+              {hs && (
+                <div className="hotspot-callout" style={calloutPosition(hs.x, hs.y)} role="status">
+                  <strong>{t(hs.label)}</strong>
+                  <p>{t(hs.desc)}</p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="exhibit-hero">
-              <span className="hero-icon">{exhibit.icon}</span>
+              <img
+                className={`hero-img hero-${exhibit.id}`}
+                src={img.src}
+                alt=""
+                draggable={false}
+                style={{ aspectRatio: `${img.width} / ${img.height}` }}
+              />
               <h2>{t(exhibit.name)}</h2>
               <p>{t(exhibit.tagline)}</p>
             </div>
@@ -148,12 +170,12 @@ export function ExhibitView({
               <Quiz exhibit={exhibit} lang={lang} answers={quizAnswers} setAnswers={setQuizAnswers} track={track} />
             )}
 
-            {stage === "experience" && hs && (
-              <div className="hotspot-info">
-                <strong>{t(hs.label)}</strong>
-                <p>{t(hs.desc)}</p>
-              </div>
+            {muralMode && exhibit.hotspots && (
+              <p className="hotspot-progress">
+                🔎 {seenHotspots.size} / {exhibit.hotspots.length}
+              </p>
             )}
+
 
             {stage === "reflect" && exhibit.quiz && (
               <p className="score">
@@ -229,6 +251,15 @@ export function ExhibitView({
       </div>
     </main>
   );
+}
+
+/** 핫스팟 설명 말풍선: 그림 밖으로 나가지 않도록 위치에 따라 방향을 바꿈 */
+function calloutPosition(x: number, y: number): React.CSSProperties {
+  const style: React.CSSProperties = { top: `${y}%` };
+  if (x <= 55) style.left = `calc(${x}% + 36px)`;
+  else style.right = `calc(${100 - x}% + 36px)`;
+  style.transform = `translateY(${y < 30 ? -15 : y > 70 ? -85 : -50}%)`;
+  return style;
 }
 
 function Quiz({

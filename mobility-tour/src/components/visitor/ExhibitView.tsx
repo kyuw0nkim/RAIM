@@ -200,17 +200,19 @@ export function ExhibitView({
             {stage === "reflect" && exhibit.faqs.length > 0 && (
               <div className="faqs">
                 <h3>{t(UI.faq)}</h3>
-                {exhibit.faqs.map((f) => (
-                  <details
-                    key={f.id}
-                    onToggle={(e) => {
-                      if ((e.currentTarget as HTMLDetailsElement).open) track("faq_opened", { ...ctx, targetId: f.id });
-                    }}
-                  >
-                    <summary>{t(f.q)}</summary>
-                    <p>{t(f.a)}</p>
-                  </details>
-                ))}
+                <div className="faq-group">
+                  {exhibit.faqs.map((f) => (
+                    <details
+                      key={f.id}
+                      onToggle={(e) => {
+                        if ((e.currentTarget as HTMLDetailsElement).open) track("faq_opened", { ...ctx, targetId: f.id });
+                      }}
+                    >
+                      <summary>{t(f.q)}</summary>
+                      <p>{t(f.a)}</p>
+                    </details>
+                  ))}
+                </div>
               </div>
             )}
 

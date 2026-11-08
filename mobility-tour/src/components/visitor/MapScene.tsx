@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { EXHIBITS } from "@/content/exhibits";
 import { EXHIBIT_IMAGE, MAP_OBJECTS, ROOM, type MapObject } from "@/content/map";
 import type { ExhibitId, Locale } from "@/content/types";
+import { UI } from "@/content/ui";
 
 /** 터치 판정용 알파 마스크 (축소본) */
 interface AlphaMask {
@@ -14,8 +15,8 @@ interface AlphaMask {
 
 const MASK_WIDTH = 320;
 const ALPHA_THRESHOLD = 40;
-/** 가장자리를 살짝 빗나가도 인식되도록 주변을 함께 검사 (CSS px) */
-const TOUCH_SLOP = 14;
+/** 손가락 터치는 부정확하므로 주변을 넓게 함께 검사 (CSS px) */
+const TOUCH_SLOP = 24;
 
 function loadMask(src: string): Promise<AlphaMask> {
   return new Promise((resolve, reject) => {
@@ -78,8 +79,8 @@ export function MapScene({
     if (!rect) return null;
     const order = [...MAP_OBJECTS].reverse().sort((a, b) => Number(b.id === focused) - Number(a.id === focused));
     const offsets: [number, number][] = [[0, 0]];
-    for (let a = 0; a < 8; a++) {
-      offsets.push([Math.cos((a * Math.PI) / 4) * TOUCH_SLOP, Math.sin((a * Math.PI) / 4) * TOUCH_SLOP]);
+    for (const r of [TOUCH_SLOP / 2, TOUCH_SLOP]) {
+      for (let a = 0; a < 8; a++) offsets.push([Math.cos((a * Math.PI) / 4) * r, Math.sin((a * Math.PI) / 4) * r]);
     }
     for (const [dx, dy] of offsets) {
       const sx = ((clientX + dx - rect.left) / rect.width) * 100;
@@ -100,7 +101,9 @@ export function MapScene({
     }, 140);
   };
 
-  const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
+  // pointerup 대신 click 사용: 태블릿에서 손가락이 조금만 움직여도 pointercancel이 나서
+  // 터치가 무시되던 문제 방지 (click은 브라우저가 탭 허용 오차를 적용)
+  const onSceneClick = (e: MouseEvent<HTMLDivElement>) => {
     if (pressed) return;
     const id = hitTest(e.clientX, e.clientY);
     if (id) select(id);
@@ -115,7 +118,7 @@ export function MapScene({
         ref={sceneRef}
         className={`scene ${focused ? "has-focus" : ""}`}
         style={{ aspectRatio: `${ROOM.width} / ${ROOM.height}` }}
-        onPointerUp={onPointerUp}
+        onClick={onSceneClick}
       >
         <img className="scene-bg" src={ROOM.src} alt="" draggable={false} fetchPriority="high" />
 
@@ -142,18 +145,25 @@ export function MapScene({
         {/* 선택한 전시물 외에는 어둡게 */}
         <div className="scene-dim" aria-hidden />
 
+        {/* "여기를 누르세요" 표시: 물체 위에 빛나는 원 + 이름 + Tap */}
         {!focused &&
           MAP_OBJECTS.map((o) => (
-            // 이름표는 그 자체로 버튼 (키보드·스크린리더 접근도 여기서 처리)
             <button
-              key={`label-${o.id}`}
-              className={`scene-label ${visited.has(o.id) ? "visited" : ""}`}
-              style={{ left: `${o.label.x}%`, top: `${o.label.y}%` }}
-              onPointerUp={(e) => e.stopPropagation()}
-              onClick={() => select(o.id)}
+              key={`marker-${o.id}`}
+              className={`scene-marker ${o.markerAlign === "start" ? "align-start" : ""} ${visited.has(o.id) ? "visited" : ""}`}
+              style={{ left: `${o.marker.x}%`, top: `${o.marker.y}%` }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!pressed) select(o.id);
+              }}
             >
-              {visited.has(o.id) && <span className="check">✓ </span>}
-              {EXHIBITS[o.id].name[lang]}
+              <span className="marker-dot" aria-hidden>
+                {visited.has(o.id) ? "✓" : ""}
+              </span>
+              <span className="marker-label">
+                <strong>{EXHIBITS[o.id].name[lang]}</strong>
+                <em>{UI.tap[lang]}</em>
+              </span>
             </button>
           ))}
       </div>

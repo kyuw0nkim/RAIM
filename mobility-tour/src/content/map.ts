@@ -25,8 +25,10 @@ export interface MapObject {
   y: number;
   w: number;
   h: number;
-  /** 이름표 위치 (배경 사진 기준 %, 이름표의 가운데) */
-  label: { x: number; y: number };
+  /** "Tap" 표시(빛나는 원 + 이름표)를 놓을 위치 — 물체 위 (배경 사진 기준 %, 원의 가운데) */
+  marker: { x: number; y: number };
+  /** 화면 가장자리 전시물은 이름표를 원의 왼쪽 끝에 맞춰 화면 밖으로 나가지 않게 */
+  markerAlign?: "start";
   /** Approach(만나기) 카드 위치 — 선택한 전시물을 가리지 않는 쪽 (화면 기준) */
   card: "right" | "top" | "bottom";
   /** 바닥에 놓인 전시물은 그림자를 넣어 배경 사진에 자연스럽게 붙임 */
@@ -39,7 +41,7 @@ export interface MapObject {
  * → 벽화의 투명 영역이 디오라마 터치를 가로채지 않습니다.
  */
 export const MAP_OBJECTS: MapObject[] = [
-  { id: "mural", x: 22.71, y: 21.98, w: 76.09, h: 39.52, label: { x: 60.8, y: 18.2 }, card: "bottom" },
-  { id: "quiz", x: 1.14, y: 25.0, w: 17.79, h: 56.45, label: { x: 10.0, y: 85.5 }, card: "right", grounded: true },
-  { id: "car", x: 19.68, y: 57.66, w: 78.74, h: 28.23, label: { x: 59.0, y: 89.5 }, card: "top", grounded: true },
+  { id: "mural", x: 22.71, y: 21.98, w: 76.09, h: 39.52, marker: { x: 60.8, y: 33 }, card: "bottom" },
+  { id: "quiz", x: 1.14, y: 25.0, w: 17.79, h: 56.45, marker: { x: 10.0, y: 40 }, markerAlign: "start", card: "right", grounded: true },
+  { id: "car", x: 19.68, y: 57.66, w: 78.74, h: 28.23, marker: { x: 59.0, y: 70 }, card: "top", grounded: true },
 ];

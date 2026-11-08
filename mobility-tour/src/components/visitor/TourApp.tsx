@@ -16,12 +16,14 @@ type Screen = "start" | "visitors" | "map" | "exhibit";
 
 // 비활성 시간 기준은 현장 운영 테스트 후 조정 (PRD §10.4)
 const IDLE_MS = 2 * 60 * 1000;
+/** 기본 언어 (투어 종료·초기화 시에도 이 언어로 돌아감) */
+const DEFAULT_LOCALE: Locale = "en";
 const IDLE_COUNTDOWN_S = 30;
 
 export type Tracker = (type: EventType, payload?: TrackPayload) => void;
 
 export function TourApp() {
-  const [lang, setLang] = useState<Locale>("ko");
+  const [lang, setLang] = useState<Locale>(DEFAULT_LOCALE);
   const [screen, setScreen] = useState<Screen>("start");
   const [sessionId, setSessionId] = useState("");
   const [visitors, setVisitors] = useState<VisitorEntry[]>([]);
@@ -54,7 +56,7 @@ export function TourApp() {
       setVisited(new Set());
       setConfirmEnd(false);
       setIdleLeft(null);
-      setLang("ko");
+      setLang(DEFAULT_LOCALE);
       setSessionKey((k) => k + 1);
       // 새 버전이 대기 중이면 방문객이 없는 지금 적용
       applyPendingUpdate();

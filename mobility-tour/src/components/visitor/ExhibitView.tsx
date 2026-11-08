@@ -106,6 +106,18 @@ export function ExhibitView({
               style={{ aspectRatio: `${img.width} / ${img.height}` }}
             >
               <img src={img.src} alt={t(exhibit.name)} draggable={false} />
+              {/* 선택한 지점만 또렷하게, 나머지 벽화는 밝은 안개로 흐리게 */}
+              <div
+                className={`hotspot-fog ${hs ? "on" : ""}`}
+                style={
+                  hs
+                    ? {
+                        background: `radial-gradient(circle 90px at ${hs.x}% ${hs.y}%, rgba(250, 248, 245, 0) 55%, rgba(250, 248, 245, 0.72) 100%)`,
+                      }
+                    : undefined
+                }
+                aria-hidden
+              />
               {exhibit.hotspots.map((h) => (
                 <button
                   key={h.id}
@@ -120,12 +132,6 @@ export function ExhibitView({
                   }}
                 />
               ))}
-              {hs && (
-                <div className="hotspot-callout" style={calloutPosition(hs.x, hs.y)} role="status">
-                  <strong>{t(hs.label)}</strong>
-                  <p>{t(hs.desc)}</p>
-                </div>
-              )}
             </div>
           ) : (
             <div className="exhibit-hero">
@@ -182,9 +188,20 @@ export function ExhibitView({
             )}
 
             {muralMode && exhibit.hotspots && (
-              <p className="hotspot-progress">
-                🔎 {seenHotspots.size} / {exhibit.hotspots.length}
-              </p>
+              <>
+                <p className="hotspot-progress">
+                  🔎 {seenHotspots.size} / {exhibit.hotspots.length}
+                </p>
+                {/* 선택한 지점의 설명은 그림을 가리지 않도록 오른쪽 패널에 표시 */}
+                {hs ? (
+                  <div className="hotspot-info" key={hs.id} role="status">
+                    <strong>{t(hs.label)}</strong>
+                    <p>{t(hs.desc)}</p>
+                  </div>
+                ) : (
+                  <p className="hotspot-empty">👈 {t(UI.tapRing)}</p>
+                )}
+              </>
             )}
 
 
@@ -255,15 +272,6 @@ export function ExhibitView({
       </div>
     </main>
   );
-}
-
-/** 핫스팟 설명 말풍선: 그림 밖으로 나가지 않도록 위치에 따라 방향을 바꿈 */
-function calloutPosition(x: number, y: number): React.CSSProperties {
-  const style: React.CSSProperties = { top: `${y}%` };
-  if (x <= 55) style.left = `calc(${x}% + 36px)`;
-  else style.right = `calc(${100 - x}% + 36px)`;
-  style.transform = `translateY(${y < 30 ? -15 : y > 70 ? -85 : -50}%)`;
-  return style;
 }
 
 function Quiz({

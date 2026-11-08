@@ -193,11 +193,13 @@ export function TourApp() {
 
       {screen === "map" && (
         <main className="map">
-          <header className="topbar">
-            <div className="glass-chip title-chip">
-              <strong>{t(UI.appTitle)}</strong>
+          {/* 위에서 내려오는 어두운 그라데이션 위에 흰 글씨 안내 */}
+          <div className="map-shade" aria-hidden />
+          <header className="topbar map-topbar">
+            <div className="map-heading">
+              <span className="map-title">{t(UI.appTitle)}</span>
+              <span className={`map-hint ${focusId ? "hidden" : ""}`}>👆 {t(UI.tapExhibit)}</span>
             </div>
-            {!focusId && <div className="glass-chip tap-hint">👆 {t(UI.tapExhibit)}</div>}
             <div className="topbar-right">
               {langToggle}
               <button className="btn ghost" onClick={() => setConfirmEnd(true)}>

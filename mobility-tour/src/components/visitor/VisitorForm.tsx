@@ -44,7 +44,7 @@ export function VisitorForm({
   return (
     <main className="visitors">
       <header className="topbar">
-        <div className="glass-chip title-chip">
+        <div className="title-chip">
           <strong>{t(UI.visitorsTitle)}</strong>
         </div>
         <div className="topbar-right">{langToggle}</div>

@@ -31,7 +31,8 @@ export function TourApp() {
   /** 지도 위 Approach(만나기) 카드가 열린 전시물 */
   const [focusId, setFocusId] = useState<ExhibitId | null>(null);
   const approachAt = useRef(0);
-  const [visited, setVisited] = useState<Set<ExhibitId>>(new Set());
+  /** 5단계(마무리)까지 마친 전시물 — 지도와 다음 전시물 목록에 ✓ 표시 */
+  const [completed, setCompleted] = useState<Set<ExhibitId>>(new Set());
   const [confirmEnd, setConfirmEnd] = useState(false);
   const [idleLeft, setIdleLeft] = useState<number | null>(null);
   // 세션마다 새로 마운트하여 이전 방문객의 퀴즈 응답·진행 상태가 남지 않게 함
@@ -53,7 +54,7 @@ export function TourApp() {
       setVisitors([]);
       setExhibitId(null);
       setFocusId(null);
-      setVisited(new Set());
+      setCompleted(new Set());
       setConfirmEnd(false);
       setIdleLeft(null);
       setLang(DEFAULT_LOCALE);
@@ -119,7 +120,6 @@ export function TourApp() {
     tr("stage_viewed", { exhibitId: id, stageKey: "approach" });
     approachAt.current = Date.now();
     setFocusId(id);
-    setVisited((v) => new Set(v).add(id));
     setScreen("map");
   };
 
@@ -212,7 +212,7 @@ export function TourApp() {
 
           <MapScene
             lang={lang}
-            visited={visited}
+            completed={completed}
             focused={focusId}
             onTapObject={onTapObject}
             onTapEmpty={closeApproach}
@@ -240,7 +240,8 @@ export function TourApp() {
           onMap={() => setScreen("map")}
           onApproach={() => showApproach(exhibitId, false)}
           onSelect={(id) => showApproach(id, false)}
-          visited={visited}
+          completed={completed}
+          onComplete={() => setCompleted((c) => new Set(c).add(exhibitId))}
         />
       )}
 

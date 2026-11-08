@@ -15,7 +15,8 @@ export function ExhibitView({
   onMap,
   onApproach,
   onSelect,
-  visited,
+  completed,
+  onComplete,
 }: {
   exhibit: Exhibit;
   lang: Locale;
@@ -25,7 +26,9 @@ export function ExhibitView({
   /** 1단계(만나기)는 지도 위 카드에서 진행 → 상세 화면은 2단계부터 */
   onApproach: () => void;
   onSelect: (id: ExhibitId) => void;
-  visited: Set<ExhibitId>;
+  completed: Set<ExhibitId>;
+  /** 5단계(마무리)에 도달하면 완료 처리 */
+  onComplete: () => void;
 }) {
   const t = (l: Record<Locale, string>) => l[lang];
   const [idx, setIdx] = useState(1);
@@ -45,6 +48,7 @@ export function ExhibitView({
     enteredAt.current = Date.now();
     track("stage_viewed", { exhibitId: exhibit.id, stageKey: stage });
     setHintOpen(false);
+    if (STAGES[idx] === "disengage") onComplete();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
 
@@ -70,6 +74,7 @@ export function ExhibitView({
   };
 
   const hs = exhibit.hotspots?.find((h) => h.id === hotspot);
+  const clearHotspot = () => setHotspot(null);
   const img = EXHIBIT_IMAGE[exhibit.id];
   const muralMode = stage === "experience" && !!exhibit.hotspots;
 
@@ -100,38 +105,40 @@ export function ExhibitView({
         {/* 왼쪽: 딤 처리된 교육장 위에 전시물 이미지만 띄움 (박스 없음) — 벽화 체험 단계에서는 핫스팟 */}
         <section className={`exhibit-visual visual-${exhibit.id}`}>
           {muralMode && exhibit.hotspots ? (
-            <div
-              className="hotspot-canvas"
-              // 비율을 고정해 핫스팟 좌표가 어긋나지 않게
-              style={{ aspectRatio: `${img.width} / ${img.height}` }}
-            >
-              <img src={img.src} alt={t(exhibit.name)} draggable={false} />
-              {/* 선택한 지점만 또렷하게, 나머지 벽화는 밝은 안개로 흐리게 */}
+            <div className="mural-wrap">
               <div
-                className={`hotspot-fog ${hs ? "on" : ""}`}
-                style={
-                  hs
-                    ? {
-                        background: `radial-gradient(circle 90px at ${hs.x}% ${hs.y}%, rgba(250, 248, 245, 0) 55%, rgba(250, 248, 245, 0.72) 100%)`,
-                      }
-                    : undefined
-                }
-                aria-hidden
-              />
-              {exhibit.hotspots.map((h) => (
-                <button
-                  key={h.id}
-                  className={`hotspot ${hotspot === h.id ? "active" : ""} ${seenHotspots.has(h.id) ? "seen" : ""}`}
-                  style={{ left: `${h.x}%`, top: `${h.y}%` }}
-                  aria-label={t(h.label)}
-                  aria-pressed={hotspot === h.id}
-                  onClick={() => {
-                    setHotspot(h.id);
-                    setSeenHotspots((s) => new Set(s).add(h.id));
-                    track("image_hotspot_selected", { ...ctx, targetId: h.id });
-                  }}
-                />
-              ))}
+                className="hotspot-canvas"
+                // 비율을 고정해 핫스팟 좌표가 어긋나지 않게
+                style={{ aspectRatio: `${img.width} / ${img.height}` }}
+                // 원 바깥(벽화 빈 곳)을 누르면 선택 해제 → 전체 벽화로 복귀
+                onClick={clearHotspot}
+              >
+                <img src={img.src} alt={t(exhibit.name)} draggable={false} />
+                {/* 선택한 지점(들)만 또렷하게, 나머지 벽화는 밝은 안개로 흐리게 */}
+                <div className={`hotspot-fog ${hs ? "on" : ""}`} style={hs ? fogMask(hs.points) : undefined} aria-hidden />
+                {exhibit.hotspots.flatMap((h) =>
+                  h.points.map((pt, i) => (
+                    <button
+                      key={`${h.id}-${i}`}
+                      className={`hotspot ${h.kind === "video" ? "video" : ""} ${hotspot === h.id ? "active" : ""} ${
+                        seenHotspots.has(h.id) ? "seen" : ""
+                      }`}
+                      style={{ left: `${pt.x}%`, top: `${pt.y}%` }}
+                      aria-label={t(h.label)}
+                      aria-pressed={hotspot === h.id}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // 같은 원을 다시 누르면 선택 해제
+                        if (hotspot === h.id) return clearHotspot();
+                        setHotspot(h.id);
+                        setSeenHotspots((s) => new Set(s).add(h.id));
+                        track("image_hotspot_selected", { ...ctx, targetId: h.id });
+                      }}
+                    />
+                  )),
+                )}
+              </div>
+              {exhibit.credit && <p className="credit">{t(exhibit.credit)}</p>}
             </div>
           ) : (
             <div className="exhibit-hero">
@@ -143,6 +150,7 @@ export function ExhibitView({
                 style={{ aspectRatio: `${img.width} / ${img.height}` }}
               />
               <p className="hero-name">{t(exhibit.name)}</p>
+              {exhibit.credit && <p className="credit">{t(exhibit.credit)}</p>}
             </div>
           )}
         </section>
@@ -194,8 +202,18 @@ export function ExhibitView({
                 </p>
                 {/* 선택한 지점의 설명은 그림을 가리지 않도록 오른쪽 패널에 표시 */}
                 {hs ? (
-                  <div className="hotspot-info" key={hs.id} role="status">
-                    <strong>{t(hs.label)}</strong>
+                  <div className={`hotspot-info ${hs.kind === "video" ? "video" : ""}`} key={hs.id} role="status">
+                    <div className="hotspot-info-head">
+                      <strong>{t(hs.label)}</strong>
+                      <button className="btn ghost small" onClick={clearHotspot}>
+                        ↺ {t(UI.showWhole)}
+                      </button>
+                    </div>
+                    {/* 태블릿이 아니라 실제 벽을 먼저 보도록: 찾을 것 → 설명 순서 */}
+                    <p className="hotspot-find">
+                      <span>👀 {t(UI.findOnWall)}</span>
+                      {t(hs.find)}
+                    </p>
                     <p>{t(hs.desc)}</p>
                   </div>
                 ) : (
@@ -242,7 +260,7 @@ export function ExhibitView({
                       <span className="next-icon">{EXHIBITS[id].icon}</span>
                       <span>
                         <strong>
-                          {visited.has(id) && "✓ "}
+                          {completed.has(id) && "✓ "}
                           {t(EXHIBITS[id].name)}
                         </strong>
                         <small>{t(EXHIBITS[id].tagline)}</small>
@@ -272,6 +290,25 @@ export function ExhibitView({
       </div>
     </main>
   );
+}
+
+/**
+ * 선택한 지점마다 구멍을 낸 안개 마스크.
+ * 각 지점의 원형 마스크(안 = 투명, 밖 = 불투명)를 intersect로 합쳐
+ * 모든 지점이 동시에 뚫리도록 함.
+ */
+function fogMask(points: { x: number; y: number }[]): React.CSSProperties {
+  const layers = points.map((p) => `radial-gradient(circle 80px at ${p.x}% ${p.y}%, transparent 55%, #000 100%)`);
+  const mask = layers.join(", ");
+  return {
+    maskImage: mask,
+    WebkitMaskImage: mask,
+    maskComposite: points.map(() => "intersect").join(", "),
+    // WebKit: 위 레이어를 아래 레이어 안에서만 남김 = 교집합
+    WebkitMaskComposite: points.map(() => "source-in").join(", "),
+    maskRepeat: "no-repeat",
+    WebkitMaskRepeat: "no-repeat",
+  };
 }
 
 function Quiz({

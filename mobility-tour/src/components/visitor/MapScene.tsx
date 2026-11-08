@@ -47,13 +47,13 @@ function opaqueAt(mask: AlphaMask | undefined, u: number, v: number) {
 
 export function MapScene({
   lang,
-  visited,
+  completed,
   focused,
   onTapObject,
   onTapEmpty,
 }: {
   lang: Locale;
-  visited: Set<ExhibitId>;
+  completed: Set<ExhibitId>;
   /** Approach 단계: 선택한 전시물만 밝게, 나머지는 딤 처리 */
   focused: ExhibitId | null;
   onTapObject: (id: ExhibitId) => void;
@@ -150,19 +150,16 @@ export function MapScene({
           MAP_OBJECTS.map((o) => (
             <button
               key={`marker-${o.id}`}
-              className={`scene-marker ${o.markerAlign === "start" ? "align-start" : ""} ${visited.has(o.id) ? "visited" : ""}`}
+              className={`scene-marker ${completed.has(o.id) ? "done" : ""}`}
               style={{ left: `${o.marker.x}%`, top: `${o.marker.y}%` }}
+              aria-label={EXHIBITS[o.id].name[lang]}
               onClick={(e) => {
                 e.stopPropagation();
                 if (!pressed) select(o.id);
               }}
             >
-              <span className="marker-dot" aria-hidden>
-                {visited.has(o.id) ? "✓" : ""}
-              </span>
-              <span className="marker-label">
-                <strong>{EXHIBITS[o.id].name[lang]}</strong>
-                <em>{UI.tap[lang]}</em>
+              <span className="marker-orb" aria-hidden>
+                {completed.has(o.id) ? "✓" : UI.tap[lang]}
               </span>
             </button>
           ))}

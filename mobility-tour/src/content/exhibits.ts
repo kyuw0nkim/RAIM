@@ -203,8 +203,8 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       experience: {
         title: { ko: "벽화 탐험", en: "Explore the Mural" },
         body: {
-          ko: "왼쪽 벽화에서 빛나는 원을 눌러 벽화 속 이야기를 알아보세요.",
-          en: "Tap the glowing rings on the mural to discover what's in it.",
+          ko: "고개를 들어 실제 벽화를 보세요. 이 화면의 원을 누르면 벽에서 무엇을 찾을지 알려 줘요. 노란 원은 영상이 나오는 화면이에요.",
+          en: "Look up at the real wall. Tap a ring here to see what to find on it. Yellow rings mark the video screens.",
         },
         cta: { ko: "무엇을 발견했나요?", en: "What Did You Find?" },
       },
@@ -224,22 +224,36 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         },
       },
     },
-    // 좌표는 벽화 이미지(mural.webp) 기준 %
+    credit: { ko: "작가 Jisoo Choi", en: "Artwork by Jisoo Choi" },
+    // 좌표는 벽화 이미지(mural.webp) 기준 %. find = 실제 벽에서 찾을 것, desc = 설명
     hotspots: [
       {
-        // TODO(교육사): 실제 영상 내용에 맞게 문구 교체 — 화면은 벽화 왼쪽(14.9%, 54%)·가운데·오른쪽(84.8%, 48.5%) 세 곳
+        // TODO(교육사): 실제 영상 내용에 맞게 문구 교체
         id: "mural-video",
-        x: 38, y: 53.8,
+        kind: "video",
+        points: [
+          { x: 14.9, y: 54.2 },
+          { x: 38, y: 53.8 },
+          { x: 84.8, y: 48.5 },
+        ],
         label: { ko: "벽화 속 영상", en: "Videos in the Mural" },
+        find: {
+          ko: "벽에서 영상이 나오는 화면 세 곳을 찾아보세요. 왼쪽, 가운데, 오른쪽에 있어요.",
+          en: "Find the three video screens on the wall: left, center and right.",
+        },
         desc: {
-          ko: "벽화 곳곳에 있는 화면 세 곳에서 영상이 나와요. 실제 벽화 앞에서 영상을 보며, 자율주행차가 주변을 어떻게 알아차리고 움직이는지 살펴보세요.",
-          en: "Videos play on three screens built into the mural. Watch them in front of the real wall and notice how self-driving cars sense their surroundings and move.",
+          ko: "잠시 서서 영상을 보며, 자율주행차가 주변을 어떻게 알아차리고 움직이는지 지켜보세요.",
+          en: "Stand for a moment and watch how self-driving cars sense what's around them and move.",
         },
       },
       {
         id: "mural-pbv",
-        x: 46.5, y: 63,
+        points: [{ x: 46.5, y: 63 }],
         label: { ko: "자율주행 셔틀 (PBV)", en: "Self-Driving Shuttle (PBV)" },
+        find: {
+          ko: "벽 가운데 도로에서, 안이 훤히 보이는 차량을 찾아보세요.",
+          en: "On the center road of the wall, find the vehicles you can see inside.",
+        },
         desc: {
           ko: "운전석 없이 실내를 용도에 맞게 꾸민 차량이에요. 전용 도로를 따라 스스로 달려요. 이런 차량을 목적 기반 모빌리티(PBV)라고 불러요.",
           en: "A vehicle with no driver's seat whose cabin is designed for a purpose. It drives itself along a dedicated lane. This is called a Purpose-Built Vehicle (PBV).",
@@ -247,8 +261,12 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       {
         id: "mural-raim",
-        x: 63, y: 50,
+        points: [{ x: 63, y: 50 }],
         label: { ko: "서울로봇인공지능과학관", en: "Seoul Robot & AI Museum" },
+        find: {
+          ko: "'RAIM'이라고 쓰인 둥근 건물을 찾아보세요.",
+          en: "Find the round building labeled 'RAIM'.",
+        },
         desc: {
           ko: "바로 여러분이 있는 이곳! 벽화 속 미래 도시에도 과학관이 그려져 있어요.",
           en: "That's where you are right now! The museum appears in the future city, too.",
@@ -256,8 +274,12 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       {
         id: "mural-speed",
-        x: 74.6, y: 21,
+        points: [{ x: 74.6, y: 21 }],
         label: { ko: "속도 제한 표지판", en: "Speed Limit Sign" },
+        find: {
+          ko: "벽 오른쪽 위에서 숫자 '30'이 적힌 표지판을 찾아보세요.",
+          en: "At the upper right of the wall, find the sign with '30' on it.",
+        },
         desc: {
           ko: "자율주행차는 카메라로 표지판을 읽고 제한 속도를 지켜요. 사람이 많은 곳에서는 더 천천히 달려요.",
           en: "Self-driving cars read signs with cameras and keep to the speed limit, driving more slowly where there are many people.",
@@ -265,8 +287,12 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       {
         id: "mural-parking",
-        x: 87.5, y: 30,
+        points: [{ x: 87.5, y: 30 }],
         label: { ko: "스마트 주차", en: "Smart Parking" },
+        find: {
+          ko: "오른쪽 끝에서 'P' 표지판과 줄지어 선 차들을 찾아보세요.",
+          en: "At the far right, find the 'P' sign and the row of parked cars.",
+        },
         desc: {
           ko: "센서로 빈자리를 찾아 차가 스스로 주차해요. 주차장을 찾느라 도로를 빙빙 도는 차가 줄어들어요.",
           en: "Cars use sensors to find an empty space and park themselves, so fewer cars circle around looking for parking.",
@@ -274,8 +300,12 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       {
         id: "mural-crosswalk",
-        x: 91.5, y: 76,
+        points: [{ x: 91.5, y: 76 }],
         label: { ko: "보행자 보호", en: "Pedestrian Safety" },
+        find: {
+          ko: "오른쪽 아래에서 걷는 사람 표지판과 횡단보도를 찾아보세요.",
+          en: "At the lower right, find the walking-person sign and the crosswalk.",
+        },
         desc: {
           ko: "자율주행차는 횡단보도의 사람을 감지하면 멈춰요. 디오라마 자동차의 장애물 센서와 같은 원리예요.",
           en: "Self-driving cars stop when they detect people at a crosswalk — the same idea as the obstacle sensor on the diorama car.",

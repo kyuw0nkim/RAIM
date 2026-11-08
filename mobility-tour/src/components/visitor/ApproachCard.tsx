@@ -31,6 +31,7 @@ export function ApproachCard({
         1/5 · {t(STAGE_LABEL.approach)}
       </p>
       <h2>{t(stage.title)}</h2>
+      {exhibit.credit && <p className="credit">{t(exhibit.credit)}</p>}
       <p className="approach-body">{t(stage.body)}</p>
       <div className="approach-actions">
         <button className="btn primary lg" onClick={onContinue}>

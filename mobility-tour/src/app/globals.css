@@ -54,7 +54,7 @@ input, textarea, select { font: inherit; }
 }
 /* 블러 미지원 환경: 불투명한 흰색으로 대체 */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass, .scene-label, .hotspot-callout, .progress { background: rgba(255, 255, 255, 0.97); }
+  .glass, .progress { background: rgba(255, 255, 255, 0.97); }
 }
 
 /* ───────── Buttons — 유리 대신 단색 ───────── */
@@ -164,7 +164,6 @@ input, textarea, select { font: inherit; }
 .scene-dim { position: absolute; inset: 0; z-index: 1; background: rgba(246, 244, 241, 0.66); opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
 .scene.has-focus .scene-dim { opacity: 1; }
 .scene-object.focused { z-index: 2; }
-.scene.has-focus .object-glow { animation: none; opacity: 0; }
 .scene.has-focus .scene-object.focused .object-glow { opacity: 0.9; }
 .approach-card {
   position: absolute; z-index: 4; width: min(520px, calc(100vw - 40px)); padding: 28px 30px 24px;
@@ -181,23 +180,45 @@ input, textarea, select { font: inherit; }
   position: absolute; top: 14px; right: 14px; width: var(--touch); height: var(--touch); border: 0; border-radius: 50%;
   background: rgba(0, 68, 139, 0.07); color: var(--c-301); font-size: 1.1rem;
 }
+/* 물체 전체 빛: 평소에는 끄고, 누를 때·선택됐을 때만 */
 .object-glow {
   filter: drop-shadow(0 0 3px #00bfdf) drop-shadow(0 0 10px rgba(0, 191, 223, 0.9));
-  opacity: 0.15;
-  animation: glow 2.4s ease-in-out infinite;
+  opacity: 0; transition: opacity 0.15s ease;
 }
-.scene-object.pressed .object-glow { animation: none; opacity: 1; }
-@keyframes glow { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.95; } }
-.scene-label {
-  position: absolute; transform: translate(-50%, -50%); z-index: 2;
-  min-height: var(--touch); padding: 8px 22px 8px 18px; border-radius: 999px; white-space: nowrap;
-  background: var(--glass-bg); border: 1px solid var(--glass-edge); box-shadow: 0 6px 20px rgba(40, 52, 66, 0.18);
-  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-  font-weight: 650; font-size: 1.05rem; color: var(--c-301); touch-action: manipulation;
+.scene-object.pressed .object-glow { opacity: 1; }
+/* "여기를 누르세요" 표시: 물체 위 빛나는 원 + 이름 + TAP */
+.scene-marker {
+  position: absolute; z-index: 2; transform: translate(-50%, -28px);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 0; border: 0; background: none; touch-action: manipulation;
 }
-.scene-label::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c-311); margin-right: 10px; vertical-align: 1px; box-shadow: 0 0 0 4px rgba(0, 191, 223, 0.22); }
-.scene-label.visited::before { display: none; }
-.scene-label:active { transform: translate(-50%, -50%) scale(0.96); }
+.marker-dot {
+  position: relative; width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.92); border: 4px solid var(--c-311);
+  animation: marker-pulse 1.8s ease-out infinite; transition: transform 0.1s ease; isolation: isolate;
+}
+.marker-dot::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: var(--c-311); box-shadow: 0 0 14px rgba(0, 191, 223, 0.9); z-index: -1; }
+.scene-marker.align-start { transform: translate(-28px, -28px); align-items: flex-start; }
+.scene-marker.visited .marker-dot { border-color: var(--c-319); }
+.scene-marker.visited .marker-dot::before { background: var(--c-319); box-shadow: none; }
+.marker-label {
+  display: flex; align-items: center; gap: 10px; padding: 7px 7px 7px 16px; border-radius: 999px; white-space: nowrap;
+  background: rgba(255, 255, 255, 0.95); box-shadow: 0 6px 20px rgba(30, 40, 52, 0.22);
+  font-size: 1.02rem; color: var(--c-301);
+}
+.marker-label strong { font-weight: 650; }
+.marker-label em {
+  font-style: normal; font-weight: 750; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--c-301); color: #fff; border-radius: 999px; padding: 5px 12px;
+}
+.scene-marker:active .marker-dot { transform: scale(0.92); }
+.scene-marker:active .marker-label { background: #edf3f9; }
+@keyframes marker-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 191, 223, 0.6), 0 4px 16px rgba(0, 0, 0, 0.25); }
+  70% { box-shadow: 0 0 0 22px rgba(0, 191, 223, 0), 0 4px 16px rgba(0, 0, 0, 0.25); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 191, 223, 0), 0 4px 16px rgba(0, 0, 0, 0.25); }
+}
 .check { color: var(--c-319); }
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(0, 191, 223, 0.55); }
@@ -205,8 +226,7 @@ input, textarea, select { font: inherit; }
   100% { box-shadow: 0 0 0 0 rgba(0, 191, 223, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .object-glow { animation: none; opacity: 0.6; }
-  .hotspot { animation: none; }
+  .marker-dot, .hotspot { animation: none; }
 }
 
 /* Exhibit */
@@ -288,16 +308,14 @@ input, textarea, select { font: inherit; }
 }
 .hotspot.seen { border-color: var(--c-319); animation: none; }
 .hotspot.active { border-color: var(--c-301); background: rgba(0, 68, 139, 0.12); animation: none; transform: scale(1.1); }
-.hotspot-callout {
-  position: absolute; z-index: 2; width: min(320px, 48%); padding: 16px 20px; border-radius: 22px; color: var(--fg);
-  background: rgba(255, 255, 255, 0.9); border: 1px solid var(--glass-edge); box-shadow: 0 12px 32px rgba(40, 52, 66, 0.22);
-  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-  animation: pop 0.18s ease-out; pointer-events: none;
-}
-.hotspot-callout strong { font-size: 1.1rem; font-weight: 700; color: var(--c-301); }
-.hotspot-callout p { margin: 6px 0 0; line-height: 1.55; font-size: 1rem; color: var(--fg-2); }
+.hotspot-fog { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.25s ease; }
+.hotspot-fog.on { opacity: 1; }
+.hotspot-info { padding: 16px 20px; border-radius: 20px; background: #fff; border: 1.5px solid rgba(0, 191, 223, 0.5); box-shadow: 0 6px 18px rgba(0, 68, 139, 0.08); animation: pop 0.2s ease-out; }
+.hotspot-info strong { display: block; font-size: 1.25rem; font-weight: 700; color: var(--c-301); }
+.hotspot-info p { margin: 8px 0 0; line-height: 1.65; font-size: 1.08rem; color: var(--fg); }
+.hotspot-empty { margin: 0; padding: 14px 18px; border-radius: 18px; color: var(--fg-2); background: rgba(0, 68, 139, 0.04); border: 1.5px dashed rgba(0, 68, 139, 0.18); }
 @keyframes pop { from { opacity: 0; } to { opacity: 1; } }
-.hotspot-progress { margin: 0 0 4px; font-weight: 650; color: var(--c-2985); }
+.hotspot-progress { margin: 0 0 10px; font-weight: 650; color: var(--c-2985); }
 
 /* Next exhibits */
 .next-exhibits { margin-top: 12px; }

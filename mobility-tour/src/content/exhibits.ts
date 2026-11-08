@@ -189,7 +189,10 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       engage: {
         title: { ko: "숨은 그림 찾기", en: "Hidden Logos" },
-        body: { ko: "실제 벽화를 천천히 살펴보세요.", en: "Look slowly at the real mural." },
+        body: {
+          ko: "실제 벽화를 천천히 살펴보세요. 벽화 속 화면에서 나오는 영상도 함께 보세요.",
+          en: "Look slowly at the real mural. Don't miss the videos playing on the screens built into it.",
+        },
         question: {
           ko: "벽화 속에 자동차 로고 4개가 숨어 있어요. 찾을 수 있나요?",
           en: "There are four car logos hidden in the mural. Can you find them?",
@@ -200,8 +203,8 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       experience: {
         title: { ko: "벽화 탐험", en: "Explore the Mural" },
         body: {
-          ko: "아래 그림에서 빛나는 점을 눌러 벽화 속 이동수단을 알아보세요.",
-          en: "Tap the glowing dots below to learn about the vehicles in the mural.",
+          ko: "왼쪽 벽화에서 빛나는 원을 눌러 벽화 속 이야기를 알아보세요.",
+          en: "Tap the glowing rings on the mural to discover what's in it.",
         },
         cta: { ko: "무엇을 발견했나요?", en: "What Did You Find?" },
       },
@@ -223,6 +226,16 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
     },
     // 좌표는 벽화 이미지(mural.webp) 기준 %
     hotspots: [
+      {
+        // TODO(교육사): 실제 영상 내용에 맞게 문구 교체 — 화면은 벽화 왼쪽(14.9%, 54%)·가운데·오른쪽(84.8%, 48.5%) 세 곳
+        id: "mural-video",
+        x: 38, y: 53.8,
+        label: { ko: "벽화 속 영상", en: "Videos in the Mural" },
+        desc: {
+          ko: "벽화 곳곳에 있는 화면 세 곳에서 영상이 나와요. 실제 벽화 앞에서 영상을 보며, 자율주행차가 주변을 어떻게 알아차리고 움직이는지 살펴보세요.",
+          en: "Videos play on three screens built into the mural. Watch them in front of the real wall and notice how self-driving cars sense their surroundings and move.",
+        },
+      },
       {
         id: "mural-pbv",
         x: 46.5, y: 63,

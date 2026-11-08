@@ -22,6 +22,8 @@ export const UI = {
   origin: { ko: "방문객 구분", en: "Visitor Origin" },
   age: { ko: "연령대", en: "Age Group" },
   tapExhibit: { ko: "전시물을 눌러 탐색해 보세요.", en: "Tap an exhibit to explore." },
+  tap: { ko: "터치", en: "Tap" },
+  tapRing: { ko: "벽화의 빛나는 원을 눌러 보세요.", en: "Tap a glowing ring on the mural." },
   endTour: { ko: "투어 종료", en: "End Tour" },
   endConfirm: { ko: "투어를 종료할까요? 처음 화면으로 돌아갑니다.", en: "End the tour? The app will return to the start screen." },
   yes: { ko: "종료", en: "End" },

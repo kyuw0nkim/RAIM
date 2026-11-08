@@ -33,9 +33,6 @@ export function ApproachCard({
       <h2>{t(stage.title)}</h2>
       <p className="approach-body">{t(stage.body)}</p>
       <div className="approach-actions">
-        <button className="btn ghost" onClick={onClose}>
-          {t(UI.map)}
-        </button>
         <button className="btn primary lg" onClick={onContinue}>
           {stage.cta ? t(stage.cta) : t(UI.next)} →
         </button>

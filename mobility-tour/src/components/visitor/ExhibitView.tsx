@@ -77,6 +77,9 @@ export function ExhibitView({
   const clearHotspot = () => setHotspot(null);
   const img = EXHIBIT_IMAGE[exhibit.id];
   const muralMode = stage === "experience" && !!exhibit.hotspots;
+  const heroImg = content.image ?? img;
+  // 관찰·체험 단계: 화면보다 실물을 보도록 상기
+  const lookReal = stage === "engage" || stage === "experience";
 
   return (
     <main className="exhibit">
@@ -142,13 +145,27 @@ export function ExhibitView({
             </div>
           ) : (
             <div className="exhibit-hero">
-              <img
-                className={`hero-img hero-${exhibit.id}`}
-                src={img.src}
-                alt=""
-                draggable={false}
-                style={{ aspectRatio: `${img.width} / ${img.height}` }}
-              />
+              <div className={`hero-frame ${content.image ? "stage-photo" : ""}`}>
+                <img
+                  className={`hero-img hero-${exhibit.id}`}
+                  src={heroImg.src}
+                  alt=""
+                  draggable={false}
+                  style={{ aspectRatio: `${heroImg.width} / ${heroImg.height}` }}
+                />
+                {/* 힌트를 열면 사진에서 찾을 부분을 원으로 표시 */}
+                {content.image?.mark && hintOpen && (
+                  <span
+                    className="photo-mark"
+                    style={{
+                      left: `${content.image.mark.x}%`,
+                      top: `${content.image.mark.y}%`,
+                      width: `${content.image.mark.r}%`,
+                    }}
+                    aria-hidden
+                  />
+                )}
+              </div>
               <p className="hero-name">{t(exhibit.name)}</p>
               {exhibit.credit && <p className="credit">{t(exhibit.credit)}</p>}
             </div>
@@ -162,6 +179,7 @@ export function ExhibitView({
               {idx + 1}/5 · {t(STAGE_LABEL[stage])}
             </p>
             <h1>{t(content.title)}</h1>
+            {lookReal && <p className="look-real">{t(UI.lookReal)}</p>}
             <p className="body">{t(content.body)}</p>
 
             {content.question && <p className="question">{t(content.question)}</p>}

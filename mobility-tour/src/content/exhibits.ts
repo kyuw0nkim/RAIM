@@ -12,29 +12,33 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       approach: {
         title: { ko: "자율주행 자동차를 만나요", en: "Meet the Self-Driving Car" },
         body: {
-          ko: "교육장 가운데의 도로 디오라마를 찾아보세요. 작은 자동차가 스스로 길을 따라 움직입니다.",
-          en: "Find the road diorama in the middle of the room. A small car is driving along the road by itself.",
+          ko: "교육장 가운데의 도로 디오라마 앞으로 가 보세요. 작은 자동차가 스스로 길을 따라 달리고 있어요.",
+          en: "Walk over to the road diorama in the middle of the room. A small car is driving along the road by itself.",
         },
-        cta: { ko: "가까이 가 보기", en: "Go Closer" },
+        cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
         title: { ko: "자세히 보기", en: "Look Closer" },
-        body: { ko: "자동차의 앞부분을 살펴보세요.", en: "Look at the front of the car." },
+        body: {
+          ko: "디오라마 앞에 서서 진짜 자동차의 앞부분을 가까이 들여다보세요.",
+          en: "Stand by the diorama and look closely at the front of the real car.",
+        },
         question: {
           ko: "장애물을 알아차리는 센서를 찾을 수 있나요?",
           en: "Can you find the sensor that detects obstacles?",
         },
         hint: {
-          ko: "동그란 '눈' 두 개처럼 생긴 부품을 찾아보세요.",
-          en: "Look for a part that looks like two round 'eyes'.",
+          ko: "동그란 '눈' 두 개처럼 생긴 부품이에요. 사진에 표시해 두었으니, 실제 자동차에서도 찾아보세요.",
+          en: "It looks like two round 'eyes'. It's marked on the photo — now find it on the real car.",
         },
+        image: { src: "/images/diorama-car.webp", width: 870, height: 575, mark: { x: 23, y: 58, r: 17 } },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },
       experience: {
         title: { ko: "관찰해 보기", en: "Watch It Happen" },
         body: {
-          ko: "자동차가 달리다가 앞에 물체가 있으면 어떻게 하는지 지켜보세요. 바닥의 선 색깔이 바뀔 때도 관찰해 보세요.",
-          en: "Watch what the car does when something is in front of it. Also watch what happens when the color of the line on the floor changes.",
+          ko: "디오라마의 자동차가 달리는 모습을 지켜보세요. 앞에 물체가 나타나면 어떻게 하나요? 바닥 선의 색이 바뀌는 곳에서는요?",
+          en: "Watch the real car drive around the diorama. What does it do when something is in front of it? And where the line on the floor changes color?",
         },
         hint: {
           ko: "장애물 배치는 교육사 선생님의 안내가 있을 때만 해 주세요.",
@@ -45,16 +49,16 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       reflect: {
         title: { ko: "어떻게 가능할까요?", en: "How Does It Work?" },
         body: {
-          ko: "자동차 앞의 초음파 센서는 소리를 보내고 되돌아오는 시간을 재서 물체까지의 거리를 알아냅니다. 바닥을 향한 색상·빛 센서는 선의 색을 읽습니다. 자동차의 컴퓨터는 이 정보를 바탕으로 '멈춤', '속도 줄이기', '방향 바꾸기'를 결정합니다.",
-          en: "The ultrasonic sensor sends out sound and measures how long the echo takes to come back, so the car knows how far away an object is. A color/light sensor facing the floor reads the line. The car's computer uses this information to decide to stop, slow down, or turn.",
+          ko: "여러분이 찾은 동그란 두 '눈'이 초음파 센서예요. 소리를 보내고 되돌아오는 시간을 재서 물체까지의 거리를 알아내요. 바닥을 향한 색상·빛 센서는 선의 색을 읽어요. 자동차의 컴퓨터는 이 정보로 '멈춤', '속도 줄이기', '방향 바꾸기'를 결정해요.",
+          en: "The two round 'eyes' you found are an ultrasonic sensor. It sends out sound and times the echo to work out how far away an object is. A color/light sensor facing the floor reads the line. The car's computer uses this to decide to stop, slow down or turn.",
         },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
       disengage: {
         title: { ko: "잘 관찰했어요!", en: "Great Observing!" },
         body: {
-          ko: "실제 자율주행차는 카메라, 레이더, 라이다 등 더 많은 센서를 함께 사용해요. 다른 전시물도 살펴볼까요?",
-          en: "Real self-driving cars combine many more sensors, such as cameras, radar and lidar. Shall we explore another exhibit?",
+          ko: "실제 자율주행차는 카메라, 레이더, 라이다 등 더 많은 센서를 함께 써요. 이제 다음 전시물로 걸어가 볼까요?",
+          en: "Real self-driving cars combine many more sensors, like cameras, radar and lidar. Ready to walk over to the next exhibit?",
         },
       },
     },
@@ -88,14 +92,17 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       approach: {
         title: { ko: "나도 자율주행 전문가", en: "I'm a Self-Driving Expert, Too" },
         body: {
-          ko: "교육장 왼쪽의 큰 퀴즈 화면을 찾아보세요. 전시를 보고 퀴즈를 풀며 자율주행차에 대한 지식을 확인해 볼 거예요.",
-          en: "Find the large quiz screen on the left side of the room. Look around the exhibits, then test what you know about self-driving cars.",
+          ko: "교육장 왼쪽의 큰 퀴즈 화면 앞으로 가 보세요. 전시를 둘러본 뒤, 자율주행차에 대해 얼마나 알게 되었는지 확인해 봐요.",
+          en: "Head to the large quiz screen on the left side of the room. After exploring the exhibits, see how much you've learned about self-driving cars.",
         },
-        cta: { ko: "시작하기", en: "Let's Start" },
+        cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
         title: { ko: "먼저 생각해 보기", en: "Think First" },
-        body: { ko: "정답을 보기 전에 함께 이야기해 보세요.", en: "Talk about it together before you see the answer." },
+        body: {
+          ko: "퀴즈 화면 앞에서, 정답을 보기 전에 함께 온 사람과 먼저 이야기해 보세요.",
+          en: "In front of the quiz screen, talk it over with the people you came with before you see the answer.",
+        },
         question: {
           ko: "모든 자율주행차는 운전자 없이 달릴 수 있을까요?",
           en: "Can all self-driving cars drive without a human driver?",
@@ -104,7 +111,10 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       experience: {
         title: { ko: "퀴즈 풀기", en: "Take the Quiz" },
-        body: { ko: "답을 고르고 제출해 보세요.", en: "Choose an answer and submit it." },
+        body: {
+          ko: "큰 퀴즈 화면에서 먼저 문제를 풀어 보고, 여기서 답을 다시 확인해 보세요.",
+          en: "Try the questions on the big quiz screen first, then check your answers here.",
+        },
         cta: { ko: "해설 보기", en: "See Explanation" },
       },
       reflect: {
@@ -118,8 +128,8 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       disengage: {
         title: { ko: "퀴즈 완료!", en: "Quiz Complete!" },
         body: {
-          ko: "자율주행 단계를 알게 되었어요. 이제 진짜 센서가 어떻게 작동하는지 보러 갈까요?",
-          en: "Now you know the levels of automation. Want to see how real sensors work?",
+          ko: "자율주행 단계를 알게 되었어요. 이제 디오라마로 가서 진짜 센서가 어떻게 움직이는지 직접 볼까요?",
+          en: "Now you know the levels of automation. Want to go to the diorama and see real sensors at work?",
         },
       },
     },
@@ -182,16 +192,16 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       approach: {
         title: { ko: "미래 모빌리티 벽화", en: "The Future Mobility Mural" },
         body: {
-          ko: "교육장 벽면의 큰 그림을 찾아보세요. 미래 도시의 이동수단이 그려져 있어요.",
-          en: "Find the large painting on the wall. It shows how people might travel in a future city.",
+          ko: "교육장 벽면의 큰 벽화 앞으로 가 보세요. 미래 도시의 이동수단이 그려져 있어요.",
+          en: "Walk up to the large mural on the wall. It shows how people might travel in a future city.",
         },
-        cta: { ko: "살펴보기", en: "Take a Look" },
+        cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
         title: { ko: "숨은 그림 찾기", en: "Hidden Logos" },
         body: {
-          ko: "실제 벽화를 천천히 살펴보세요. 벽화 속 화면에서 나오는 영상도 함께 보세요.",
-          en: "Look slowly at the real mural. Don't miss the videos playing on the screens built into it.",
+          ko: "벽화 앞에 서서 천천히 둘러보세요. 벽화 속 화면에서 나오는 영상도 놓치지 마세요.",
+          en: "Stand in front of the mural and take your time. Don't miss the videos playing on the screens built into it.",
         },
         question: {
           ko: "벽화 속에 자동차 로고 4개가 숨어 있어요. 찾을 수 있나요?",
@@ -211,16 +221,16 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       reflect: {
         title: { ko: "미래의 이동", en: "Moving in the Future" },
         body: {
-          ko: "PBV(목적 기반 모빌리티)는 하나의 차체에 용도에 맞는 공간을 바꿔 끼워 카페, 병원, 택배 차량 등으로 쓰는 이동수단이에요. 미래 도시는 전기·수소 에너지와 공유 이동수단으로 더 깨끗하고 효율적인 교통을 만들려고 해요.",
-          en: "A PBV (Purpose-Built Vehicle) swaps cabins on the same base to become a café, clinic or delivery van. Future cities aim for cleaner, more efficient transport using electric and hydrogen power and shared mobility.",
+          ko: "벽화에서 찾은 속이 훤히 보이는 셔틀이 PBV(목적 기반 모빌리티)예요. 하나의 차체에 용도에 맞는 공간을 바꿔 끼워 카페, 병원, 택배 차량 등으로 써요. 미래 도시는 전기·수소 에너지와 공유 이동수단으로 더 깨끗하고 효율적인 교통을 만들려고 해요.",
+          en: "The see-through shuttles you found on the wall are PBVs (Purpose-Built Vehicles). They swap cabins on the same base to become a café, clinic or delivery van. Future cities aim for cleaner, more efficient transport with electric and hydrogen power and shared mobility.",
         },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
       disengage: {
         title: { ko: "멋진 탐험이었어요!", en: "Great Exploring!" },
         body: {
-          ko: "여러분이 상상하는 미래의 이동수단은 무엇인가요? 다른 전시물도 둘러보세요.",
-          en: "What vehicle do you imagine for the future? Take a look at the other exhibits too.",
+          ko: "여러분이 상상하는 미래의 이동수단은 무엇인가요? 벽화를 한 번 더 둘러본 뒤, 다음 전시물로 걸어가 보세요.",
+          en: "What vehicle do you imagine for the future? Take one more look at the wall, then walk to the next exhibit.",
         },
       },
     },

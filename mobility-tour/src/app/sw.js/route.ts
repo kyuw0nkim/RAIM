@@ -10,7 +10,7 @@ const VERSION = ${JSON.stringify(`${VERSION}-${BUILD}`)};
 const CACHE = "amt-" + VERSION;
 const CORE = [
   "/", "/manifest.webmanifest", "/icons/icon-192.png", "/icons/icon-512.png",
-  "/images/room.webp", "/images/diorama.webp", "/images/quiz-display.webp", "/images/mural.webp",
+  "/images/room.webp", "/images/diorama.webp", "/images/diorama-car.webp", "/images/quiz-display.webp", "/images/mural.webp",
 ];
 
 self.addEventListener("install", (event) => {

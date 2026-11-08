@@ -111,10 +111,7 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       experience: {
         title: { ko: "퀴즈 풀기", en: "Take the Quiz" },
-        body: {
-          ko: "큰 퀴즈 화면에서 먼저 문제를 풀어 보고, 여기서 답을 다시 확인해 보세요.",
-          en: "Try the questions on the big quiz screen first, then check your answers here.",
-        },
+        body: { ko: "", en: "" },
         cta: { ko: "해설 보기", en: "See Explanation" },
       },
       reflect: {

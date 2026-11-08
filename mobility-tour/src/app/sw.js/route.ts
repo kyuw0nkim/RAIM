@@ -40,9 +40,11 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(req.url);
   if (req.method !== "GET" || url.origin !== self.location.origin) return;
   // 관리자·API는 항상 네트워크 (캐시하지 않음)
-  if (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api") || url.pathname === "/sw.js") return;
+  if (url.pathname.startsWith("/admin") || url.pathname === "/sw.js") return;
+  if (url.pathname.startsWith("/api") && url.pathname !== "/api/content") return;
 
-  if (req.mode === "navigate") {
+  // 페이지와 발행 콘텐츠: 네트워크 우선, 실패 시 캐시 (오프라인 투어)
+  if (req.mode === "navigate" || url.pathname === "/api/content") {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE);
       try {
@@ -50,7 +52,7 @@ self.addEventListener("fetch", (event) => {
         if (res.ok) cache.put(req, res.clone());
         return res;
       } catch (e) {
-        return (await cache.match(req)) || (await cache.match("/")) || Response.error();
+        return (await cache.match(req)) || (req.mode === "navigate" ? await cache.match("/") : undefined) || Response.error();
       }
     })());
     return;

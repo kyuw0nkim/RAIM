@@ -23,15 +23,18 @@ export interface StageImage {
   mark?: { x: number; y: number; r: number };
 }
 
-export interface Faq { id: string; q: L; a: L }
+export interface Faq { id: string; q: L; a: L; /** 숨김 (방문객 앱에 표시하지 않음) */ disabled?: boolean }
 
 export interface QuizQuestion {
   id: string;
+  /** choice = 객관식, ox = O/X */
+  type?: "choice" | "ox";
   question: L;
   options: { key: string; text: L }[];
   /** 정답은 언어와 독립적으로 관리 */
   answer: string;
   explanation: L;
+  disabled?: boolean;
 }
 
 export interface Hotspot {
@@ -59,3 +62,10 @@ export interface Exhibit {
   credit?: L;
   next: ExhibitId[];
 }
+
+/** 발행 단위 콘텐츠 문서 (텍스트만 편집, 이미지·좌표는 코드에 고정) */
+export interface ContentDoc {
+  exhibits: Record<ExhibitId, Exhibit>;
+}
+
+export const EXHIBIT_IDS: ExhibitId[] = ["car", "quiz", "mural"];

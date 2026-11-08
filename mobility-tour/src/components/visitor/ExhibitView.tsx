@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { EXHIBITS } from "@/content/exhibits";
 import { EXHIBIT_IMAGE } from "@/content/map";
 import { STAGE_LABEL, UI } from "@/content/ui";
 import { STAGES, type Exhibit, type ExhibitId, type Locale, type StageKey } from "@/content/types";
@@ -9,6 +8,7 @@ import type { Tracker } from "./TourApp";
 
 export function ExhibitView({
   exhibit,
+  exhibits,
   lang,
   langToggle,
   track,
@@ -19,6 +19,7 @@ export function ExhibitView({
   onComplete,
 }: {
   exhibit: Exhibit;
+  exhibits: Record<ExhibitId, Exhibit>;
   lang: Locale;
   langToggle: ReactNode;
   track: Tracker;
@@ -79,7 +80,8 @@ export function ExhibitView({
   const muralMode = stage === "experience" && !!exhibit.hotspots;
   const heroImg = content.image ?? img;
   // 관찰·체험 단계: 화면보다 실물을 보도록 상기
-  const lookReal = stage === "engage" || stage === "experience";
+  // 퀴즈 풀기 단계는 앱에서 직접 푸는 단계라 제외
+  const lookReal = stage === "engage" || (stage === "experience" && !exhibit.quiz);
 
   return (
     <main className="exhibit">
@@ -180,7 +182,7 @@ export function ExhibitView({
             </p>
             <h1>{t(content.title)}</h1>
             {lookReal && <p className="look-real">{t(UI.lookReal)}</p>}
-            <p className="body">{t(content.body)}</p>
+            {t(content.body) && <p className="body">{t(content.body)}</p>}
 
             {content.question && <p className="question">{t(content.question)}</p>}
 
@@ -190,7 +192,7 @@ export function ExhibitView({
                   <p>💡 {t(content.hint)}</p>
                 ) : (
                   <button
-                    className="btn text"
+                    className="btn ghost hint-btn"
                     onClick={() => {
                       setHintOpen(true);
                       track("hint_opened", { ...ctx, targetId: `${stage}-hint` });
@@ -268,13 +270,13 @@ export function ExhibitView({
                 <div className="next-grid">
                   {exhibit.next.map((id) => (
                     <button key={id} className="next-card" onClick={() => leave(() => onSelect(id))}>
-                      <span className="next-icon">{EXHIBITS[id].icon}</span>
+                      <span className="next-icon">{exhibits[id].icon}</span>
                       <span>
                         <strong>
                           {completed.has(id) && "✓ "}
-                          {t(EXHIBITS[id].name)}
+                          {t(exhibits[id].name)}
                         </strong>
-                        <small>{t(EXHIBITS[id].tagline)}</small>
+                        <small>{t(exhibits[id].tagline)}</small>
                       </span>
                     </button>
                   ))}

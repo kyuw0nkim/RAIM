@@ -20,6 +20,17 @@ npm run dev        # http://localhost:3000
 3. **Environment Variables**: `ADMIN_USER`, `ADMIN_PASSWORD` 등록 (없으면 `/admin`이 503으로 잠깁니다)
 4. Deploy → 이후 `main` 브랜치에 푸시할 때마다 자동 배포, 다른 브랜치는 Preview 배포
 
+## 데이터베이스 연결 (콘텐츠 편집·이용 기록에 필요)
+
+관리자 페이지의 콘텐츠 편집과 세션 기록은 Postgres에 저장됩니다.
+
+1. Vercel 프로젝트 → **Storage** → **Create Database** → **Neon (Postgres)** → 이 프로젝트에 연결
+2. `DATABASE_URL` 환경변수가 자동으로 추가됩니다 (`POSTGRES_URL`도 인식)
+3. **Redeploy** — 첫 요청 때 표가 자동으로 만들어집니다
+
+연결하지 않으면 방문객 앱은 앱에 내장된 기본 콘텐츠로 정상 동작하지만, 편집·기록은 저장되지 않습니다.
+로컬(`npm run dev`)에서는 `DATABASE_URL`이 없으면 내장 Postgres(PGlite)로 `.data/pglite` 폴더에 저장합니다.
+
 ## 태블릿에 설치
 
 1. 갤럭시 태블릿 Chrome(또는 Samsung Internet)에서 배포 주소 접속
@@ -67,4 +78,7 @@ npm run release:new -- minor   # 기능 추가     (0.1.0 → 0.2.0)
 | `src/data/releases.json` | 업데이트 내역 데이터 |
 | `src/app/sw.js/route.ts` | 서비스 워커 (버전별 캐시) |
 | `src/proxy.ts` | `/admin` 인증 |
-| `src/lib/analytics.ts` | 이용 로그 진입점 (개인정보 검토 전까지 전송 비활성) |
+| `src/lib/analytics.ts` | 이용 로그 큐 (기기에 쌓았다가 `/api/events`로 전송, 오프라인 재전송) |
+| `src/lib/server/` | DB 연결, 콘텐츠 버전(초안·발행·복원), 설정, 이용 기록 집계 |
+| `src/app/api/` | 방문객 앱용 공개 API: 발행 콘텐츠(`content`), 이용 로그(`events`) |
+| `src/app/admin/` | 대시보드·세션 기록·전시물·콘텐츠/FAQ/퀴즈 편집·설정·업데이트 내역 |

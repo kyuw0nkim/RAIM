@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { EXHIBITS } from "@/content/exhibits";
+import { DEFAULT_CONTENT } from "@/content/defaults";
 import { MAP_OBJECTS, ROOM } from "@/content/map";
 import { UI } from "@/content/ui";
-import type { ExhibitId, Locale } from "@/content/types";
-import { track, type EventType, type TrackPayload } from "@/lib/analytics";
+import type { ContentDoc, ExhibitId, Locale } from "@/content/types";
+import { configureAnalytics, flushEvents, getDeviceId, track, type EventType, type TrackPayload } from "@/lib/analytics";
 import { ExhibitView } from "./ExhibitView";
 import { MapScene } from "./MapScene";
 import { ApproachCard } from "./ApproachCard";
@@ -22,6 +22,22 @@ const IDLE_COUNTDOWN_S = 30;
 
 export type Tracker = (type: EventType, payload?: TrackPayload) => void;
 
+interface PublishedResponse {
+  revisionId: number;
+  content: ContentDoc;
+  settings: { analyticsEnabled: boolean; askVisitorInfo: boolean };
+}
+const CONTENT_CACHE_KEY = "amt-content";
+
+/** 숨김 처리된 FAQ·퀴즈는 방문객 앱에서 제외 */
+function prepare(c: ContentDoc): ContentDoc["exhibits"] {
+  const out = {} as ContentDoc["exhibits"];
+  for (const [id, ex] of Object.entries(c.exhibits) as [ExhibitId, ContentDoc["exhibits"][ExhibitId]][]) {
+    out[id] = { ...ex, faqs: ex.faqs.filter((f) => !f.disabled), quiz: ex.quiz?.filter((q) => !q.disabled) };
+  }
+  return out;
+}
+
 export function TourApp() {
   const [lang, setLang] = useState<Locale>(DEFAULT_LOCALE);
   const [screen, setScreen] = useState<Screen>("start");
@@ -31,11 +47,58 @@ export function TourApp() {
   /** 지도 위 Approach(만나기) 카드가 열린 전시물 */
   const [focusId, setFocusId] = useState<ExhibitId | null>(null);
   const approachAt = useRef(0);
-  const [visited, setVisited] = useState<Set<ExhibitId>>(new Set());
+  /** 5단계(마무리)까지 마친 전시물 — 지도와 다음 전시물 목록에 ✓ 표시 */
+  const [completed, setCompleted] = useState<Set<ExhibitId>>(new Set());
   const [confirmEnd, setConfirmEnd] = useState(false);
   const [idleLeft, setIdleLeft] = useState<number | null>(null);
   // 세션마다 새로 마운트하여 이전 방문객의 퀴즈 응답·진행 상태가 남지 않게 함
   const [sessionKey, setSessionKey] = useState(0);
+  /** 관리자에서 발행한 콘텐츠 (투어 시작 전에 최신본을 받아 둠, 실패 시 내장 기본값) */
+  const [published, setPublished] = useState<PublishedResponse>({
+    revisionId: 0,
+    content: DEFAULT_CONTENT,
+    settings: { analyticsEnabled: false, askVisitorInfo: true },
+  });
+  const exhibits = prepare(published.content);
+  const [deviceId, setDeviceId] = useState("");
+
+  const loadContent = useCallback(async () => {
+    const apply = (r: PublishedResponse) => {
+      setPublished(r);
+      configureAnalytics({ enabled: r.settings.analyticsEnabled, revisionId: r.revisionId });
+    };
+    try {
+      const res = await fetch("/api/content", { cache: "no-store" });
+      if (!res.ok) throw new Error(String(res.status));
+      const r = (await res.json()) as PublishedResponse;
+      apply(r);
+      try {
+        localStorage.setItem(CONTENT_CACHE_KEY, JSON.stringify(r));
+      } catch {}
+    } catch {
+      // 오프라인: 마지막으로 받은 콘텐츠 사용
+      try {
+        const cached = localStorage.getItem(CONTENT_CACHE_KEY);
+        if (cached) apply(JSON.parse(cached));
+      } catch {}
+    }
+  }, []);
+
+  useEffect(() => {
+    setDeviceId(getDeviceId());
+    loadContent();
+    // 이용 로그 전송: 주기적으로, 화면이 숨겨질 때, 네트워크가 돌아올 때
+    const timer = window.setInterval(() => flushEvents(), 15_000);
+    const onHide = () => document.hidden && flushEvents(true);
+    const onOnline = () => flushEvents();
+    document.addEventListener("visibilitychange", onHide);
+    window.addEventListener("online", onOnline);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onHide);
+      window.removeEventListener("online", onOnline);
+    };
+  }, [loadContent]);
 
   const t = useCallback((l: Record<Locale, string>) => l[lang], [lang]);
   const tr: Tracker = useCallback(
@@ -53,15 +116,18 @@ export function TourApp() {
       setVisitors([]);
       setExhibitId(null);
       setFocusId(null);
-      setVisited(new Set());
+      setCompleted(new Set());
       setConfirmEnd(false);
       setIdleLeft(null);
       setLang(DEFAULT_LOCALE);
       setSessionKey((k) => k + 1);
+      flushEvents();
+      // 다음 방문객을 위해 최신 발행 콘텐츠 받아 두기
+      loadContent();
       // 새 버전이 대기 중이면 방문객이 없는 지금 적용
       applyPendingUpdate();
     },
-    [sessionId, lang],
+    [sessionId, lang, loadContent],
   );
 
   // ── 비활성 감지 ──────────────────────────────
@@ -109,8 +175,8 @@ export function TourApp() {
   const startTour = () => {
     const id = crypto.randomUUID();
     setSessionId(id);
-    track(id, "session_started", lang, { metadata: { app_version: process.env.NEXT_PUBLIC_APP_VERSION } });
-    setScreen("visitors");
+    track(id, "session_started", lang, { metadata: { device_id: deviceId } });
+    setScreen(published.settings.askVisitorInfo ? "visitors" : "map");
   };
 
   /** 1단계 Approach: 지도 위에서 해당 전시물만 밝히고 카드 표시 */
@@ -119,7 +185,6 @@ export function TourApp() {
     tr("stage_viewed", { exhibitId: id, stageKey: "approach" });
     approachAt.current = Date.now();
     setFocusId(id);
-    setVisited((v) => new Set(v).add(id));
     setScreen("map");
   };
 
@@ -179,7 +244,10 @@ export function TourApp() {
               {t(UI.start)} →
             </button>
           </div>
-          <p className="version-tag">v{process.env.NEXT_PUBLIC_APP_VERSION}</p>
+          <p className="version-tag">
+            v{process.env.NEXT_PUBLIC_APP_VERSION}
+            {deviceId && ` · ${deviceId}`}
+          </p>
         </main>
       )}
 
@@ -189,7 +257,13 @@ export function TourApp() {
           visitors={visitors}
           setVisitors={setVisitors}
           langToggle={langToggle}
-          onDone={() => setScreen("map")}
+          onDone={(list) => {
+            if (list.length)
+              tr("visitor_info_submitted", {
+                metadata: { visitors: list.map(({ gender, origin, age }) => ({ gender, origin, age })) },
+              });
+            setScreen("map");
+          }}
         />
       )}
 
@@ -211,8 +285,9 @@ export function TourApp() {
           </header>
 
           <MapScene
+            exhibits={exhibits}
             lang={lang}
-            visited={visited}
+            completed={completed}
             focused={focusId}
             onTapObject={onTapObject}
             onTapEmpty={closeApproach}
@@ -220,7 +295,7 @@ export function TourApp() {
           {focusId && (
             <ApproachCard
               key={focusId}
-              exhibit={EXHIBITS[focusId]}
+              exhibit={exhibits[focusId]}
               placement={MAP_OBJECTS.find((o) => o.id === focusId)!.card}
               lang={lang}
               onContinue={() => enterDetail(focusId)}
@@ -233,14 +308,16 @@ export function TourApp() {
       {screen === "exhibit" && exhibitId && (
         <ExhibitView
           key={exhibitId}
-          exhibit={EXHIBITS[exhibitId]}
+          exhibit={exhibits[exhibitId]}
+          exhibits={exhibits}
           lang={lang}
           langToggle={langToggle}
           track={tr}
           onMap={() => setScreen("map")}
           onApproach={() => showApproach(exhibitId, false)}
           onSelect={(id) => showApproach(id, false)}
-          visited={visited}
+          completed={completed}
+          onComplete={() => setCompleted((c) => new Set(c).add(exhibitId))}
         />
       )}
 

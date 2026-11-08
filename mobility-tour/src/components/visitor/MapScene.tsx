@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { EXHIBITS } from "@/content/exhibits";
 import { EXHIBIT_IMAGE, MAP_OBJECTS, ROOM, type MapObject } from "@/content/map";
-import type { ExhibitId, Locale } from "@/content/types";
+import type { Exhibit, ExhibitId, Locale } from "@/content/types";
 import { UI } from "@/content/ui";
 
 /** 터치 판정용 알파 마스크 (축소본) */
@@ -46,14 +45,16 @@ function opaqueAt(mask: AlphaMask | undefined, u: number, v: number) {
 }
 
 export function MapScene({
+  exhibits,
   lang,
-  visited,
+  completed,
   focused,
   onTapObject,
   onTapEmpty,
 }: {
+  exhibits: Record<ExhibitId, Exhibit>;
   lang: Locale;
-  visited: Set<ExhibitId>;
+  completed: Set<ExhibitId>;
   /** Approach 단계: 선택한 전시물만 밝게, 나머지는 딤 처리 */
   focused: ExhibitId | null;
   onTapObject: (id: ExhibitId) => void;
@@ -150,20 +151,18 @@ export function MapScene({
           MAP_OBJECTS.map((o) => (
             <button
               key={`marker-${o.id}`}
-              className={`scene-marker ${o.markerAlign === "start" ? "align-start" : ""} ${visited.has(o.id) ? "visited" : ""}`}
+              className={`scene-marker ${completed.has(o.id) ? "done" : ""}`}
               style={{ left: `${o.marker.x}%`, top: `${o.marker.y}%` }}
+              aria-label={exhibits[o.id].name[lang]}
               onClick={(e) => {
                 e.stopPropagation();
                 if (!pressed) select(o.id);
               }}
             >
               <span className="marker-dot" aria-hidden>
-                {visited.has(o.id) ? "✓" : ""}
+                {completed.has(o.id) ? "✓" : ""}
               </span>
-              <span className="marker-label">
-                <strong>{EXHIBITS[o.id].name[lang]}</strong>
-                <em>{UI.tap[lang]}</em>
-              </span>
+              <span className="marker-tap">{UI.tap[lang]}</span>
             </button>
           ))}
       </div>

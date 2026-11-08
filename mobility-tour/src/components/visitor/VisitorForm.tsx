@@ -24,7 +24,7 @@ export function VisitorForm({
   visitors: VisitorEntry[];
   setVisitors: (v: VisitorEntry[]) => void;
   langToggle: ReactNode;
-  onDone: () => void;
+  onDone: (visitors: VisitorEntry[]) => void;
 }) {
   const t = (l: Record<Locale, string>) => l[lang];
   const list = visitors.length ? visitors : [{ id: "v0" }];
@@ -37,8 +37,9 @@ export function VisitorForm({
 
   // 방문객 정보는 선택 사항: 아무것도 고르지 않은 블록은 저장하지 않음 (임의로 채우지 않음)
   const finish = (skip: boolean) => {
-    setVisitors(skip ? [] : list.filter((v) => v.gender || v.origin || v.age));
-    onDone();
+    const kept = skip ? [] : list.filter((v) => v.gender || v.origin || v.age);
+    setVisitors(kept);
+    onDone(kept);
   };
 
   return (

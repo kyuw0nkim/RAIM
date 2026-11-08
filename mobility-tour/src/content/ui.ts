@@ -1,0 +1,78 @@
+import type { L, StageKey } from "./types";
+
+export const UI = {
+  museum: { ko: "서울로봇인공지능과학관", en: "Seoul Robot & AI Museum" },
+  appTitle: { ko: "자율주행 모빌리티 투어", en: "Autonomous Mobility Tour" },
+  intro: {
+    ko: "교육장의 전시물을 직접 선택하고, 단계별 안내를 따라 관찰하고 체험해 보세요.",
+    en: "Pick an exhibit in the room and follow the step-by-step guide to observe and try it yourself.",
+  },
+  start: { ko: "탐험 시작하기", en: "Start Exploring" },
+  visitorsTitle: { ko: "함께 관람하는 분을 알려 주세요", en: "Who's exploring today?" },
+  visitorsNote: {
+    ko: "선택 사항이에요. 이름 등 개인을 알아볼 수 있는 정보는 받지 않아요.",
+    en: "Optional. We never ask for names or anything that identifies you.",
+  },
+  visitor: { ko: "방문객", en: "Visitor" },
+  addVisitor: { ko: "+ 방문객 추가", en: "+ Add Visitor" },
+  remove: { ko: "삭제", en: "Remove" },
+  skip: { ko: "건너뛰기", en: "Skip" },
+  continue: { ko: "투어 시작", en: "Start Tour" },
+  gender: { ko: "성별", en: "Gender" },
+  origin: { ko: "방문객 구분", en: "Visitor Origin" },
+  age: { ko: "연령대", en: "Age Group" },
+  tapExhibit: { ko: "전시물을 눌러 탐색해 보세요.", en: "Tap an exhibit to explore." },
+  endTour: { ko: "투어 종료", en: "End Tour" },
+  endConfirm: { ko: "투어를 종료할까요? 처음 화면으로 돌아갑니다.", en: "End the tour? The app will return to the start screen." },
+  yes: { ko: "종료", en: "End" },
+  cancel: { ko: "취소", en: "Cancel" },
+  map: { ko: "전체 전시", en: "All Exhibits" },
+  back: { ko: "이전", en: "Back" },
+  next: { ko: "다음", en: "Next" },
+  close: { ko: "닫기", en: "Close" },
+  hint: { ko: "힌트 보기", en: "Show Hint" },
+  bypass: { ko: "지금 체험이 어렵나요? 설명 먼저 보기", en: "Can't try it now? See the explanation" },
+  faq: { ko: "자주 묻는 질문", en: "FAQ" },
+  nextExhibits: { ko: "다음 전시물", en: "Next Exhibits" },
+  submit: { ko: "제출", en: "Submit" },
+  nextQuestion: { ko: "다음 문제", en: "Next Question" },
+  correct: { ko: "정답이에요!", en: "Correct!" },
+  wrong: { ko: "아쉬워요!", en: "Not quite!" },
+  answerIs: { ko: "정답", en: "Answer" },
+  quizScore: { ko: "맞힌 문제", en: "Score" },
+  idleTitle: { ko: "아직 관람 중이신가요?", en: "Are you still exploring?" },
+  idleBody: { ko: "초 후 처음 화면으로 돌아갑니다.", en: "seconds until the app returns to the start." },
+  keepGoing: { ko: "계속하기", en: "Keep Going" },
+  stageLabel: { ko: "단계", en: "Stage" },
+} satisfies Record<string, L>;
+
+export const STAGE_LABEL: Record<StageKey, L> = {
+  approach: { ko: "만나기", en: "Approach" },
+  engage: { ko: "관찰하기", en: "Engage" },
+  experience: { ko: "체험하기", en: "Experience" },
+  reflect: { ko: "이해하기", en: "Reflect" },
+  disengage: { ko: "마무리", en: "Next" },
+};
+
+export const VISITOR_OPTIONS = {
+  gender: [
+    { v: "male", l: { ko: "남성", en: "Male" } },
+    { v: "female", l: { ko: "여성", en: "Female" } },
+    { v: "na", l: { ko: "미응답", en: "Prefer not to say" } },
+  ],
+  origin: [
+    { v: "domestic", l: { ko: "내국인", en: "Korean resident" } },
+    { v: "foreign", l: { ko: "외국인", en: "International" } },
+    { v: "na", l: { ko: "미응답", en: "Prefer not to say" } },
+  ],
+  age: [
+    { v: "preschool", l: { ko: "미취학", en: "Preschool" } },
+    { v: "elementary", l: { ko: "초등학생", en: "Elementary" } },
+    { v: "secondary", l: { ko: "중·고등학생", en: "Middle/High" } },
+    { v: "20s", l: { ko: "20대", en: "20s" } },
+    { v: "30s", l: { ko: "30대", en: "30s" } },
+    { v: "40s", l: { ko: "40대", en: "40s" } },
+    { v: "50plus", l: { ko: "50대 이상", en: "50+" } },
+    { v: "na", l: { ko: "미응답", en: "Prefer not to say" } },
+  ],
+} as const;

@@ -139,3 +139,9 @@ https://raw.githubusercontent.com/kyuw0nkim/RAIM/main/teachable-machine.user.js
 ---
 
 **참고 자료:** [Tampermonkey 공식 홈페이지](https://www.tampermonkey.net/) · [설치 관련 FAQ](https://www.tampermonkey.net/faq.php) · [메타데이터 문서](https://www.tampermonkey.net/documentation.php)
+
+---
+
+## 자율주행 모빌리티 투어 앱
+
+교육장 태블릿용 웹앱은 [`mobility-tour/`](mobility-tour/) 폴더에 있습니다. 배포·업데이트 방법은 해당 폴더의 README를 참고하세요.

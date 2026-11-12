@@ -20,37 +20,36 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       engage: {
         title: { ko: "자세히 보기", en: "Look Closer" },
         body: {
-          ko: "디오라마 앞에 서서 진짜 자동차의 앞부분을 가까이 들여다보세요.",
-          en: "Stand by the diorama and look closely at the front of the real car.",
+          ko: "디오라마 앞에 서서 레고로 만든 자율주행 자동차의 앞부분을 가까이 들여다보세요.",
+          en: "Stand by the diorama and look closely at the front of the autonomous driving car built with LEGO.",
         },
         question: {
-          ko: "장애물을 알아차리는 센서를 찾을 수 있나요?",
-          en: "Can you find the sensor that detects obstacles?",
+          ko: "센서들을 찾을 수 있나요?",
+          en: "Can you find the sensors?",
         },
         hint: {
-          ko: "동그란 '눈' 두 개처럼 생긴 부품이에요. 사진에 표시해 두었으니, 실제 자동차에서도 찾아보세요.",
-          en: "It looks like two round 'eyes'. It's marked on the photo — now find it on the real car.",
+          ko: "하나는 정면에서 차를 바라봤을 때, 하나는 차의 바닥에서 찾을 수 있어요.",
+          en: "You can see one when you look at the car from the front. The other is on the bottom of the car.",
         },
-        image: { src: "/images/diorama-car.webp", width: 870, height: 575, mark: { x: 23, y: 58, r: 17 } },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },
       experience: {
         title: { ko: "관찰해 보기", en: "Watch It Happen" },
         body: {
-          ko: "디오라마의 자동차가 달리는 모습을 지켜보세요. 앞에 물체가 나타나면 어떻게 하나요? 바닥 선의 색이 바뀌는 곳에서는요?",
-          en: "Watch the real car drive around the diorama. What does it do when something is in front of it? And where the line on the floor changes color?",
+          ko: "자동차가 도로를 달리는 모습을 지켜보세요. 자동차가 다가오면 앞에 장애물을 놓아 보세요. 앞에 무언가 있으면 자동차는 어떻게 하나요?",
+          en: "Watch the car drive around the road. Place obstacles when a car approaches you. What does it do when something is in front of it?",
         },
         hint: {
-          ko: "장애물 배치는 교육사 선생님의 안내가 있을 때만 해 주세요.",
-          en: "Please place obstacles only when a museum educator guides you.",
+          ko: "손으로 직접 자동차를 막아 봐도 돼요.",
+          en: "You can also block the car with your own hand.",
         },
         cta: { ko: "무슨 일이 일어났나요?", en: "What Happened?" },
       },
       reflect: {
         title: { ko: "어떻게 가능할까요?", en: "How Does It Work?" },
         body: {
-          ko: "여러분이 찾은 동그란 두 '눈'이 초음파 센서예요. 소리를 보내고 되돌아오는 시간을 재서 물체까지의 거리를 알아내요. 바닥을 향한 색상·빛 센서는 선의 색을 읽어요. 자동차의 컴퓨터는 이 정보로 '멈춤', '속도 줄이기', '방향 바꾸기'를 결정해요.",
-          en: "The two round 'eyes' you found are an ultrasonic sensor. It sends out sound and times the echo to work out how far away an object is. A color/light sensor facing the floor reads the line. The car's computer uses this to decide to stop, slow down or turn.",
+          ko: "여러분이 찾은 동그란 두 '눈'이 초음파 센서예요. 소리를 보내고 되돌아오는 시간을 재서 물체까지의 거리를 알아내요. 바닥을 향한 컬러 센서는 선의 색을 읽어요. 자동차의 컴퓨터는 이 정보로 '멈춤', '속도 줄이기', '방향 바꾸기'를 결정해요.",
+          en: "The two round 'eyes' you found are an ultrasonic sensor. It sends out sound and times the echo to work out how far away an object is. A color sensor facing the floor reads the line. The car's computer uses this to decide to stop, slow down or turn.",
         },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
@@ -197,41 +196,45 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       engage: {
         title: { ko: "숨은 그림 찾기", en: "Hidden Logos" },
         body: {
-          ko: "벽화 앞에 서서 천천히 둘러보세요. 벽화 속 화면에서 나오는 영상도 놓치지 마세요.",
-          en: "Stand in front of the mural and take your time. Don't miss the videos playing on the screens built into it.",
+          ko: "벽화 앞에 서서 천천히 둘러보세요.",
+          en: "Stand in front of the mural and take your time.",
         },
         question: {
           ko: "벽화 속에 자동차 로고 4개가 숨어 있어요. 찾을 수 있나요?",
           en: "There are four car logos hidden in the mural. Can you find them?",
         },
-        hint: { ko: "건물 간판과 차량 옆면을 살펴보세요.", en: "Check the building signs and the sides of the vehicles." },
+        hint: { ko: "건물 간판을 살펴보세요.", en: "Check the building signs." },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },
       experience: {
         title: { ko: "벽화 탐험", en: "Explore the Mural" },
         body: {
-          ko: "고개를 들어 실제 벽화를 보세요. 이 화면의 원을 누르면 벽에서 무엇을 찾을지 알려 줘요. 노란 원은 영상이 나오는 화면이에요.",
-          en: "Look up at the real wall. Tap a ring here to see what to find on it. Yellow rings mark the video screens.",
+          ko: "고개를 들어 벽화를 보세요. 이 화면의 원을 누르면 벽화에서 무엇을 찾을지 알려 줘요.",
+          en: "Look up at the mural. Tap a ring here to see what to find on it.",
         },
         cta: { ko: "무엇을 발견했나요?", en: "What Did You Find?" },
       },
       reflect: {
-        title: { ko: "미래의 이동", en: "Moving in the Future" },
+        title: { ko: "미래 도시를 상상해 봐요", en: "Imagine the Future City" },
         body: {
-          ko: "벽화에서 찾은 속이 훤히 보이는 셔틀이 PBV(목적 기반 모빌리티)예요. 하나의 차체에 용도에 맞는 공간을 바꿔 끼워 카페, 병원, 택배 차량 등으로 써요. 미래 도시는 전기·수소 에너지와 공유 이동수단으로 더 깨끗하고 효율적인 교통을 만들려고 해요.",
-          en: "The see-through shuttles you found on the wall are PBVs (Purpose-Built Vehicles). They swap cabins on the same base to become a café, clinic or delivery van. Future cities aim for cleaner, more efficient transport with electric and hydrogen power and shared mobility.",
+          ko: "벽화에서 찾은 것들은 서로 연결되어 있어요. 표지판을 읽고 사람을 보면 멈추는 자동차, 함께 타는 셔틀, 스스로 주차하는 차가 모이면 도시는 더 안전하고, 깨끗하고, 덜 붐비게 돼요.",
+          en: "The things you found work together. Cars that read signs and stop for people, shuttles we share, and cars that park themselves can make a city safer, cleaner and less crowded.",
+        },
+        question: {
+          ko: "이 벽화에 하나를 더 그려 넣을 수 있다면, 무엇을 그리고 싶나요?",
+          en: "If you could add one thing to this mural, what would it be?",
         },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
       disengage: {
         title: { ko: "멋진 탐험이었어요!", en: "Great Exploring!" },
         body: {
-          ko: "여러분이 상상하는 미래의 이동수단은 무엇인가요? 벽화를 한 번 더 둘러본 뒤, 다음 전시물로 걸어가 보세요.",
-          en: "What vehicle do you imagine for the future? Take one more look at the wall, then walk to the next exhibit.",
+          ko: "벽화를 한 번 더 둘러본 뒤, 다음 전시물로 걸어가 보세요.",
+          en: "Take one more look at the mural, then walk to the next exhibit.",
         },
       },
     },
-    credit: { ko: "작가 Jisoo Choi", en: "Artwork by Jisoo Choi" },
+    credit: { ko: "작가 최지수", en: "Artwork by Jisoo Choi" },
     // 좌표는 벽화 이미지(mural.webp) 기준 %. find = 실제 벽에서 찾을 것, desc = 설명
     hotspots: [
       {
@@ -245,12 +248,12 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         ],
         label: { ko: "벽화 속 영상", en: "Videos in the Mural" },
         find: {
-          ko: "벽에서 영상이 나오는 화면 세 곳을 찾아보세요. 왼쪽, 가운데, 오른쪽에 있어요.",
-          en: "Find the three video screens on the wall: left, center and right.",
+          ko: "벽화에서 영상이 나오는 화면 세 곳을 찾아보세요. 왼쪽, 가운데, 오른쪽에 있어요.",
+          en: "Find the three video screens on the mural: left, center and right.",
         },
         desc: {
-          ko: "잠시 서서 영상을 보며, 자율주행차가 주변을 어떻게 알아차리고 움직이는지 지켜보세요.",
-          en: "Stand for a moment and watch how self-driving cars sense what's around them and move.",
+          ko: "잠시 서서, 자율주행차와 함께하는 미래가 어떤 모습일지 영상으로 지켜보세요.",
+          en: "Stand for a moment and watch what the future with self-driving cars will look like.",
         },
       },
       {
@@ -258,12 +261,12 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         points: [{ x: 46.5, y: 63 }],
         label: { ko: "자율주행 셔틀 (PBV)", en: "Self-Driving Shuttle (PBV)" },
         find: {
-          ko: "벽 가운데 도로에서, 안이 훤히 보이는 차량을 찾아보세요.",
-          en: "On the center road of the wall, find the vehicles you can see inside.",
+          ko: "벽화 가운데 도로에서, 안이 훤히 보이는 차량을 찾아보세요.",
+          en: "On the center road of the mural, find the vehicles you can see inside.",
         },
         desc: {
-          ko: "운전석 없이 실내를 용도에 맞게 꾸민 차량이에요. 전용 도로를 따라 스스로 달려요. 이런 차량을 목적 기반 모빌리티(PBV)라고 불러요.",
-          en: "A vehicle with no driver's seat whose cabin is designed for a purpose. It drives itself along a dedicated lane. This is called a Purpose-Built Vehicle (PBV).",
+          ko: "운전석 없이 스스로 달리는 셔틀이에요. 하나의 차체에 용도에 맞는 공간을 바꿔 끼워 카페, 병원, 택배 차량 등으로 써요. 이런 차량을 목적 기반 모빌리티(PBV)라고 불러요.",
+          en: "A shuttle with no driver's seat that drives itself. It swaps cabins on the same base to become a café, clinic or delivery van. This is called a Purpose-Built Vehicle (PBV).",
         },
       },
       {
@@ -284,8 +287,8 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         points: [{ x: 74.6, y: 21 }],
         label: { ko: "속도 제한 표지판", en: "Speed Limit Sign" },
         find: {
-          ko: "벽 오른쪽 위에서 숫자 '30'이 적힌 표지판을 찾아보세요.",
-          en: "At the upper right of the wall, find the sign with '30' on it.",
+          ko: "벽화 오른쪽 위에서 숫자 '30'이 적힌 표지판을 찾아보세요.",
+          en: "At the upper right of the mural, find the sign with '30' on it.",
         },
         desc: {
           ko: "자율주행차는 카메라로 표지판을 읽고 제한 속도를 지켜요. 사람이 많은 곳에서는 더 천천히 달려요.",

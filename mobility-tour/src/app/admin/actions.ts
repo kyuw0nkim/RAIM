@@ -7,6 +7,7 @@ import { discardDraft, publishDraft, restoreToDraft, saveDraft } from "@/lib/ser
 import { saveSettings, type AppSettings } from "@/lib/server/settings";
 import { purgeOlderThan } from "@/lib/server/analytics";
 import type { ContentDoc } from "@/content/types";
+import { DEFAULT_CONTENT } from "@/content/defaults";
 
 // 서버 액션은 어떤 경로로도 호출될 수 있으므로 액션마다 인증을 다시 확인
 async function requireAdmin() {
@@ -58,4 +59,10 @@ export async function purgeAction(days: number) {
   const n = await purgeOlderThan(Math.max(1, Math.round(days)));
   revalidatePath("/admin", "layout");
   return n;
+}
+
+export async function loadDefaultsAction() {
+  await requireAdmin();
+  await saveDraft(DEFAULT_CONTENT);
+  revalidatePath("/admin", "layout");
 }

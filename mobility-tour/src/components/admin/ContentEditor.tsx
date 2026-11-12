@@ -4,7 +4,7 @@ import { useState } from "react";
 import { STAGE_LABEL, UI } from "@/content/ui";
 import { EXHIBIT_IDS, STAGES, type ContentDoc, type ExhibitId, type L, type Locale, type StageKey } from "@/content/types";
 import type { RevisionMeta } from "@/lib/server/content";
-import { discardDraftAction, restoreAction } from "@/app/admin/actions";
+import { discardDraftAction, loadDefaultsAction, restoreAction } from "@/app/admin/actions";
 import { DraftBar, useDraft } from "./useDraft";
 import { LField } from "./LField";
 import { fmtDateTime } from "@/lib/format";
@@ -159,6 +159,20 @@ export function ContentEditor({
       <section className="admin-card revisions">
         <h2>버전 이력</h2>
         <p className="muted">발행된 버전은 수정되지 않습니다. 이전 버전을 초안으로 불러온 뒤 다시 발행하면 복원됩니다.</p>
+        <div className="row-actions">
+          <button
+            className="btn-admin ghost small"
+            onClick={async () => {
+              if (confirm("앱 업데이트에 포함된 기본 문구로 초안을 만들까요? 현재 초안은 덮어씁니다. (발행해야 태블릿에 반영됩니다)")) {
+                await loadDefaultsAction();
+                window.location.reload();
+              }
+            }}
+          >
+            앱 기본 문구로 초안 만들기
+          </button>
+          <span className="muted">앱 업데이트로 기본 문구가 바뀌었을 때, 이미 발행한 콘텐츠 대신 새 기본 문구를 쓰려면 사용하세요.</span>
+        </div>
         <table className="data-table compact">
           <thead>
             <tr>
@@ -265,7 +279,6 @@ function Preview({ content, ex, section, lang }: { content: ContentDoc; ex: Exhi
         {i + 1}/5 · {t(STAGE_LABEL[stage])}
       </p>
       <h3>{t(st.title)}</h3>
-      {(stage === "engage" || (stage === "experience" && !exhibit.quiz)) && <p className="pv-look">{t(UI.lookReal)}</p>}
       {t(st.body) && <p>{t(st.body)}</p>}
       {st.question && <p className="pv-question">{t(st.question)}</p>}
       {st.hint && <p className="pv-hint">💡 {t(st.hint)}</p>}

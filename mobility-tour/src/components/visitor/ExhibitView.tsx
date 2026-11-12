@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { EXHIBIT_IMAGE } from "@/content/map";
+import { EXHIBIT_IMAGE, STAGE_IMAGES } from "@/content/map";
 import { STAGE_LABEL, UI } from "@/content/ui";
-import { STAGES, type Exhibit, type ExhibitId, type Locale, type StageKey } from "@/content/types";
+import { STAGES, type StageImage, type Exhibit, type ExhibitId, type Locale, type StageKey } from "@/content/types";
 import type { Tracker } from "./TourApp";
 
 export function ExhibitView({
@@ -78,10 +78,7 @@ export function ExhibitView({
   const clearHotspot = () => setHotspot(null);
   const img = EXHIBIT_IMAGE[exhibit.id];
   const muralMode = stage === "experience" && !!exhibit.hotspots;
-  const heroImg = content.image ?? img;
-  // 관찰·체험 단계: 화면보다 실물을 보도록 상기
-  // 퀴즈 풀기 단계는 앱에서 직접 푸는 단계라 제외
-  const lookReal = stage === "engage" || (stage === "experience" && !exhibit.quiz);
+  const stageImg = STAGE_IMAGES[exhibit.id]?.[stage];
 
   return (
     <main className="exhibit">
@@ -147,24 +144,16 @@ export function ExhibitView({
             </div>
           ) : (
             <div className="exhibit-hero">
-              <div className={`hero-frame ${content.image ? "stage-photo" : ""}`}>
-                <img
-                  className={`hero-img hero-${exhibit.id}`}
-                  src={heroImg.src}
-                  alt=""
-                  draggable={false}
-                  style={{ aspectRatio: `${heroImg.width} / ${heroImg.height}` }}
-                />
-                {/* 힌트를 열면 사진에서 찾을 부분을 원으로 표시 */}
-                {content.image?.mark && hintOpen && (
-                  <span
-                    className="photo-mark"
-                    style={{
-                      left: `${content.image.mark.x}%`,
-                      top: `${content.image.mark.y}%`,
-                      width: `${content.image.mark.r}%`,
-                    }}
-                    aria-hidden
+              <div className={`hero-frame ${stageImg ? "stage-photo" : ""}`}>
+                {stageImg?.marks?.length ? (
+                  <PhotoSpotlight image={stageImg} lang={lang} />
+                ) : (
+                  <img
+                    className={`hero-img hero-${exhibit.id}`}
+                    src={(stageImg ?? img).src}
+                    alt=""
+                    draggable={false}
+                    style={{ aspectRatio: `${(stageImg ?? img).width} / ${(stageImg ?? img).height}` }}
                   />
                 )}
               </div>
@@ -181,7 +170,6 @@ export function ExhibitView({
               {idx + 1}/5 · {t(STAGE_LABEL[stage])}
             </p>
             <h1>{t(content.title)}</h1>
-            {lookReal && <p className="look-real">{t(UI.lookReal)}</p>}
             {t(content.body) && <p className="body">{t(content.body)}</p>}
 
             {content.question && <p className="question">{t(content.question)}</p>}
@@ -322,6 +310,42 @@ function fogMask(points: { x: number; y: number }[]): React.CSSProperties {
     maskRepeat: "no-repeat",
     WebkitMaskRepeat: "no-repeat",
   };
+}
+
+/** 사진에서 표시한 부분만 또렷하게, 나머지는 흐리게 + 노란 원과 이름 */
+function PhotoSpotlight({ image, lang }: { image: StageImage; lang: Locale }) {
+  const { src, width: w, height: h } = image;
+  const marks = image.marks ?? [];
+  const id = `spot-${src.replace(/\W/g, "")}`;
+  const fs = w * 0.038;
+  return (
+    <svg className="hero-img spotlight" viewBox={`0 0 ${w} ${h}`} style={{ aspectRatio: `${w} / ${h}` }} role="img">
+      <defs>
+        <mask id={id}>
+          <rect width={w} height={h} fill="black" />
+          {marks.map((m, i) => (
+            <circle key={i} cx={(m.x / 100) * w} cy={(m.y / 100) * h} r={(m.r / 100) * w} fill="white" />
+          ))}
+        </mask>
+      </defs>
+      <image href={src} width={w} height={h} opacity={0.28} />
+      <image href={src} width={w} height={h} mask={`url(#${id})`} />
+      {marks.map((m, i) => {
+        const cx = (m.x / 100) * w;
+        const cy = (m.y / 100) * h;
+        const r = (m.r / 100) * w;
+        return (
+          <g key={i} className="spot-mark">
+            <circle cx={cx} cy={cy} r={r} fill="none" stroke="#fff" strokeWidth={w * 0.012} />
+            <circle cx={cx} cy={cy} r={r} fill="none" stroke="#f5b400" strokeWidth={w * 0.006} />
+            <text x={cx + r + w * 0.015} y={cy + fs * 0.35} fontSize={fs}>
+              {m.label[lang]}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
 }
 
 function Quiz({

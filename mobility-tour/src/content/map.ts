@@ -51,6 +51,7 @@ export const MAP_OBJECTS: MapObject[] = [
 export const STAGE_IMAGES: Partial<Record<ExhibitId, Partial<Record<StageKey, StageImage>>>> = {
   car: {
     engage: { src: "/images/diorama-car.webp", width: 870, height: 575 },
+    experience: { src: "/images/diorama-obstacle.webp", width: 1040, height: 869 },
     reflect: {
       src: "/images/diorama-car.webp",
       width: 870,

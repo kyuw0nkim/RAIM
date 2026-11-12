@@ -68,11 +68,11 @@ input, textarea, select { font: inherit; }
 }
 .btn:active { transform: scale(0.96); }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-.btn.primary { background: var(--c-301); color: #fff; box-shadow: 0 6px 16px rgba(0, 68, 139, 0.25); }
+.btn.primary { background: var(--c-301); color: #fff; }
 .btn.primary:active { background: #003670; }
 .btn.secondary { background: var(--c-2985); color: #fff; }
 .btn.secondary:active { background: #1f5d9b; }
-.btn.ghost { background: #fff; color: var(--c-301); box-shadow: 0 4px 14px rgba(40, 52, 66, 0.12); }
+.btn.ghost { background: #fff; color: var(--c-301); border: 1px solid rgba(0, 68, 139, 0.18); }
 .btn.ghost:active { background: #edf3f9; }
 .btn.text { white-space: normal; text-align: left; background: transparent; color: var(--c-2985); padding: 8px 10px; text-decoration: underline; text-decoration-color: rgba(39, 111, 183, 0.4); text-underline-offset: 4px; }
 .btn.small { font-size: 0.92rem; font-weight: 600; }
@@ -80,7 +80,7 @@ input, textarea, select { font: inherit; }
 .btn.xl { min-height: 68px; padding: 16px 44px; font-size: 1.3rem; }
 
 /* 언어 선택: 단색 흰 바탕 + 선택된 쪽 남색 */
-.lang-toggle { display: inline-flex; padding: 4px; border-radius: 10px; background: #fff; box-shadow: 0 4px 14px rgba(40, 52, 66, 0.12); }
+.lang-toggle { display: inline-flex; padding: 4px; border-radius: 10px; background: #fff; border: 1px solid rgba(0, 68, 139, 0.14); }
 .lang-toggle button { min-height: 42px; min-width: 86px; border: 0; background: transparent; border-radius: 7px; font-weight: 600; color: var(--fg-2); }
 .lang-toggle button.active { background: var(--c-301); color: #fff; }
 
@@ -328,10 +328,10 @@ input, textarea, select { font: inherit; }
 .hotspot.active { border-color: var(--c-301); background: rgba(0, 68, 139, 0.12); animation: none; transform: scale(1.1); }
 .hotspot-fog { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.25s ease; background: rgba(250, 248, 245, 0.74); }
 .hotspot-fog.on { opacity: 1; }
-.hotspot-info { padding: 16px 20px; border-radius: 10px; background: #fff; border: 1.5px solid rgba(0, 191, 223, 0.5); box-shadow: 0 6px 18px rgba(0, 68, 139, 0.08); animation: pop 0.2s ease-out; }
+.hotspot-info { padding: 16px 20px; border-radius: 10px; background: #fff; border: 1.5px solid rgba(0, 191, 223, 0.5); animation: pop 0.2s ease-out; }
 .hotspot-info.video { border-color: rgba(245, 180, 0, 0.6); }
 .hotspot-info-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.hotspot-info-head .btn { min-height: 40px; padding: 6px 14px; box-shadow: none; background: rgba(0, 68, 139, 0.06); }
+.hotspot-info-head .btn { min-height: 40px; padding: 6px 14px; border: 0; background: rgba(0, 68, 139, 0.06); }
 .hotspot-info strong { display: block; font-size: 1.25rem; font-weight: 700; color: var(--c-301); }
 /* 실제 벽에서 찾을 것: 가장 먼저, 눈에 띄게 */
 .hotspot-find { margin: 12px 0 0 !important; color: var(--c-301) !important; font-weight: 600; line-height: 1.55; }

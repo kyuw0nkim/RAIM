@@ -11,16 +11,14 @@ export interface StageContent {
   hint?: L;
   /** 다음 단계로 넘어가는 버튼 문구 */
   cta?: L;
-  /** 이 단계에서만 왼쪽에 보여 줄 사진 (없으면 전시물 기본 이미지) */
-  image?: StageImage;
 }
 
 export interface StageImage {
   src: string;
   width: number;
   height: number;
-  /** 힌트를 열면 사진 위에 원으로 표시할 위치 (사진 기준 %, r = 지름 % of width) */
-  mark?: { x: number; y: number; r: number };
+  /** 사진 위에 원으로 표시할 부분 (사진 기준 %, r = 반지름 % of width). 표시하면 나머지는 흐리게 */
+  marks?: { x: number; y: number; r: number; label: L }[];
 }
 
 export interface Faq { id: string; q: L; a: L; /** 숨김 (방문객 앱에 표시하지 않음) */ disabled?: boolean }

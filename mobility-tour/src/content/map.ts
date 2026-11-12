@@ -1,7 +1,7 @@
 // 교육장 지도 배치 (PRD §3.4): 위치·크기는 개발 단계에서 고정하며 DB에 저장하지 않습니다.
 // 모든 좌표는 배경 사진(room.webp — 전시물이 없는 빈 교육장, 1585×992) 기준 % 값입니다.
 // 사진을 교체하면 x·y·w·h 를 새 사진에 맞게 다시 맞춰 주세요.
-import type { ExhibitId } from "./types";
+import type { ExhibitId, StageImage, StageKey } from "./types";
 
 export const ROOM = { src: "/images/room.webp", width: 1585, height: 992 };
 
@@ -43,3 +43,23 @@ export const MAP_OBJECTS: MapObject[] = [
   { id: "quiz", x: 1.14, y: 25.0, w: 17.79, h: 56.45, marker: { x: 10.0, y: 40 }, card: "right", grounded: true },
   { id: "car", x: 19.68, y: 57.66, w: 78.74, h: 28.23, marker: { x: 59.0, y: 70 }, card: "top", grounded: true },
 ];
+
+/**
+ * 단계별로 왼쪽에 보여 줄 사진 (없으면 전시물 기본 이미지).
+ * 이미지·표시 위치는 관리자 편집 대상이 아니므로 콘텐츠 문서가 아닌 코드에 둡니다.
+ */
+export const STAGE_IMAGES: Partial<Record<ExhibitId, Partial<Record<StageKey, StageImage>>>> = {
+  car: {
+    engage: { src: "/images/diorama-car.webp", width: 870, height: 575 },
+    reflect: {
+      src: "/images/diorama-car.webp",
+      width: 870,
+      height: 575,
+      marks: [
+        { x: 23, y: 58, r: 8.5, label: { ko: "초음파 센서", en: "Ultrasonic sensor" } },
+        // TODO: 바닥 컬러 센서의 실제 위치 확인 (사진에서는 차체 아래 가운데 부근으로 표시)
+        { x: 42, y: 89, r: 6.5, label: { ko: "컬러 센서", en: "Color sensor" } },
+      ],
+    },
+  },
+};

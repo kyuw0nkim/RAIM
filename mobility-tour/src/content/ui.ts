@@ -4,8 +4,8 @@ export const UI = {
   museum: { ko: "서울로봇인공지능과학관", en: "Seoul Robot & AI Museum" },
   appTitle: { ko: "자율주행 모빌리티 투어", en: "Autonomous Mobility Tour" },
   intro: {
-    ko: "이 태블릿은 길잡이예요. 안내를 따라 교육장의 진짜 전시물을 직접 보고 체험해 보세요.",
-    en: "This tablet is just your guide. Follow it to see and try the real exhibits in this room.",
+    ko: "자동차는 어떻게 스스로 달릴까요? 교육장의 전시물로 직접 알아봐요.",
+    en: "How does a car drive itself? Find out with the exhibits in this room.",
   },
   start: { ko: "탐험 시작하기", en: "Start Exploring" },
   visitorsTitle: { ko: "함께 관람하는 분을 알려 주세요", en: "Who's exploring today?" },

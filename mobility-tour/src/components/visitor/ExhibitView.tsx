@@ -370,7 +370,7 @@ function LevelScale({ lang }: { lang: Locale }) {
       <p className="levels-title">{t(UI.levelsTitle)}</p>
       <ol className="levels-steps">
         {LEVELS.map((l) => (
-          <li key={l.n} className={`lv ${l.n <= 2 ? "lv-person" : l.n === 3 ? "lv-takeover" : l.n === 4 ? "lv-area here" : "lv-anywhere"}`}>
+          <li key={l.n} className={`lv ${l.n <= 2 ? "lv-person" : l.n === 3 ? "lv-takeover" : l.n === 4 ? "lv-area" : "lv-anywhere"}`}>
             <b>{l.n}</b>
             <span>{l[lang]}</span>
           </li>
@@ -385,8 +385,6 @@ function LevelScale({ lang }: { lang: Locale }) {
         </div>
         <div className="lg lg-area">
           <strong>{t(UI.lvArea)}</strong>
-          <small>🚗 {t(UI.legoCar)}</small>
-          <small>🚐 {t(UI.muralShuttle)}</small>
         </div>
         <div className="lg lg-anywhere">
           <strong>{t(UI.lvAnywhere)}</strong>

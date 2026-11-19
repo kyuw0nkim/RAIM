@@ -268,7 +268,6 @@ input, textarea, select { font: inherit; }
 .lv-takeover { border-top: 4px solid var(--c-2985); }
 .lv-area { border-top: 4px solid var(--c-319); }
 .lv-anywhere { border-top: 4px solid #b9c4cf; }
-.lv.here { background: rgba(31, 189, 198, 0.1); border-color: var(--c-319); }
 .levels-groups { display: grid; grid-template-columns: 3fr 1fr 1fr 1fr; gap: 4px; margin-top: 8px; }
 .lg { display: flex; flex-direction: column; gap: 3px; padding: 8px 6px 0; border-top: 2px solid; font-size: 0.8rem; }
 .lg strong { color: var(--fg); font-weight: 650; line-height: 1.3; }

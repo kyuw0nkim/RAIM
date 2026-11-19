@@ -101,18 +101,18 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
-        title: { ko: "어디서든 달릴 수 있을까?", en: "Can It Drive Anywhere?" },
+        title: { ko: "자율주행차는 다 똑같을까?", en: "Are All Self-Driving Cars the Same?" },
         body: {
-          ko: "퀴즈를 풀기 전에 디오라마를 한 번 더 보세요. 레고 자동차는 아무도 운전하지 않는데 스스로 도로를 달려요.",
-          en: "Before the quiz, take one more look at the diorama. No one is driving the LEGO car, yet it moves along the road by itself.",
+          ko: "퀴즈를 풀기 전에, 함께 온 사람과 먼저 이야기해 보세요.",
+          en: "Before the quiz, talk it over with the people you came with.",
         },
         question: {
-          ko: "이 자동차를 교육장 바닥에 내려놓아도 스스로 잘 달릴 수 있을까요?",
-          en: "If you put this car on the floor of this room, could it still drive itself?",
+          ko: "자율주행차라면 모두 운전자 없이 달릴 수 있을까요?",
+          en: "Can every self-driving car drive with no one at the wheel?",
         },
         hint: {
-          ko: "자동차가 도로에서 무엇을 따라 달리는지 살펴보세요.",
-          en: "Look at what the car follows on the road.",
+          ko: "오늘 타고 온 차를 떠올려 보세요. 차가 스스로 해 주는 일이 있나요? (속도 맞추기, 차선 지키기, 주차…)",
+          en: "Think about the car you came in today. Does it do anything by itself? (keeping speed, staying in the lane, parking…)",
         },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },

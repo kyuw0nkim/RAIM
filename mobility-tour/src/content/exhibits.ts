@@ -51,6 +51,10 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
           ko: "여러분이 찾은 동그란 두 '눈'이 초음파 센서예요. 소리를 보내고 되돌아오는 시간을 재서 물체까지의 거리를 알아내요. 바닥을 향한 컬러 센서는 선의 색을 읽어요. 자동차의 컴퓨터는 이 정보로 '멈춤', '속도 줄이기', '방향 바꾸기'를 결정해요.",
           en: "The two round 'eyes' you found are an ultrasonic sensor. It sends out sound and times the echo to work out how far away an object is. A color sensor facing the floor reads the line. The car's computer uses this to decide to stop, slow down or turn.",
         },
+        hint: {
+          ko: "디오라마 양 옆의 태블릿에서 레고 자동차가 도로를 스스로 달리는 원리를 확인해 보세요.",
+          en: "Check the tablets on both sides of the diorama to see how the LEGO car drives itself along the road.",
+        },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
       disengage: {
@@ -97,18 +101,18 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
-        title: { ko: "핸들을 찾아라", en: "Spot the Steering Wheel" },
+        title: { ko: "어디서든 달릴 수 있을까?", en: "Can It Drive Anywhere?" },
         body: {
-          ko: "퀴즈를 풀기 전에 교육장을 한 번 둘러보세요. 디오라마의 레고 자동차 안을 들여다보고, 벽화 속 차들도 살펴보세요.",
-          en: "Before the quiz, take one more look around the room. Look inside the LEGO car on the diorama, then at the vehicles in the mural.",
+          ko: "퀴즈를 풀기 전에 디오라마를 한 번 더 보세요. 레고 자동차는 아무도 운전하지 않는데 스스로 도로를 달려요.",
+          en: "Before the quiz, take one more look at the diorama. No one is driving the LEGO car, yet it moves along the road by itself.",
         },
         question: {
-          ko: "어떤 차에는 핸들이 있고, 어떤 차에는 없나요?",
-          en: "Which vehicles have a steering wheel, and which don't?",
+          ko: "이 자동차를 교육장 바닥에 내려놓아도 스스로 잘 달릴 수 있을까요?",
+          en: "If you put this car on the floor of this room, could it still drive itself?",
         },
         hint: {
-          ko: "레고 자동차 안의 흰색 핸들을 찾아보세요. 벽화 가운데의 속이 훤히 보이는 셔틀은 안이 어떻게 생겼나요?",
-          en: "Find the white wheel inside the LEGO car. What does the inside of the see-through shuttles in the mural look like?",
+          ko: "자동차가 도로에서 무엇을 따라 달리는지 살펴보세요.",
+          en: "Look at what the car follows on the road.",
         },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },
@@ -121,14 +125,14 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         cta: { ko: "다 풀었어요", en: "I'm Done" },
       },
       reflect: {
-        title: { ko: "핸들이 사라지는 날", en: "When the Steering Wheel Disappears" },
+        title: { ko: "자율주행에도 단계가 있어요", en: "Self-Driving Has Levels" },
         body: {
-          ko: "레고 자동차는 스스로 달리지만 핸들이 있어요. 오늘날의 자율주행차도 대부분 이래요. 차가 운전을 돕거나 맡더라도, 필요할 때 사람이 바로 넘겨받을 수 있어야 하거든요(0~3단계). 벽화 속 셔틀에는 핸들이 아예 없어요. 사람이 넘겨받을 필요 없이 정해진 지역이나 모든 곳에서 스스로 달리는 4~5단계를 목표로 하기 때문이에요.",
-          en: "The LEGO car drives itself, but it still has a steering wheel. Most self-driving cars today are the same: even when the car helps or takes over, a person must be ready to take control (Levels 0–3). The shuttles in the mural have no steering wheel at all. They aim for Levels 4–5, where no one needs to take over and the vehicle drives itself in set areas or everywhere.",
+          ko: "자율주행은 0~5단계로 나뉘어요. 2단계까지는 사람이 운전하고 차가 돕기만 해요. 3단계는 차가 운전하지만, 요청하면 사람이 바로 넘겨받아야 해요. 레고 자동차는 아무도 없이 스스로 달리지만, 선이 그려진 자기 도로 위에서만 그래요. 이렇게 정해진 곳에서만 스스로 달리는 것이 4단계예요. 벽화 속 전용 도로의 셔틀도 마찬가지예요. 어디서든, 어떤 날씨에도 스스로 달리는 5단계 차는 아직 없어요.",
+          en: "Self-driving has six levels, from 0 to 5. Up to Level 2, a person drives and the car only helps. At Level 3, the car drives but a person must take over when asked. The LEGO car drives with no one in it, but only on its own road with the line. That's Level 4: driving itself, but only in a set area. The shuttles on the mural's dedicated lane work the same way. A Level 5 car that drives itself anywhere, in any weather, doesn't exist yet.",
         },
         question: {
-          ko: "핸들이 없는 차를 타 보고 싶나요? 왜 그런가요?",
-          en: "Would you ride in a car with no steering wheel? Why or why not?",
+          ko: "운전자가 없는 차를 타 보고 싶나요? 어디로 가 보고 싶나요?",
+          en: "Would you ride in a car with no driver? Where would you want it to take you?",
         },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },

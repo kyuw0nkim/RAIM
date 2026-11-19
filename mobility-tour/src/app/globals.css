@@ -264,15 +264,19 @@ input, textarea, select { font: inherit; }
 .lv { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px; border-radius: 8px; background: #fff; border: 1px solid rgba(0, 68, 139, 0.12); text-align: center; }
 .lv b { font-size: 1.6rem; line-height: 1; color: var(--c-301); }
 .lv span { font-size: 0.78rem; line-height: 1.3; color: var(--fg-2); }
-.lv-wheel { border-top: 4px solid var(--c-2985); }
-.lv-free { border-top: 4px solid var(--c-319); }
-.levels-groups { display: grid; grid-template-columns: 4fr 2fr; gap: 4px; margin-top: 8px; }
-.lg { display: flex; flex-direction: column; gap: 3px; padding: 8px 6px 0; border-top: 2px solid; font-size: 0.85rem; }
-.lg strong { color: var(--fg); font-weight: 650; }
-.lg span { color: var(--fg-2); }
-.lg small { color: var(--fg-2); font-size: 0.8rem; margin-top: 4px; }
-.lg-wheel { border-color: var(--c-2985); }
-.lg-free { border-color: var(--c-319); }
+.lv-person { border-top: 4px solid var(--c-646); }
+.lv-takeover { border-top: 4px solid var(--c-2985); }
+.lv-area { border-top: 4px solid var(--c-319); }
+.lv-anywhere { border-top: 4px solid #b9c4cf; }
+.lv.here { background: rgba(31, 189, 198, 0.1); border-color: var(--c-319); }
+.levels-groups { display: grid; grid-template-columns: 3fr 1fr 1fr 1fr; gap: 4px; margin-top: 8px; }
+.lg { display: flex; flex-direction: column; gap: 3px; padding: 8px 6px 0; border-top: 2px solid; font-size: 0.8rem; }
+.lg strong { color: var(--fg); font-weight: 650; line-height: 1.3; }
+.lg small { color: var(--fg-2); font-size: 0.78rem; }
+.lg-person { border-color: var(--c-646); }
+.lg-takeover { border-color: var(--c-2985); }
+.lg-area { border-color: var(--c-319); }
+.lg-anywhere { border-color: #b9c4cf; }
 .hero-name { margin: 18px 0 0; color: var(--c-301); font-weight: 700; font-size: 1.15rem; text-align: center; }
 .stage-panel { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
 .stage-scroll { flex: 1; overflow-y: auto; padding: 30px 32px 12px; -webkit-overflow-scrolling: touch; }

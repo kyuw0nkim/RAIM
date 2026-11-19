@@ -370,22 +370,27 @@ function LevelScale({ lang }: { lang: Locale }) {
       <p className="levels-title">{t(UI.levelsTitle)}</p>
       <ol className="levels-steps">
         {LEVELS.map((l) => (
-          <li key={l.n} className={`lv ${l.n <= 3 ? "lv-wheel" : "lv-free"}`}>
+          <li key={l.n} className={`lv ${l.n <= 2 ? "lv-person" : l.n === 3 ? "lv-takeover" : l.n === 4 ? "lv-area here" : "lv-anywhere"}`}>
             <b>{l.n}</b>
             <span>{l[lang]}</span>
           </li>
         ))}
       </ol>
       <div className="levels-groups">
-        <div className="lg lg-wheel">
-          <strong>{t(UI.needsWheel)}</strong>
-          <span>{t(UI.needsWheelNote)}</span>
-          <small>🚗 {t(UI.legoCar)}</small>
+        <div className="lg lg-person">
+          <strong>{t(UI.lvPerson)}</strong>
         </div>
-        <div className="lg lg-free">
-          <strong>{t(UI.noWheel)}</strong>
-          <span>{t(UI.noWheelNote)}</span>
+        <div className="lg lg-takeover">
+          <strong>{t(UI.lvTakeover)}</strong>
+        </div>
+        <div className="lg lg-area">
+          <strong>{t(UI.lvArea)}</strong>
+          <small>🚗 {t(UI.legoCar)}</small>
           <small>🚐 {t(UI.muralShuttle)}</small>
+        </div>
+        <div className="lg lg-anywhere">
+          <strong>{t(UI.lvAnywhere)}</strong>
+          <small>{t(UI.notYet)}</small>
         </div>
       </div>
     </div>

@@ -48,12 +48,13 @@ export const UI = {
   keepGoing: { ko: "계속하기", en: "Keep Going" },
   stageLabel: { ko: "단계", en: "Stage" },
   levelsTitle: { ko: "자율주행 0~5단계", en: "Levels of Driving Automation" },
-  needsWheel: { ko: "핸들이 필요해요", en: "Needs a steering wheel" },
-  needsWheelNote: { ko: "사람이 운전하거나, 넘겨받을 준비", en: "A person drives or stands ready" },
-  noWheel: { ko: "핸들이 없어도 돼요", en: "No steering wheel needed" },
-  noWheelNote: { ko: "차가 스스로 운전", en: "The car drives itself" },
-  legoCar: { ko: "레고 자동차 (핸들 있음)", en: "LEGO car (has a steering wheel)" },
-  muralShuttle: { ko: "벽화 속 셔틀 (운전석 없음)", en: "Mural shuttle (no driver's seat)" },
+  lvPerson: { ko: "사람이 운전", en: "A person drives" },
+  lvTakeover: { ko: "차가 운전, 사람은 대기", en: "Car drives, person on standby" },
+  lvArea: { ko: "정해진 곳에서 스스로", en: "Drives itself in set areas" },
+  lvAnywhere: { ko: "어디서든 스스로", en: "Drives itself anywhere" },
+  legoCar: { ko: "레고 자동차", en: "LEGO car" },
+  muralShuttle: { ko: "벽화 속 셔틀", en: "Mural shuttle" },
+  notYet: { ko: "아직 없음", en: "Not yet" },
 } satisfies Record<string, L>;
 
 export const STAGE_LABEL: Record<StageKey, L> = {

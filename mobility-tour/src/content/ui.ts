@@ -52,8 +52,6 @@ export const UI = {
   lvTakeover: { ko: "차가 운전, 사람은 대기", en: "Car drives, person on standby" },
   lvArea: { ko: "정해진 곳에서 스스로", en: "Drives itself in set areas" },
   lvAnywhere: { ko: "어디서든 스스로", en: "Drives itself anywhere" },
-  legoCar: { ko: "레고 자동차", en: "LEGO car" },
-  muralShuttle: { ko: "벽화 속 셔틀", en: "Mural shuttle" },
   notYet: { ko: "아직 없음", en: "Not yet" },
 } satisfies Record<string, L>;
 

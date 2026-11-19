@@ -127,8 +127,8 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       reflect: {
         title: { ko: "자율주행에도 단계가 있어요", en: "Self-Driving Has Levels" },
         body: {
-          ko: "자율주행은 0~5단계로 나뉘어요. 2단계까지는 사람이 운전하고 차가 돕기만 해요. 3단계는 차가 운전하지만, 요청하면 사람이 바로 넘겨받아야 해요. 레고 자동차는 아무도 없이 스스로 달리지만, 선이 그려진 자기 도로 위에서만 그래요. 이렇게 정해진 곳에서만 스스로 달리는 것이 4단계예요. 벽화 속 전용 도로의 셔틀도 마찬가지예요. 어디서든, 어떤 날씨에도 스스로 달리는 5단계 차는 아직 없어요.",
-          en: "Self-driving has six levels, from 0 to 5. Up to Level 2, a person drives and the car only helps. At Level 3, the car drives but a person must take over when asked. The LEGO car drives with no one in it, but only on its own road with the line. That's Level 4: driving itself, but only in a set area. The shuttles on the mural's dedicated lane work the same way. A Level 5 car that drives itself anywhere, in any weather, doesn't exist yet.",
+          ko: "자율주행은 0~5단계로 나뉘어요. 0~2단계는 사람이 운전하고, 차는 속도 조절이나 차선 유지 같은 운전을 도와요. 3단계는 차가 운전하지만, 요청하면 사람이 바로 넘겨받아야 해요. 4단계는 정해진 지역 안에서는 사람 없이 스스로 달려요. 5단계는 어디서든, 어떤 날씨에도 스스로 달리는 단계로, 아직 이런 차는 없어요.",
+          en: "Self-driving has six levels, from 0 to 5. At Levels 0–2, a person drives and the car helps, for example by keeping speed or staying in the lane. At Level 3, the car drives, but a person must take over when asked. At Level 4, the car drives itself with no one at the wheel, but only in set areas. Level 5 means driving itself anywhere, in any weather, and no car can do that yet.",
         },
         question: {
           ko: "운전자가 없는 차를 타 보고 싶나요? 어디로 가 보고 싶나요?",

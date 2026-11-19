@@ -47,6 +47,12 @@ export const UI = {
   idleBody: { ko: "초 후 처음 화면으로 돌아갑니다.", en: "seconds until the app returns to the start." },
   keepGoing: { ko: "계속하기", en: "Keep Going" },
   stageLabel: { ko: "단계", en: "Stage" },
+  levelsTitle: { ko: "자율주행 0~5단계", en: "Levels of Driving Automation" },
+  personDrives: { ko: "사람이 운전", en: "A person drives" },
+  carDrivesSometimes: { ko: "조건부로 차가 운전", en: "Car drives in some conditions" },
+  carDrives: { ko: "차가 스스로 운전", en: "Car drives itself" },
+  legoCar: { ko: "레고 자동차 (핸들 있음)", en: "LEGO car (has a steering wheel)" },
+  muralShuttle: { ko: "벽화 속 셔틀 (운전석 없음)", en: "Mural shuttle (no driver's seat)" },
 } satisfies Record<string, L>;
 
 export const STAGE_LABEL: Record<StageKey, L> = {

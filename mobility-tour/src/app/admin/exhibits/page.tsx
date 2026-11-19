@@ -73,11 +73,6 @@ export default async function ExhibitsPage() {
                   <Link className="btn-admin ghost" href={`/admin/faq?exhibit=${id}`}>
                     FAQ
                   </Link>
-                  {quiz !== undefined && (
-                    <Link className="btn-admin ghost" href="/admin/quiz">
-                      퀴즈
-                    </Link>
-                  )}
                 </div>
               </div>
             </article>

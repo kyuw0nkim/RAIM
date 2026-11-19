@@ -9,7 +9,6 @@ const MENU: { href: string; label: string }[] = [
   { href: "/admin/exhibits", label: "전시물" },
   { href: "/admin/content", label: "콘텐츠 편집" },
   { href: "/admin/faq", label: "FAQ 관리" },
-  { href: "/admin/quiz", label: "퀴즈 관리" },
   { href: "/admin/settings", label: "설정" },
   { href: "/admin/releases", label: "업데이트 내역" },
 ];

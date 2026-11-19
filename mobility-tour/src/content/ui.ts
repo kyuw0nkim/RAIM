@@ -4,8 +4,8 @@ export const UI = {
   museum: { ko: "서울로봇인공지능과학관", en: "Seoul Robot & AI Museum" },
   appTitle: { ko: "자율주행 모빌리티 투어", en: "Autonomous Mobility Tour" },
   intro: {
-    ko: "이 태블릿은 길잡이예요. 안내를 따라 교육장의 진짜 전시물을 직접 보고 체험해 보세요.",
-    en: "This tablet is just your guide. Follow it to see and try the real exhibits in this room.",
+    ko: "자동차는 어떻게 스스로 달릴까요? 교육장의 전시물로 직접 알아봐요.",
+    en: "How does a car drive itself? Find out with the exhibits in this room.",
   },
   start: { ko: "탐험 시작하기", en: "Start Exploring" },
   visitorsTitle: { ko: "함께 관람하는 분을 알려 주세요", en: "Who's exploring today?" },
@@ -47,6 +47,14 @@ export const UI = {
   idleBody: { ko: "초 후 처음 화면으로 돌아갑니다.", en: "seconds until the app returns to the start." },
   keepGoing: { ko: "계속하기", en: "Keep Going" },
   stageLabel: { ko: "단계", en: "Stage" },
+  levelsTitle: { ko: "자율주행 0~5단계", en: "Levels of Driving Automation" },
+  lvPerson: { ko: "사람이 운전", en: "A person drives" },
+  lvTakeover: { ko: "차가 운전, 사람은 대기", en: "Car drives, person on standby" },
+  lvArea: { ko: "정해진 곳에서 스스로", en: "Drives itself in set areas" },
+  lvAnywhere: { ko: "어디서든 스스로", en: "Drives itself anywhere" },
+  legoCar: { ko: "레고 자동차", en: "LEGO car" },
+  muralShuttle: { ko: "벽화 속 셔틀", en: "Mural shuttle" },
+  notYet: { ko: "아직 없음", en: "Not yet" },
 } satisfies Record<string, L>;
 
 export const STAGE_LABEL: Record<StageKey, L> = {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { EXHIBIT_IMAGE, STAGE_IMAGES } from "@/content/map";
+import { EXHIBIT_IMAGE, STAGE_IMAGES, STAGE_VISUALS } from "@/content/map";
 import { STAGE_LABEL, UI } from "@/content/ui";
 import { STAGES, type StageImage, type Exhibit, type ExhibitId, type Locale, type StageKey } from "@/content/types";
 import type { Tracker } from "./TourApp";
@@ -79,6 +79,7 @@ export function ExhibitView({
   const img = EXHIBIT_IMAGE[exhibit.id];
   const muralMode = stage === "experience" && !!exhibit.hotspots;
   const stageImg = STAGE_IMAGES[exhibit.id]?.[stage];
+  const stageVisual = STAGE_VISUALS[exhibit.id]?.[stage];
 
   return (
     <main className="exhibit">
@@ -144,6 +145,9 @@ export function ExhibitView({
             </div>
           ) : (
             <div className="exhibit-hero">
+              {stageVisual === "levels" ? (
+                <LevelScale lang={lang} />
+              ) : (
               <div className={`hero-frame ${stageImg ? "stage-photo" : ""}`}>
                 {stageImg?.marks?.length ? (
                   <PhotoSpotlight image={stageImg} lang={lang} />
@@ -157,6 +161,7 @@ export function ExhibitView({
                   />
                 )}
               </div>
+              )}
               <p className="hero-name">{t(exhibit.name)}</p>
               {exhibit.credit && <p className="credit">{t(exhibit.credit)}</p>}
             </div>
@@ -345,6 +350,50 @@ function PhotoSpotlight({ image, lang }: { image: StageImage; lang: Locale }) {
         );
       })}
     </svg>
+  );
+}
+
+const LEVELS: { n: number; ko: string; en: string }[] = [
+  { n: 0, ko: "자동화 없음", en: "No automation" },
+  { n: 1, ko: "운전 보조", en: "Driver assistance" },
+  { n: 2, ko: "부분 자동화", en: "Partial automation" },
+  { n: 3, ko: "조건부 자동화", en: "Conditional automation" },
+  { n: 4, ko: "고도 자동화", en: "High automation" },
+  { n: 5, ko: "완전 자동화", en: "Full automation" },
+];
+
+/** 자율주행 0~5단계 — 레고 자동차와 벽화 셔틀이 어디쯤인지 표시 */
+function LevelScale({ lang }: { lang: Locale }) {
+  const t = (l: Record<Locale, string>) => l[lang];
+  return (
+    <div className="levels">
+      <p className="levels-title">{t(UI.levelsTitle)}</p>
+      <ol className="levels-steps">
+        {LEVELS.map((l) => (
+          <li key={l.n} className={`lv ${l.n <= 2 ? "lv-person" : l.n === 3 ? "lv-takeover" : l.n === 4 ? "lv-area here" : "lv-anywhere"}`}>
+            <b>{l.n}</b>
+            <span>{l[lang]}</span>
+          </li>
+        ))}
+      </ol>
+      <div className="levels-groups">
+        <div className="lg lg-person">
+          <strong>{t(UI.lvPerson)}</strong>
+        </div>
+        <div className="lg lg-takeover">
+          <strong>{t(UI.lvTakeover)}</strong>
+        </div>
+        <div className="lg lg-area">
+          <strong>{t(UI.lvArea)}</strong>
+          <small>🚗 {t(UI.legoCar)}</small>
+          <small>🚐 {t(UI.muralShuttle)}</small>
+        </div>
+        <div className="lg lg-anywhere">
+          <strong>{t(UI.lvAnywhere)}</strong>
+          <small>{t(UI.notYet)}</small>
+        </div>
+      </div>
+    </div>
   );
 }
 

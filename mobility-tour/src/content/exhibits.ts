@@ -51,6 +51,10 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
           ko: "여러분이 찾은 동그란 두 '눈'이 초음파 센서예요. 소리를 보내고 되돌아오는 시간을 재서 물체까지의 거리를 알아내요. 바닥을 향한 컬러 센서는 선의 색을 읽어요. 자동차의 컴퓨터는 이 정보로 '멈춤', '속도 줄이기', '방향 바꾸기'를 결정해요.",
           en: "The two round 'eyes' you found are an ultrasonic sensor. It sends out sound and times the echo to work out how far away an object is. A color sensor facing the floor reads the line. The car's computer uses this to decide to stop, slow down or turn.",
         },
+        hint: {
+          ko: "디오라마 양 옆의 태블릿에서 레고 자동차가 도로를 스스로 달리는 원리를 확인해 보세요.",
+          en: "Check the tablets on both sides of the diorama to see how the LEGO car drives itself along the road.",
+        },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
       disengage: {
@@ -86,7 +90,7 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
     id: "quiz",
     icon: "❓",
     name: { ko: "자율주행 퀴즈", en: "Autonomous Driving Quiz" },
-    tagline: { ko: "자율주행의 단계를 퀴즈로 알아봐요.", en: "Learn the levels of self-driving with a quiz." },
+    tagline: { ko: "퀴즈로 자율주행 지식을 확인해요.", en: "Test what you know about self-driving cars." },
     stages: {
       approach: {
         title: { ko: "나도 자율주행 전문가", en: "I'm a Self-Driving Expert, Too" },
@@ -97,75 +101,50 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
-        title: { ko: "먼저 생각해 보기", en: "Think First" },
+        title: { ko: "어디서든 달릴 수 있을까?", en: "Can It Drive Anywhere?" },
         body: {
-          ko: "퀴즈 화면 앞에서, 정답을 보기 전에 함께 온 사람과 먼저 이야기해 보세요.",
-          en: "In front of the quiz screen, talk it over with the people you came with before you see the answer.",
+          ko: "퀴즈를 풀기 전에 디오라마를 한 번 더 보세요. 레고 자동차는 아무도 운전하지 않는데 스스로 도로를 달려요.",
+          en: "Before the quiz, take one more look at the diorama. No one is driving the LEGO car, yet it moves along the road by itself.",
         },
         question: {
-          ko: "모든 자율주행차는 운전자 없이 달릴 수 있을까요?",
-          en: "Can all self-driving cars drive without a human driver?",
+          ko: "이 자동차를 교육장 바닥에 내려놓아도 스스로 잘 달릴 수 있을까요?",
+          en: "If you put this car on the floor of this room, could it still drive itself?",
+        },
+        hint: {
+          ko: "자동차가 도로에서 무엇을 따라 달리는지 살펴보세요.",
+          en: "Look at what the car follows on the road.",
         },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },
       experience: {
         title: { ko: "퀴즈 풀기", en: "Take the Quiz" },
-        body: { ko: "", en: "" },
-        cta: { ko: "해설 보기", en: "See Explanation" },
+        body: {
+          ko: "앞의 퀴즈 화면에서 풀어 보세요! 몇 개나 맞출 수 있을까요?",
+          en: "Take the quiz on the screen in front of you! How many can you get right?",
+        },
+        cta: { ko: "다 풀었어요", en: "I'm Done" },
       },
       reflect: {
-        title: { ko: "자율주행의 6단계", en: "The Six Levels of Driving Automation" },
+        title: { ko: "자율주행에도 단계가 있어요", en: "Self-Driving Has Levels" },
         body: {
-          ko: "자율주행은 0단계(자동화 없음)부터 5단계(완전 자율주행)까지 나뉩니다. 2단계까지는 운전자가 항상 운전에 책임을 지고, 3단계부터 특정 조건에서 시스템이 운전을 맡습니다. 그래서 '자율주행차'라도 모두 운전자 없이 달릴 수 있는 것은 아니에요.",
-          en: "Driving automation ranges from Level 0 (no automation) to Level 5 (full automation). Up to Level 2 the human driver is always responsible; from Level 3 the system drives under certain conditions. So not every 'self-driving' car can drive without a human.",
+          ko: "자율주행은 0~5단계로 나뉘어요. 2단계까지는 사람이 운전하고 차가 돕기만 해요. 3단계는 차가 운전하지만, 요청하면 사람이 바로 넘겨받아야 해요. 레고 자동차는 아무도 없이 스스로 달리지만, 선이 그려진 자기 도로 위에서만 그래요. 이렇게 정해진 곳에서만 스스로 달리는 것이 4단계예요. 벽화 속 전용 도로의 셔틀도 마찬가지예요. 어디서든, 어떤 날씨에도 스스로 달리는 5단계 차는 아직 없어요.",
+          en: "Self-driving has six levels, from 0 to 5. Up to Level 2, a person drives and the car only helps. At Level 3, the car drives but a person must take over when asked. The LEGO car drives with no one in it, but only on its own road with the line. That's Level 4: driving itself, but only in a set area. The shuttles on the mural's dedicated lane work the same way. A Level 5 car that drives itself anywhere, in any weather, doesn't exist yet.",
+        },
+        question: {
+          ko: "운전자가 없는 차를 타 보고 싶나요? 어디로 가 보고 싶나요?",
+          en: "Would you ride in a car with no driver? Where would you want it to take you?",
         },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
       disengage: {
         title: { ko: "퀴즈 완료!", en: "Quiz Complete!" },
         body: {
-          ko: "자율주행 단계를 알게 되었어요. 이제 디오라마로 가서 진짜 센서가 어떻게 움직이는지 직접 볼까요?",
-          en: "Now you know the levels of automation. Want to go to the diorama and see real sensors at work?",
+          ko: "몇 개나 맞혔나요? 아리송했던 문제가 있다면, 관련된 전시물로 다시 가서 살펴보세요.",
+          en: "How many did you get right? If a question was tricky, walk back to the related exhibit and take another look.",
         },
       },
     },
-    // ⚠ 실제 퀴즈 TV 문항으로 교체 필요 (PRD §5.2)
-    quiz: [
-      {
-        id: "quiz-q1",
-        question: {
-          ko: "운전자가 전혀 필요 없는 '완전 자율주행'은 몇 단계일까요?",
-          en: "Which level is 'full automation', where no human driver is needed at all?",
-        },
-        options: [
-          { key: "a", text: { ko: "2단계", en: "Level 2" } },
-          { key: "b", text: { ko: "3단계", en: "Level 3" } },
-          { key: "c", text: { ko: "5단계", en: "Level 5" } },
-        ],
-        answer: "c",
-        explanation: {
-          ko: "5단계는 모든 도로와 환경에서 시스템이 스스로 운전하는 단계예요.",
-          en: "At Level 5 the system drives itself on every road and in every condition.",
-        },
-      },
-      {
-        id: "quiz-q2",
-        question: {
-          ko: "차선 유지와 속도 조절을 도와주지만 운전자가 계속 지켜봐야 하는 단계는?",
-          en: "Which level helps with lane keeping and speed, but the driver must keep watching?",
-        },
-        options: [
-          { key: "a", text: { ko: "0단계", en: "Level 0" } },
-          { key: "b", text: { ko: "2단계", en: "Level 2" } },
-          { key: "c", text: { ko: "4단계", en: "Level 4" } },
-        ],
-        answer: "b",
-        explanation: {
-          ko: "2단계는 '부분 자동화'예요. 오늘날 많은 자동차의 운전 보조 기능이 여기에 해당해요.",
-          en: "Level 2 is 'partial automation'. Many driver-assistance features in today's cars are at this level.",
-        },
-      },
-    ],
+    // 퀴즈는 교육장의 퀴즈 화면에서 진행 (앱에서 푸는 문항 없음)
     faqs: [
       {
         id: "quiz-faq-1",

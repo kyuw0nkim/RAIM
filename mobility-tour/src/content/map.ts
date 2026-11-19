@@ -49,8 +49,13 @@ export const MAP_OBJECTS: MapObject[] = [
  * 이미지·표시 위치는 관리자 편집 대상이 아니므로 콘텐츠 문서가 아닌 코드에 둡니다.
  */
 export const STAGE_IMAGES: Partial<Record<ExhibitId, Partial<Record<StageKey, StageImage>>>> = {
+  // 퀴즈 관찰 단계: 스스로 달리는 레고 자동차
+  quiz: {
+    engage: { src: "/images/diorama-car.webp", width: 870, height: 575 },
+  },
   car: {
     engage: { src: "/images/diorama-car.webp", width: 870, height: 575 },
+    experience: { src: "/images/diorama-obstacle.webp", width: 1040, height: 869 },
     reflect: {
       src: "/images/diorama-car.webp",
       width: 870,
@@ -62,4 +67,9 @@ export const STAGE_IMAGES: Partial<Record<ExhibitId, Partial<Record<StageKey, St
       ],
     },
   },
+};
+
+/** 사진 대신 그림을 보여 줄 단계 */
+export const STAGE_VISUALS: Partial<Record<ExhibitId, Partial<Record<StageKey, "levels">>>> = {
+  quiz: { reflect: "levels" },
 };

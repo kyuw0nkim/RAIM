@@ -173,7 +173,8 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
         </article>
       </section>
 
-      <section className="admin-card">
+      {quiz.length > 0 && (
+        <section className="admin-card">
         <h2>퀴즈 응답</h2>
         {quiz.length ? (
           <div className="grid-2 inner">
@@ -191,6 +192,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
           <p className="chart-empty">등록된 퀴즈가 없습니다.</p>
         )}
       </section>
+      )}
 
       <section className="admin-card">
         <h2>방문객 구성</h2>

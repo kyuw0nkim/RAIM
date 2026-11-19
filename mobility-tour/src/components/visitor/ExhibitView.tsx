@@ -365,28 +365,26 @@ const LEVELS: { n: number; ko: string; en: string }[] = [
 /** 자율주행 0~5단계 — 레고 자동차와 벽화 셔틀이 어디쯤인지 표시 */
 function LevelScale({ lang }: { lang: Locale }) {
   const t = (l: Record<Locale, string>) => l[lang];
-  const group = (n: number) => (n <= 2 ? "person" : n === 3 ? "some" : "car");
   return (
     <div className="levels">
       <p className="levels-title">{t(UI.levelsTitle)}</p>
       <ol className="levels-steps">
         {LEVELS.map((l) => (
-          <li key={l.n} className={`lv lv-${group(l.n)}`}>
+          <li key={l.n} className={`lv ${l.n <= 3 ? "lv-wheel" : "lv-free"}`}>
             <b>{l.n}</b>
             <span>{l[lang]}</span>
           </li>
         ))}
       </ol>
       <div className="levels-groups">
-        <div className="lg lg-person">
-          <strong>{t(UI.personDrives)}</strong>
+        <div className="lg lg-wheel">
+          <strong>{t(UI.needsWheel)}</strong>
+          <span>{t(UI.needsWheelNote)}</span>
           <small>🚗 {t(UI.legoCar)}</small>
         </div>
-        <div className="lg lg-some">
-          <strong>{t(UI.carDrivesSometimes)}</strong>
-        </div>
-        <div className="lg lg-car">
-          <strong>{t(UI.carDrives)}</strong>
+        <div className="lg lg-free">
+          <strong>{t(UI.noWheel)}</strong>
+          <span>{t(UI.noWheelNote)}</span>
           <small>🚐 {t(UI.muralShuttle)}</small>
         </div>
       </div>

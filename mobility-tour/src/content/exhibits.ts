@@ -97,18 +97,18 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
-        title: { ko: "누가 운전하나요?", en: "Who's Driving?" },
+        title: { ko: "핸들을 찾아라", en: "Spot the Steering Wheel" },
         body: {
-          ko: "퀴즈를 풀기 전에 교육장을 한 번 둘러보세요. 디오라마의 레고 자동차와 벽화 속 차들을 살펴보세요.",
-          en: "Before the quiz, take one more look around the room. Check the LEGO car on the diorama and the vehicles in the mural.",
+          ko: "퀴즈를 풀기 전에 교육장을 한 번 둘러보세요. 디오라마의 레고 자동차 안을 들여다보고, 벽화 속 차들도 살펴보세요.",
+          en: "Before the quiz, take one more look around the room. Look inside the LEGO car on the diorama, then at the vehicles in the mural.",
         },
         question: {
-          ko: "이 중에서 아직 사람이 운전해야 하는 차는 무엇일까요?",
-          en: "Which of these cars still needs a person to drive?",
+          ko: "어떤 차에는 핸들이 있고, 어떤 차에는 없나요?",
+          en: "Which vehicles have a steering wheel, and which don't?",
         },
         hint: {
-          ko: "차 안을 들여다보세요. 핸들이나 운전석이 있나요?",
-          en: "Look inside the vehicles. Is there a steering wheel or a driver's seat?",
+          ko: "레고 자동차 안의 흰색 핸들을 찾아보세요. 벽화 가운데의 속이 훤히 보이는 셔틀은 안이 어떻게 생겼나요?",
+          en: "Find the white wheel inside the LEGO car. What does the inside of the see-through shuttles in the mural look like?",
         },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },
@@ -123,8 +123,8 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       reflect: {
         title: { ko: "핸들이 사라지는 날", en: "When the Steering Wheel Disappears" },
         body: {
-          ko: "레고 자동차처럼 핸들이 있는 차는 사람이 책임지고 운전해요. 오늘날 대부분의 차가 여기에 해당하고(0~2단계), 3단계부터는 특정 조건에서 시스템이 운전을 맡아요. 벽화 속 셔틀처럼 운전석이 아예 없는 차는 정해진 지역이나 모든 곳에서 스스로 달리는 4~5단계를 목표로 해요.",
-          en: "A car with a steering wheel, like the LEGO car, has a person in charge of driving. Most cars today are like this (Levels 0–2). From Level 3, the system drives under certain conditions. Vehicles with no driver's seat at all, like the shuttles in the mural, aim for Levels 4–5, where they drive themselves in set areas or everywhere.",
+          ko: "레고 자동차는 스스로 달리지만 핸들이 있어요. 오늘날의 자율주행차도 대부분 이래요. 차가 운전을 돕거나 맡더라도, 필요할 때 사람이 바로 넘겨받을 수 있어야 하거든요(0~3단계). 벽화 속 셔틀에는 핸들이 아예 없어요. 사람이 넘겨받을 필요 없이 정해진 지역이나 모든 곳에서 스스로 달리는 4~5단계를 목표로 하기 때문이에요.",
+          en: "The LEGO car drives itself, but it still has a steering wheel. Most self-driving cars today are the same: even when the car helps or takes over, a person must be ready to take control (Levels 0–3). The shuttles in the mural have no steering wheel at all. They aim for Levels 4–5, where no one needs to take over and the vehicle drives itself in set areas or everywhere.",
         },
         question: {
           ko: "핸들이 없는 차를 타 보고 싶나요? 왜 그런가요?",

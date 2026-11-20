@@ -148,6 +148,23 @@ export function ExhibitView({
             <div className="exhibit-hero">
               {stageVisual === "levels" ? (
                 <LevelScale lang={lang} />
+              ) : stageVisual === "videos" ? (
+                <div className="mural-wrap">
+                  <div className="hotspot-canvas" style={{ aspectRatio: `${img.width} / ${img.height}` }}>
+                    <img src={img.src} alt={t(exhibit.name)} draggable={false} />
+                    {(() => {
+                      const pts = (exhibit.hotspots ?? []).filter((h) => h.kind === "video").flatMap((h) => h.points);
+                      return (
+                        <>
+                          <div className="hotspot-fog on" style={fogMask(pts)} aria-hidden />
+                          {pts.map((pt, i) => (
+                            <span key={i} className="hotspot video static" style={{ left: `${pt.x}%`, top: `${pt.y}%` }} aria-hidden />
+                          ))}
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
               ) : (
               <div className={`hero-frame ${stageImg ? "stage-photo" : ""}`}>
                 {stageImg?.marks?.length ? (

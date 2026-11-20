@@ -284,6 +284,7 @@ input, textarea, select { font: inherit; }
 /* 질문: 제목(남색 굵게)과 구분되도록 본문 색 Semibold. 남색은 번호에만 */
 .question { font-size: 1.22rem; font-weight: 600; color: var(--fg); margin: 4px 0 18px; line-height: 1.5; }
 .question.small { font-size: 1.05rem; margin: 10px 0 0; }
+.plain-desc { margin: 10px 0 0; font-size: 1.05rem; line-height: 1.65; color: var(--fg); font-weight: 400; }
 .question-list { list-style: none; margin: 4px 0 18px; padding: 0; }
 .question-list li { display: flex; gap: 12px; align-items: baseline; padding: 12px 0; font-size: 1.22rem; font-weight: 600; color: var(--fg); line-height: 1.5; }
 .question-list li + li { border-top: 1px solid var(--hairline); }

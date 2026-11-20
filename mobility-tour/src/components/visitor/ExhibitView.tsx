@@ -394,6 +394,8 @@ function PhotoSpotlight({ image, lang }: { image: StageImage; lang: Locale }) {
 function Questions({ text, small }: { text: string; small?: boolean }) {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   if (!lines.length) return null;
+  // 질문이 아닌 안내 문장(물음표 없음)은 일반 본문으로
+  if (!lines.some((l) => /[?？]$/.test(l))) return <p className="plain-desc">{lines.join(" ")}</p>;
   if (lines.length === 1) return <p className={`question ${small ? "small" : ""}`}>{lines[0]}</p>;
   return (
     <ol className={`question-list ${small ? "small" : ""}`}>

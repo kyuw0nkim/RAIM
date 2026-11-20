@@ -281,7 +281,16 @@ input, textarea, select { font: inherit; }
 .stage-scroll { flex: 1; overflow-y: auto; padding: 30px 32px 12px; -webkit-overflow-scrolling: touch; }
 .stage-scroll h1 { font-size: 2rem; font-weight: 750; margin-bottom: 14px; }
 .stage-scroll .body { font-size: 1.18rem; line-height: 1.7; margin: 0 0 18px; color: var(--fg); }
-.question { white-space: pre-line; font-size: 1.3rem; font-weight: 600; color: var(--c-301); margin: 4px 0 18px; line-height: 1.45; }
+/* 질문: 제목(남색 굵게)과 구분되도록 본문 색 Semibold. 남색은 번호에만 */
+.question { font-size: 1.22rem; font-weight: 600; color: var(--fg); margin: 4px 0 18px; line-height: 1.5; }
+.question.small { font-size: 1.05rem; margin: 10px 0 0; }
+.question-list { list-style: none; margin: 4px 0 18px; padding: 0; }
+.question-list li { display: flex; gap: 12px; align-items: baseline; padding: 12px 0; font-size: 1.22rem; font-weight: 600; color: var(--fg); line-height: 1.5; }
+.question-list li + li { border-top: 1px solid var(--hairline); }
+.question-list li:first-child { padding-top: 0; }
+.q-num { flex: 0 0 auto; width: 1.6em; height: 1.6em; display: inline-grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--c-301); color: var(--c-301); font-size: 0.78em; font-weight: 700; line-height: 1; transform: translateY(-0.1em); }
+.question-list.small { margin: 10px 0 0; }
+.question-list.small li { font-size: 1.05rem; padding: 10px 0; }
 .hint p { margin: 0; font-size: 1.08rem; line-height: 1.6; color: var(--fg); }
 .btn.hint-btn { min-height: 48px; padding: 8px 20px; font-size: 1rem; }
 .stage-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 24px 20px; border-top: 1px solid var(--hairline); }
@@ -630,7 +639,7 @@ input, textarea, select { font: inherit; }
 .preview-panel p { line-height: 1.6; margin: 0 0 10px; }
 .pv-eyebrow { color: var(--c-2985); font-weight: 650; font-size: 0.8rem; margin-bottom: 4px !important; }
 .pv-look { color: var(--c-2985); font-weight: 650; font-size: 0.8rem; }
-.pv-question { color: var(--c-301); font-weight: 600; font-size: 1.02rem; }
+.pv-question { white-space: pre-line; color: var(--text); font-weight: 600; font-size: 1.02rem; }
 .pv-hint { color: var(--muted); }
 .pv-credit { font-style: italic; color: var(--muted); font-size: 0.82rem; }
 .pv-find { color: var(--c-301); font-weight: 650; }

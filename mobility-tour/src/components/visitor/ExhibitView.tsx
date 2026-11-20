@@ -195,15 +195,7 @@ export function ExhibitView({
             <h1>{t(content.title)}</h1>
             {t(content.body) && <p className="body">{t(content.body)}</p>}
 
-            {content.question &&
-              t(content.question)
-                .split("\n")
-                .filter(Boolean)
-                .map((q, i) => (
-                  <p key={i} className="question">
-                    {q}
-                  </p>
-                ))}
+            {content.question && <Questions text={t(content.question)} />}
 
             {content.hint && (
               <div className="hint">
@@ -246,7 +238,7 @@ export function ExhibitView({
                       <span>👀 {t(UI.findOnWall)}</span>
                       {t(hs.find)}
                     </p>
-                    <p>{t(hs.desc)}</p>
+                    <Questions text={t(hs.desc)} small />
                   </div>
                 ) : (
                   <p className="hotspot-empty">👈 {t(UI.tapRing)}</p>
@@ -395,6 +387,25 @@ function PhotoSpotlight({ image, lang }: { image: StageImage; lang: Locale }) {
         );
       })}
     </svg>
+  );
+}
+
+/** 질문 목록: 여러 개면 번호 + 구분선, 하나면 한 줄 */
+function Questions({ text, small }: { text: string; small?: boolean }) {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return null;
+  if (lines.length === 1) return <p className={`question ${small ? "small" : ""}`}>{lines[0]}</p>;
+  return (
+    <ol className={`question-list ${small ? "small" : ""}`}>
+      {lines.map((q, i) => (
+        <li key={i}>
+          <span className="q-num" aria-hidden>
+            {i + 1}
+          </span>
+          <span>{q}</span>
+        </li>
+      ))}
+    </ol>
   );
 }
 

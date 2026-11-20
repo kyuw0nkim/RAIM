@@ -67,19 +67,19 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
     },
     faqs: [
       {
-        id: "car-faq-1",
-        q: { ko: "초음파는 사람 귀에 들리나요?", en: "Can people hear ultrasound?" },
+        id: "car-faq-corner",
+        q: { ko: "왜 코너에서 자꾸 부딪히나요?", en: "Why do the cars keep bumping into each other at the corners?" },
         a: {
-          ko: "아니요. 초음파는 사람이 들을 수 있는 소리보다 높은 소리라서 들리지 않아요. 박쥐도 비슷한 방법으로 길을 찾아요.",
-          en: "No. Ultrasound is higher than the sounds people can hear. Bats find their way in a similar way.",
+          ko: "자동차에 장애물을 인식하는 센서가 한 곳에만 달려 있어, 그 센서 하나에만 의존하기 때문입니다.\n이는 사람이 운전석에 앉아 앞만 보고 운전하는 것과 비슷합니다. 그래서 코너를 돌 때 보이지 않는 영역, 즉 '사각지대'가 커지고, 그곳에 있는 차를 놓쳐 서로 부딪히게 됩니다.\n그런데 실제 자율주행 자동차가 이렇게 부딪힌다면 매우 위험하겠지요?\n그래서 실제 자율주행 자동차는 차량 곳곳에 센서를 달아 사방을 살피고, 사각지대를 최소화하고 있습니다.",
+          en: "Each car has a sensor for detecting obstacles in only one place, so it relies on that single sensor.\nIt's like a driver who only looks straight ahead. When the car turns a corner, the area it can't see, its 'blind spot', gets bigger, so it misses the car there and they bump into each other.\nIf a real self-driving car crashed like this, it would be very dangerous, right?\nThat's why real self-driving cars have sensors all around the vehicle to watch in every direction and keep blind spots as small as possible.",
         },
       },
       {
-        id: "car-faq-2",
-        q: { ko: "진짜 자율주행차도 이 센서를 쓰나요?", en: "Do real self-driving cars use these sensors?" },
+        id: "car-faq-build",
+        q: { ko: "자동차는 무엇으로 만들었나요? 어떻게 도로를 따라가나요?", en: "What is the car made of? How does it follow the road?" },
         a: {
-          ko: "주차를 도와주는 초음파 센서는 많은 자동차에 쓰여요. 도로를 달릴 때는 카메라·레이더·라이다를 함께 사용해 더 멀리, 더 정확하게 봐요.",
-          en: "Many cars use ultrasonic sensors to help with parking. On the road, cameras, radar and lidar are combined to see farther and more accurately.",
+          ko: "이 자동차는 레고로 만들었습니다. 자동차에는 레고에서 쓰는 센서 두 개가 달려 있습니다.\n앞쪽에 돼지코처럼 생긴 부분이 초음파 센서입니다. 이 센서로 앞에 있는 장애물을 인식합니다.\n그 아래에서 바닥을 향해 빛을 비추고 있는 것은 컬러 센서입니다. 이 센서는 바닥에 빛을 쏜 뒤 반사되어 돌아오는 빛의 양을 측정합니다. 그 값에 따라 바퀴의 움직임을 조절해서 자동차가 도로를 따라 달리게 합니다.",
+          en: "This car is built with LEGO. It has two sensors used in LEGO kits.\nThe part at the front that looks like a pig's nose is the ultrasonic sensor. It detects obstacles in front of the car.\nBelow it, the part shining light at the floor is the color sensor. It shines light on the floor and measures how much light bounces back. Based on that value, it adjusts how the wheels move so the car follows the road.",
         },
       },
     ],
@@ -147,11 +147,11 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
     // 퀴즈는 교육장의 퀴즈 화면에서 진행 (앱에서 푸는 문항 없음)
     faqs: [
       {
-        id: "quiz-faq-1",
-        q: { ko: "지금 도로에 4단계 자동차가 있나요?", en: "Are there Level 4 cars on the road now?" },
+        id: "quiz-faq-seoul",
+        q: { ko: "서울에도 자율주행 자동차가 다니고 있나요?", en: "Are there self-driving cars in Seoul?" },
         a: {
-          ko: "일부 도시에서는 정해진 지역 안에서만 달리는 4단계 로보택시가 운행되고 있어요.",
-          en: "In some cities, Level 4 robotaxis operate only within designated areas.",
+          ko: "그럼요. 실제 자율주행 자동차는 이미 서울 도로를 달리고 있습니다.\n청계천에서는 운전석이 없는 자율주행 셔틀이, 합정에서 동대문까지는 늦은 밤 시민들의 귀갓길을 돕는 심야 자율주행버스가 다닙니다. 강남에서는 자율주행 택시를 호출해 탈 수도 있습니다.\n셔틀과 택시, 마을버스, 심야버스까지, 형태도 점점 다양해지고 있습니다.",
+          en: "Yes! Real self-driving vehicles are already on Seoul's roads.\nAlong Cheonggyecheon, self-driving shuttles with no driver's seat carry passengers, and between Hapjeong and Dongdaemun, late-night self-driving buses help people get home. In Gangnam, you can even call a self-driving taxi.\nFrom shuttles and taxis to neighborhood buses and late-night buses, they come in more and more forms.",
         },
       },
     ],
@@ -167,22 +167,25 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       approach: {
         title: { ko: "미래 모빌리티 벽화", en: "The Future Mobility Mural" },
         body: {
-          ko: "교육장 벽면의 큰 벽화 앞으로 가 보세요. 미래 도시의 이동수단이 그려져 있어요.",
-          en: "Walk up to the large mural on the wall. It shows how people might travel in a future city.",
+          ko: "교육장 벽면의 큰 벽화 앞으로 가 보세요. 최지수 작가가 미래 모빌리티를 상상하며 그린 벽화예요.",
+          en: "Walk up to the large mural on the wall. Artist Jisoo Choi painted it imagining the future of mobility.",
         },
         cta: { ko: "도착했어요", en: "I'm There" },
       },
       engage: {
-        title: { ko: "숨은 그림 찾기", en: "Hidden Logos" },
+        title: { ko: "작가가 그린 미래", en: "The Artist's Future" },
         body: {
-          ko: "벽화 앞에 서서 천천히 둘러보세요.",
-          en: "Stand in front of the mural and take your time.",
+          ko: "벽화의 일부 장면은 영상으로도 재현해 두었으니, 함께 보러 가 볼까요?",
+          en: "Some scenes from the mural have also been recreated as videos. Shall we go and watch them together?",
         },
         question: {
-          ko: "벽화 속에 자동차 로고 4개가 숨어 있어요. 찾을 수 있나요?",
-          en: "There are four car logos hidden in the mural. Can you find them?",
+          ko: "작가는 미래의 이동 수단을 어떤 모습으로 상상했을까요?",
+          en: "How did the artist imagine the vehicles of the future?",
         },
-        hint: { ko: "건물 간판을 살펴보세요.", en: "Check the building signs." },
+        hint: {
+          ko: "그림 속에서 미래의 모습을 떠올리게 하는 부분은 어디인가요? 지금은 없지만 미래에는 생길 것 같은 로봇을 찾아보세요.",
+          en: "Which parts of the picture make you think of the future? Look for robots that don't exist yet but might one day.",
+        },
         cta: { ko: "더 알아보기", en: "Explore Deeper" },
       },
       experience: {
@@ -194,14 +197,11 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
         cta: { ko: "무엇을 발견했나요?", en: "What Did You Find?" },
       },
       reflect: {
-        title: { ko: "미래 도시를 상상해 봐요", en: "Imagine the Future City" },
-        body: {
-          ko: "벽화에서 찾은 것들은 서로 연결되어 있어요. 표지판을 읽고 사람을 보면 멈추는 자동차, 함께 타는 셔틀, 스스로 주차하는 차가 모이면 도시는 더 안전하고, 깨끗하고, 덜 붐비게 돼요.",
-          en: "The things you found work together. Cars that read signs and stop for people, shuttles we share, and cars that park themselves can make a city safer, cleaner and less crowded.",
-        },
+        title: { ko: "벽화 속 미래, 우리의 하루", en: "The Mural's Future, Our Day" },
+        body: { ko: "", en: "" },
         question: {
-          ko: "이 벽화에 하나를 더 그려 넣을 수 있다면, 무엇을 그리고 싶나요?",
-          en: "If you could add one thing to this mural, what would it be?",
+          ko: "작가가 그린 미래의 이동은 지금과 무엇이 다를까요?\n이 벽화 속 풍경이 현실이 된다면 우리의 하루는 어떻게 달라질까요?",
+          en: "How is the future of travel the artist painted different from today?\nIf the scenes in this mural came true, how would our days change?",
         },
         cta: { ko: "계속 탐색하기", en: "Continue Exploring" },
       },
@@ -211,17 +211,27 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
           ko: "벽화를 한 번 더 둘러본 뒤, 다음 전시물로 걸어가 보세요.",
           en: "Take one more look at the mural, then walk to the next exhibit.",
         },
+        bonus: {
+          question: {
+            ko: "벽화 속 건물을 잘 살펴보면 자동차 회사 로고 4개가 숨어 있습니다. 어떤 로고들이 있을까요? 그리고 왜 그려져 있을까요?",
+            en: "Look closely at the buildings in the mural. Four car company logos are hidden there. Which ones are they, and why are they there?",
+          },
+          button: { ko: "찾았다면 눌러 보세요!", en: "Found them? Tap here!" },
+          answer: {
+            ko: "이 공간은 폭스바겐그룹우리재단과 함께 만든 공간이기 때문입니다.\n2층은 이렇게 여러 기업과 협업한 공간으로 꾸며져 있습니다. 다른 공간은 어떤 기업과 함께 만들었을지 찾아보세요!",
+            en: "Because this space was created together with the Volkswagen Group Woori Foundation.\nThe 2nd floor is made up of spaces created with different companies. See if you can find which companies helped build the other spaces!",
+          },
+        },
       },
     },
     credit: { ko: "작가 최지수", en: "Artwork by Jisoo Choi" },
-    // 좌표는 벽화 이미지(mural.webp) 기준 %. find = 실제 벽에서 찾을 것, desc = 설명
+    // 좌표는 벽화 이미지(mural.webp) 기준 %. find = 벽화에서 찾을 것, desc = 생각해 볼 질문·설명
     hotspots: [
       {
-        // TODO(교육사): 실제 영상 내용에 맞게 문구 교체
         id: "mural-video",
         kind: "video",
         points: [
-          { x: 14.9, y: 54.2 },
+          { x: 15.0, y: 54.2 },
           { x: 38, y: 53.8 },
           { x: 84.8, y: 48.5 },
         ],
@@ -231,86 +241,51 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
           en: "Find the three video screens on the mural: left, center and right.",
         },
         desc: {
-          ko: "잠시 서서, 자율주행차와 함께하는 미래가 어떤 모습일지 영상으로 지켜보세요.",
-          en: "Stand for a moment and watch what the future with self-driving cars will look like.",
+          ko: "벽화의 일부 장면을 영상으로 재현해 두었어요. 잠시 서서 지켜보세요.",
+          en: "Some scenes from the mural have been recreated as videos. Stand for a moment and watch.",
         },
       },
       {
-        id: "mural-pbv",
-        points: [{ x: 46.5, y: 63 }],
-        label: { ko: "자율주행 셔틀 (PBV)", en: "Self-Driving Shuttle (PBV)" },
+        id: "mural-cars",
+        points: [{ x: 47.5, y: 72 }],
+        label: { ko: "속이 보이는 자동차", en: "See-Through Cars" },
         find: {
-          ko: "벽화 가운데 도로에서, 안이 훤히 보이는 차량을 찾아보세요.",
-          en: "On the center road of the mural, find the vehicles you can see inside.",
+          ko: "벽화 가운데 도로에서 속이 훤히 보이는 자동차들을 찾아보세요.",
+          en: "On the center road of the mural, find the cars you can see inside.",
         },
         desc: {
-          ko: "운전석 없이 스스로 달리는 셔틀이에요. 하나의 차체에 용도에 맞는 공간을 바꿔 끼워 카페, 병원, 택배 차량 등으로 써요. 이런 차량을 목적 기반 모빌리티(PBV)라고 불러요.",
-          en: "A shuttle with no driver's seat that drives itself. It swaps cabins on the same base to become a café, clinic or delivery van. This is called a Purpose-Built Vehicle (PBV).",
+          ko: "그림 속 자동차는 우리가 지금 타는 자동차와 무엇이 다를까요?\n여러분이 생각하는 미래의 자동차와 그림 속 모습은 얼마나 닮았나요?",
+          en: "How are the cars in the picture different from the cars we ride today?\nHow close are they to the future car you imagine?",
         },
       },
       {
-        id: "mural-raim",
-        points: [{ x: 63, y: 50 }],
-        label: { ko: "서울로봇인공지능과학관", en: "Seoul Robot & AI Museum" },
+        id: "mural-charging",
+        points: [{ x: 73.9, y: 51.4 }],
+        label: { ko: "충전소", en: "Charging Station" },
         find: {
-          ko: "'RAIM'이라고 쓰인 둥근 건물을 찾아보세요.",
-          en: "Find the round building labeled 'RAIM'.",
+          ko: "RAIM 건물 오른쪽에서 자동차를 충전하는 곳을 찾아보세요.",
+          en: "To the right of the RAIM building, find the place where a car is being charged.",
         },
         desc: {
-          ko: "바로 여러분이 있는 이곳! 벽화 속 미래 도시에도 과학관이 그려져 있어요.",
-          en: "That's where you are right now! The museum appears in the future city, too.",
+          ko: "그림 속에서 자동차를 충전해 주는 것은 누구일까요?",
+          en: "Who is charging the car in the picture?",
         },
       },
       {
-        id: "mural-speed",
-        points: [{ x: 74.6, y: 21 }],
-        label: { ko: "속도 제한 표지판", en: "Speed Limit Sign" },
+        id: "mural-intersection",
+        points: [{ x: 92.0, y: 33.6 }],
+        label: { ko: "교차로의 신호등", en: "The Intersection" },
         find: {
-          ko: "벽화 오른쪽 위에서 숫자 '30'이 적힌 표지판을 찾아보세요.",
-          en: "At the upper right of the mural, find the sign with '30' on it.",
+          ko: "벽화 오른쪽 교차로의 도로를 자세히 보세요.",
+          en: "Look closely at the roads at the intersection on the right.",
         },
         desc: {
-          ko: "자율주행차는 카메라로 표지판을 읽고 제한 속도를 지켜요. 사람이 많은 곳에서는 더 천천히 달려요.",
-          en: "Self-driving cars read signs with cameras and keep to the speed limit, driving more slowly where there are many people.",
-        },
-      },
-      {
-        id: "mural-parking",
-        points: [{ x: 87.5, y: 30 }],
-        label: { ko: "스마트 주차", en: "Smart Parking" },
-        find: {
-          ko: "오른쪽 끝에서 'P' 표지판과 줄지어 선 차들을 찾아보세요.",
-          en: "At the far right, find the 'P' sign and the row of parked cars.",
-        },
-        desc: {
-          ko: "센서로 빈자리를 찾아 차가 스스로 주차해요. 주차장을 찾느라 도로를 빙빙 도는 차가 줄어들어요.",
-          en: "Cars use sensors to find an empty space and park themselves, so fewer cars circle around looking for parking.",
-        },
-      },
-      {
-        id: "mural-crosswalk",
-        points: [{ x: 91.5, y: 76 }],
-        label: { ko: "보행자 보호", en: "Pedestrian Safety" },
-        find: {
-          ko: "오른쪽 아래에서 걷는 사람 표지판과 횡단보도를 찾아보세요.",
-          en: "At the lower right, find the walking-person sign and the crosswalk.",
-        },
-        desc: {
-          ko: "자율주행차는 횡단보도의 사람을 감지하면 멈춰요. 디오라마 자동차의 장애물 센서와 같은 원리예요.",
-          en: "Self-driving cars stop when they detect people at a crosswalk — the same idea as the obstacle sensor on the diorama car.",
+          ko: "지금의 도로에는 있지만, 이 그림에는 없는 것이 있습니다. 무엇일까요?\n자동차를 위한 신호등이 보이나요?\n그림 속에 하나뿐인 신호등은 누구를 위한 것일까요?",
+          en: "Today's roads have something this picture doesn't. What is it?\nCan you see any traffic lights for cars?\nWho is the only traffic light in the picture for?",
         },
       },
     ],
-    faqs: [
-      {
-        id: "mural-faq-1",
-        q: { ko: "PBV는 지금도 있나요?", en: "Do PBVs exist today?" },
-        a: {
-          ko: "여러 자동차 회사가 PBV를 개발하고 있고, 일부는 배송·이동 서비스에 시범 운행되고 있어요.",
-          en: "Several carmakers are developing PBVs, and some are being trialed for delivery and ride services.",
-        },
-      },
-    ],
+    faqs: [],
     next: ["car", "quiz"],
   },
 };

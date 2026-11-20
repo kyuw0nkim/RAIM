@@ -115,6 +115,24 @@ export function ContentEditor({
                   {stage !== "approach" && stage !== "disengage" && optional(stage, "question", "관찰 질문")}
                   {stage !== "approach" && stage !== "disengage" && optional(stage, "hint", "힌트", true)}
                   {stage !== "disengage" && optional(stage, "cta", "다음 단계 버튼 문구")}
+                  {st.bonus ? (
+                    <fieldset className="field-group">
+                      <legend>플러스 질문 (버튼을 누르면 답이 열림)</legend>
+                      <LField label="질문" multiline value={st.bonus.question} onChange={(v) => update((d) => void (d.exhibits[ex].stages[stage].bonus!.question = v))} />
+                      <LField label="버튼 문구" value={st.bonus.button} onChange={(v) => update((d) => void (d.exhibits[ex].stages[stage].bonus!.button = v))} />
+                      <LField label="답변" multiline value={st.bonus.answer} onChange={(v) => update((d) => void (d.exhibits[ex].stages[stage].bonus!.answer = v))} />
+                      <button className="link-danger" onClick={() => update((d) => void delete d.exhibits[ex].stages[stage].bonus)}>
+                        플러스 질문 삭제
+                      </button>
+                    </fieldset>
+                  ) : (
+                    <button
+                      className="btn-admin ghost small"
+                      onClick={() => update((d) => void (d.exhibits[ex].stages[stage].bonus = { question: { ...EMPTY }, button: { ...EMPTY }, answer: { ...EMPTY } }))}
+                    >
+                      + 플러스 질문 추가
+                    </button>
+                  )}
                   {stage === "experience" && exhibit.quiz && <p className="field-help">퀴즈 문항은 ‘퀴즈 관리’에서 편집합니다.</p>}
                   {stage === "reflect" && <p className="field-help">이 단계에 표시되는 FAQ는 ‘FAQ 관리’에서 편집합니다.</p>}
                 </>

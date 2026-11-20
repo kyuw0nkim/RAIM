@@ -35,6 +35,7 @@ export function ExhibitView({
   const [idx, setIdx] = useState(1);
   const [maxReached, setMaxReached] = useState(1);
   const [hintOpen, setHintOpen] = useState(false);
+  const [bonusOpen, setBonusOpen] = useState(false);
   const [hotspot, setHotspot] = useState<string | null>(null);
   const [seenHotspots, setSeenHotspots] = useState<Set<string>>(new Set());
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
@@ -147,6 +148,23 @@ export function ExhibitView({
             <div className="exhibit-hero">
               {stageVisual === "levels" ? (
                 <LevelScale lang={lang} />
+              ) : stageVisual === "videos" ? (
+                <div className="mural-wrap">
+                  <div className="hotspot-canvas" style={{ aspectRatio: `${img.width} / ${img.height}` }}>
+                    <img src={img.src} alt={t(exhibit.name)} draggable={false} />
+                    {(() => {
+                      const pts = (exhibit.hotspots ?? []).filter((h) => h.kind === "video").flatMap((h) => h.points);
+                      return (
+                        <>
+                          <div className="hotspot-fog on" style={fogMask(pts)} aria-hidden />
+                          {pts.map((pt, i) => (
+                            <span key={i} className="hotspot video static" style={{ left: `${pt.x}%`, top: `${pt.y}%` }} aria-hidden />
+                          ))}
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
               ) : (
               <div className={`hero-frame ${stageImg ? "stage-photo" : ""}`}>
                 {stageImg?.marks?.length ? (
@@ -177,7 +195,7 @@ export function ExhibitView({
             <h1>{t(content.title)}</h1>
             {t(content.body) && <p className="body">{t(content.body)}</p>}
 
-            {content.question && <p className="question">{t(content.question)}</p>}
+            {content.question && <Questions text={t(content.question)} />}
 
             {content.hint && (
               <div className="hint">
@@ -220,7 +238,7 @@ export function ExhibitView({
                       <span>👀 {t(UI.findOnWall)}</span>
                       {t(hs.find)}
                     </p>
-                    <p>{t(hs.desc)}</p>
+                    <Questions text={t(hs.desc)} small />
                   </div>
                 ) : (
                   <p className="hotspot-empty">👈 {t(UI.tapRing)}</p>
@@ -254,6 +272,25 @@ export function ExhibitView({
                     </details>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {content.bonus && (
+              <div className="bonus">
+                <p className="bonus-q">{t(content.bonus.question)}</p>
+                {bonusOpen ? (
+                  <p className="bonus-a">{t(content.bonus.answer)}</p>
+                ) : (
+                  <button
+                    className="btn ghost hint-btn"
+                    onClick={() => {
+                      setBonusOpen(true);
+                      track("cta_clicked", { ...ctx, targetId: `${stage}-bonus` });
+                    }}
+                  >
+                    {t(content.bonus.button)}
+                  </button>
+                )}
               </div>
             )}
 
@@ -350,6 +387,27 @@ function PhotoSpotlight({ image, lang }: { image: StageImage; lang: Locale }) {
         );
       })}
     </svg>
+  );
+}
+
+/** 질문 목록: 여러 개면 번호 + 구분선, 하나면 한 줄 */
+function Questions({ text, small }: { text: string; small?: boolean }) {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) return null;
+  // 질문이 아닌 안내 문장(물음표 없음)은 일반 본문으로
+  if (!lines.some((l) => /[?？]$/.test(l))) return <p className="plain-desc">{lines.join(" ")}</p>;
+  if (lines.length === 1) return <p className={`question ${small ? "small" : ""}`}>{lines[0]}</p>;
+  return (
+    <ol className={`question-list ${small ? "small" : ""}`}>
+      {lines.map((q, i) => (
+        <li key={i}>
+          <span className="q-num" aria-hidden>
+            {i + 1}
+          </span>
+          <span>{q}</span>
+        </li>
+      ))}
+    </ol>
   );
 }
 

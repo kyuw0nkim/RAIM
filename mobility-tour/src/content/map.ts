@@ -66,6 +66,8 @@ export const STAGE_IMAGES: Partial<Record<ExhibitId, Partial<Record<StageKey, St
 };
 
 /** 사진 대신 그림을 보여 줄 단계 */
-export const STAGE_VISUALS: Partial<Record<ExhibitId, Partial<Record<StageKey, "levels">>>> = {
+export const STAGE_VISUALS: Partial<Record<ExhibitId, Partial<Record<StageKey, "levels" | "videos">>>> = {
   quiz: { reflect: "levels" },
+  // 벽화 관찰 단계: 영상이 나오는 화면 3곳을 노란 원으로 표시
+  mural: { engage: "videos" },
 };

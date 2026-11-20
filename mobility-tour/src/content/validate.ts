@@ -24,6 +24,11 @@ export function validateContent(c: ContentDoc): string[] {
       need(st.question, `[${n}] ${s} 질문`);
       need(st.hint, `[${n}] ${s} 힌트`);
       need(st.cta, `[${n}] ${s} 버튼 문구`);
+      if (st.bonus) {
+        need(st.bonus.question, `[${n}] ${s} 플러스 질문`);
+        need(st.bonus.button, `[${n}] ${s} 플러스 질문 버튼`);
+        need(st.bonus.answer, `[${n}] ${s} 플러스 질문 답변`);
+      }
     }
     ex.faqs.filter((f) => !f.disabled).forEach((f, i) => {
       need(f.q, `[${n}] FAQ ${i + 1} 질문`);

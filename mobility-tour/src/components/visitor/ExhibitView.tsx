@@ -35,6 +35,7 @@ export function ExhibitView({
   const [idx, setIdx] = useState(1);
   const [maxReached, setMaxReached] = useState(1);
   const [hintOpen, setHintOpen] = useState(false);
+  const [bonusOpen, setBonusOpen] = useState(false);
   const [hotspot, setHotspot] = useState<string | null>(null);
   const [seenHotspots, setSeenHotspots] = useState<Set<string>>(new Set());
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string>>({});
@@ -177,7 +178,15 @@ export function ExhibitView({
             <h1>{t(content.title)}</h1>
             {t(content.body) && <p className="body">{t(content.body)}</p>}
 
-            {content.question && <p className="question">{t(content.question)}</p>}
+            {content.question &&
+              t(content.question)
+                .split("\n")
+                .filter(Boolean)
+                .map((q, i) => (
+                  <p key={i} className="question">
+                    {q}
+                  </p>
+                ))}
 
             {content.hint && (
               <div className="hint">
@@ -254,6 +263,25 @@ export function ExhibitView({
                     </details>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {content.bonus && (
+              <div className="bonus">
+                <p className="bonus-q">{t(content.bonus.question)}</p>
+                {bonusOpen ? (
+                  <p className="bonus-a">{t(content.bonus.answer)}</p>
+                ) : (
+                  <button
+                    className="btn ghost hint-btn"
+                    onClick={() => {
+                      setBonusOpen(true);
+                      track("cta_clicked", { ...ctx, targetId: `${stage}-bonus` });
+                    }}
+                  >
+                    {t(content.bonus.button)}
+                  </button>
+                )}
               </div>
             )}
 

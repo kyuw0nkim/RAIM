@@ -11,6 +11,8 @@ export interface StageContent {
   hint?: L;
   /** 다음 단계로 넘어가는 버튼 문구 */
   cta?: L;
+  /** 플러스 질문: 버튼을 누르면 답이 열림 */
+  bonus?: { question: L; button: L; answer: L };
 }
 
 export interface StageImage {

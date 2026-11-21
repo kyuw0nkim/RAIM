@@ -46,10 +46,13 @@ export function ExhibitView({
 
   // 단계 진입 기록 (언어 전환으로는 재기록하지 않음)
   const enteredAt = useRef(Date.now());
+  const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     enteredAt.current = Date.now();
     track("stage_viewed", { exhibitId: exhibit.id, stageKey: stage });
     setHintOpen(false);
+    // 단계가 바뀌면 오른쪽 패널을 맨 위부터 (이전 단계의 스크롤 위치가 남지 않게)
+    scrollRef.current?.scrollTo({ top: 0 });
     if (STAGES[idx] === "disengage") onComplete();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
@@ -192,7 +195,7 @@ export function ExhibitView({
 
         {/* 오른쪽: 단계 콘텐츠 */}
         <section className="glass stage-panel" aria-live="polite">
-          <div className="stage-scroll">
+          <div className="stage-scroll" ref={scrollRef}>
             <p className="eyebrow">
               {idx + 1}/5 · {t(STAGE_LABEL[stage])}
             </p>

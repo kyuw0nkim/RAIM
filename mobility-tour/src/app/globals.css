@@ -295,8 +295,8 @@ input, textarea, select { font: inherit; }
 .question { font-size: 1.22rem; font-weight: 600; color: var(--fg); margin: 4px 0 18px; line-height: 1.5; }
 .question.small { font-size: 1.05rem; margin: 10px 0 0; }
 .plain-desc { margin: 10px 0 0; font-size: 1.05rem; line-height: 1.65; color: var(--fg); font-weight: 400; }
-/* 질문 여러 개: 번호·구분선 없이 같은 모양의 상자로 나란히 → 순서 없이 골라 이야기하도록 */
-.question-list { list-style: none; margin: 4px 0 18px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+/* 질문 여러 개: 번호·구분선 없이 같은 모양의 상자에 하나씩 (상자마다 전체 폭) → 순서 없이 골라 이야기하도록 */
+.question-list { list-style: none; margin: 4px 0 18px; padding: 0; display: grid; grid-template-columns: 1fr; gap: 10px; }
 .question-list li {
   display: flex; align-items: center; padding: 14px 16px; border-radius: 12px;
   background: var(--inner-bg); border: 1px solid var(--inner-edge);
@@ -502,7 +502,7 @@ input, textarea, select { font: inherit; }
   .stage-scroll h1 { font-size: 1.3rem; margin-bottom: 8px; }
   .stage-scroll .body { font-size: 0.95rem; line-height: 1.6; margin-bottom: 10px; }
   .question, .question-list li { font-size: 0.98rem; }
-  .question-list { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+  .question-list { gap: 8px; }
   .question-list li { padding: 10px 12px; }
   .question.small, .question-list.small li, .plain-desc, .hint p, .hotspot-info p { font-size: 0.9rem; }
   .btn.hint-btn { min-height: 40px; padding: 6px 14px; font-size: 0.9rem; }

@@ -297,6 +297,7 @@ export function TourApp() {
               key={focusId}
               exhibit={exhibits[focusId]}
               placement={MAP_OBJECTS.find((o) => o.id === focusId)!.card}
+              side={MAP_OBJECTS.find((o) => o.id === focusId)!.marker.x > 50 ? "left" : "right"}
               lang={lang}
               onContinue={() => enterDetail(focusId)}
               onClose={closeApproach}
@@ -320,6 +321,13 @@ export function TourApp() {
           onComplete={() => setCompleted((c) => new Set(c).add(exhibitId))}
         />
       )}
+
+      {/* 휴대폰 세로 화면: 가로 전용 앱이므로 돌려 달라는 안내 (CSS로 세로 폰에서만 표시) */}
+      <div className="rotate-hint" role="alert">
+        <span className="rotate-icon" aria-hidden>📱</span>
+        <p>{UI.rotate.ko}</p>
+        <p>{UI.rotate.en}</p>
+      </div>
 
       {confirmEnd && (
         <div className="modal-backdrop" role="dialog" aria-modal>

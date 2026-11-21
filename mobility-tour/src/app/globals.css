@@ -399,6 +399,130 @@ input, textarea, select { font: inherit; }
   .exhibit-body, .exhibit-body.mural-mode { grid-template-columns: 1fr; grid-template-rows: 30% 1fr; }
 }
 
+/* ───────── 휴대폰 세로: 가로로 돌려 달라는 안내 ───────── */
+.rotate-hint { display: none; }
+@media (orientation: portrait) and (max-width: 599px) {
+  .rotate-hint {
+    position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px; padding: 24px; text-align: center; background: #eaf4fa; color: var(--c-301);
+  }
+  .rotate-hint p { margin: 0; font-weight: 650; font-size: 1.1rem; line-height: 1.5; }
+  .rotate-hint p + p { font-weight: 500; font-size: 0.95rem; color: var(--fg-2); }
+  .rotate-icon { font-size: 3rem; margin-bottom: 10px; animation: rotate-phone 2.4s ease-in-out infinite; }
+  @keyframes rotate-phone { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+}
+
+/* ───────── 가로 휴대폰 (높이가 낮은 화면) ───────── */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root { --touch: 40px; }
+  body { font-size: 14px; }
+  .tour main {
+    padding: 8px max(14px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+    gap: 8px;
+  }
+  .topbar { gap: 8px; }
+  .topbar-right { gap: 6px; }
+  .title-chip { font-size: 1.05rem; }
+  .eyebrow { font-size: 0.8rem; margin-bottom: 4px; }
+  .btn { padding: 6px 14px; font-size: 0.92rem; border-radius: 8px; }
+  .btn.lg { min-height: 42px; padding: 8px 18px; font-size: 0.95rem; }
+  .btn.xl { min-height: 48px; padding: 10px 28px; font-size: 1.05rem; }
+  .lang-toggle { padding: 3px; }
+  .lang-toggle button { min-height: 34px; min-width: 64px; font-size: 0.85rem; }
+  .version-tag { right: max(12px, env(safe-area-inset-right)); bottom: 6px; font-size: 0.7rem; }
+
+  /* Start: 카드가 화면보다 크면 스크롤 */
+  .tour main.start { overflow-y: auto; justify-content: safe center; }
+  .start-card { padding: 20px 28px; gap: 12px; max-width: 520px; }
+  .start-card h1 { font-size: 1.6rem; }
+  .start-card .lead { font-size: 0.95rem; line-height: 1.5; }
+
+  /* Visitors */
+  .visitors-panel { padding: 10px 12px; }
+  .visitors-panel > .muted { margin: 0 0 8px; font-size: 0.85rem; }
+  /* 블록 안쪽 스크롤 대신 패널 전체를 위아래로 스크롤 (항목이 숨겨지지 않게) */
+  .visitor-blocks { gap: 10px; overflow-y: auto; align-items: flex-start; -webkit-overflow-scrolling: touch; }
+  .visitor-block { flex-basis: 290px; padding: 10px 12px; overflow: visible; }
+  .visitor-add { align-self: stretch; min-height: 120px; }
+  .visitor-head { font-size: 0.95rem; margin-bottom: 2px; }
+  .field { margin-top: 8px; }
+  .field-label { font-size: 0.82rem; margin-bottom: 5px; }
+  .chips { gap: 6px; }
+  .chip { min-height: 38px; padding: 6px 12px; font-size: 0.88rem; }
+  .visitor-add { flex-basis: 130px; font-size: 0.95rem; }
+  .visitors-actions { gap: 8px; }
+
+  /* Map */
+  .map .topbar { padding: 8px max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left)); }
+  .map-shade { height: 96px; }
+  .map-title { font-size: 0.75rem; }
+  .map-hint { font-size: 1.05rem; }
+  .marker-dot { width: 40px; height: 40px; border-width: 3px; font-size: 1rem; }
+  .marker-dot::before { inset: 6px; }
+  .scene-marker { transform: translate(-50%, -20px); gap: 4px; }
+  .marker-tap { font-size: 0.66rem; padding: 3px 9px; }
+  /* Approach 카드: 위·아래에 둘 공간이 없으므로 전시물 반대편 옆에 */
+  .approach-card,
+  .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom {
+    top: 50%; bottom: auto; transform: translateY(-50%);
+    width: min(340px, 46vw); max-height: calc(100% - 16px); overflow-y: auto; padding: 16px 18px 14px;
+  }
+  .approach-card.side-left { left: max(10px, env(safe-area-inset-left)); right: auto; }
+  .approach-card.side-right { right: max(10px, env(safe-area-inset-right)); left: auto; }
+  .approach-card h2 { font-size: 1.2rem; margin-bottom: 6px; }
+  .approach-body { font-size: 0.92rem; line-height: 1.55; margin-bottom: 12px; }
+  .approach-close { top: 8px; right: 8px; width: 36px; height: 36px; font-size: 0.95rem; }
+
+  /* Exhibit: 진행 단계는 숫자만 (현재 단계만 이름 표시) */
+  .exhibit .topbar > .btn { padding: 6px 10px; }
+  .progress { gap: 2px; padding: 3px; min-width: 0; }
+  .step { min-height: 34px; padding: 3px; gap: 6px; }
+  .step .dot { width: 26px; height: 26px; font-size: 0.78rem; }
+  .step .step-label { display: none; }
+  .step.current { padding-right: 10px; }
+  .step.current .step-label { display: inline; font-size: 0.85rem; }
+  .exhibit-body,
+  .exhibit-body.mural-mode { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); grid-template-rows: none; gap: 10px; }
+  .exhibit-body.mural-mode { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .hero-name { margin-top: 6px; font-size: 0.9rem; max-width: 100%; }
+  .credit { font-size: 0.75rem; }
+  .stage-scroll { padding: 14px 16px 8px; }
+  .stage-scroll h1 { font-size: 1.3rem; margin-bottom: 8px; }
+  .stage-scroll .body { font-size: 0.95rem; line-height: 1.6; margin-bottom: 10px; }
+  .question, .question-list li { font-size: 0.98rem; }
+  .question-list li { padding: 8px 0; }
+  .question.small, .question-list.small li, .plain-desc, .hint p, .hotspot-info p { font-size: 0.9rem; }
+  .btn.hint-btn { min-height: 40px; padding: 6px 14px; font-size: 0.9rem; }
+  .stage-actions { padding: 8px 12px 10px; gap: 8px; }
+  .stage-actions .btn { white-space: normal; text-align: center; line-height: 1.25; }
+  .stage-actions .btn.ghost { white-space: nowrap; flex-shrink: 0; }
+  .faqs summary { min-height: 44px; padding: 10px 40px 10px 14px; font-size: 0.92rem; }
+  .faqs summary::after { right: 14px; }
+  .faqs details p { padding: 0 14px 12px; font-size: 0.9rem; }
+  .quiz { gap: 8px; }
+  .quiz-q { font-size: 1.02rem; }
+  .quiz-option { min-height: 44px; padding: 8px 12px; font-size: 0.92rem; gap: 10px; }
+  .quiz-option .opt-key { width: 26px; height: 26px; font-size: 0.8rem; }
+  .score { font-size: 0.98rem; }
+  .hotspot { width: 36px; height: 36px; margin: -18px 0 0 -18px; border-width: 4px; }
+  .hotspot-info { padding: 10px 12px; }
+  .hotspot-info strong { font-size: 1.02rem; }
+  .hotspot-empty { padding: 10px 12px; font-size: 0.88rem; }
+  .bonus-q { font-size: 0.98rem; }
+  .next-grid { grid-template-columns: 1fr; gap: 8px; }
+  .next-card { min-height: 60px; padding: 8px 12px; }
+  .next-icon { font-size: 1.6rem; }
+  .levels-title { font-size: 0.9rem; margin-bottom: 6px; }
+  .lv { padding: 6px 2px; gap: 3px; }
+  .lv b { font-size: 1.1rem; }
+  .lv span, .lg, .lg small { font-size: 0.64rem; hyphens: auto; overflow-wrap: break-word; }
+
+  /* Modal */
+  .modal { padding: 18px 20px; max-height: calc(100% - 24px); overflow-y: auto; }
+  .modal p { font-size: 0.98rem; }
+  .modal-actions { margin-top: 10px; }
+}
+
 /* ───────── Admin ───────── */
 .admin { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; background: #f3f7fa; }
 .admin-side { background: #fff; border-right: 1px solid #e1e8ee; padding: 20px 14px; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 0; height: 100vh; }

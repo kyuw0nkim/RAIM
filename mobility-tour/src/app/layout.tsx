@@ -25,6 +25,8 @@ export const viewport: Viewport = {
   // 공용 키오스크 태블릿: 실수로 확대되어 화면이 어긋나는 것을 방지
   maximumScale: 1,
   userScalable: false,
+  // 노치가 있는 휴대폰을 가로로 들어도 화면 끝까지 사용 (안전 영역은 CSS에서 여백 처리)
+  viewportFit: "cover",
   themeColor: "#00448B",
 };
 

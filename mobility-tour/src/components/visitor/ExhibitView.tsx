@@ -137,6 +137,10 @@ export function ExhibitView({
                         setHotspot(h.id);
                         setSeenHotspots((s) => new Set(s).add(h.id));
                         track("image_hotspot_selected", { ...ctx, targetId: h.id });
+                        // 작은 화면: 오른쪽 패널의 설명이 보이도록 스크롤
+                        requestAnimationFrame(() =>
+                          document.querySelector(".hotspot-info")?.scrollIntoView({ block: "nearest", behavior: "smooth" }),
+                        );
                       }}
                     />
                   )),

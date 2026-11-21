@@ -325,8 +325,8 @@ export function TourApp() {
       {/* 휴대폰 세로 화면: 가로 전용 앱이므로 돌려 달라는 안내 (CSS로 세로 폰에서만 표시) */}
       <div className="rotate-hint" role="alert">
         <span className="rotate-icon" aria-hidden>📱</span>
-        <p>{UI.rotate.ko}</p>
-        <p>{UI.rotate.en}</p>
+        <p lang="ko">{UI.rotate.ko}</p>
+        <p lang="en">{UI.rotate.en}</p>
       </div>
 
       {confirmEnd && (

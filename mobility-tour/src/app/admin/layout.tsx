@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="admin">
+    <div className="admin" lang="ko">
       <aside className="admin-side">
         <Link href="/admin" className="admin-brand">
           <span className="brand-mark">AMT</span>

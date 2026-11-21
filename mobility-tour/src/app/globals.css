@@ -42,6 +42,16 @@ h1, h2, h3 { color: var(--heading); margin: 0; line-height: 1.25; }
 code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
 input, textarea, select { font: inherit; }
 
+/* ───────── 한국어 조판 규칙 (디자인 시스템 기본값 — 모든 화면에 자동 적용) ─────────
+ * 한국어 텍스트(lang="ko" 아래)는
+ *  1) 줄바꿈을 공백·문장부호에서만: word-break: keep-all (어절 중간에서 끊지 않음)
+ *  2) 보조: 긴 영문·URL이 칸을 넘치면 아무 곳에서나 끊음: overflow-wrap: anywhere
+ *  3) 제목은 끝줄에 한 글자만 남지 않게: text-wrap: pretty
+ * 새 화면·컴포넌트는 lang 속성만 올바르게 두면 따로 지정할 필요가 없습니다.
+ * 예외가 필요하면 이 규칙을 지우지 말고 해당 요소에서만 덮어쓰세요. */
+:lang(ko) { word-break: keep-all; overflow-wrap: anywhere; }
+:lang(ko) :is(h1, h2, h3, h4, h5, h6, .title-chip, .map-hint, .hero-name, .levels-title, .quiz-q, .bonus-q) { text-wrap: pretty; }
+
 /* ───────── Glass material (패널·카드) ───────── */
 .glass {
   background: var(--glass-bg);

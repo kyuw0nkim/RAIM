@@ -3,6 +3,7 @@ import { asJson, db } from "./db";
 import { DEFAULT_CONTENT } from "@/content/defaults";
 import type { ContentDoc } from "@/content/types";
 import { validateContent } from "@/content/validate";
+import { applyContentPatches } from "@/content/patches";
 
 export interface RevisionMeta {
   id: number;
@@ -15,13 +16,18 @@ export interface RevisionMeta {
 
 const META = "id, status, note, created_at, updated_at, published_at";
 
-/** 발행본 (없으면 앱에 내장된 기본 콘텐츠, revisionId 0) */
+/**
+ * 발행본 (없으면 앱에 내장된 기본 콘텐츠, revisionId 0).
+ * 발행 이후에 코드로 고친 콘텐츠 패치가 있으면 발행본 위에 덧씌움 (src/content/patches.ts)
+ */
 export async function getPublished(): Promise<{ revisionId: number; content: ContentDoc }> {
   const d = await db();
-  const rows = await d.query<{ id: number; data: ContentDoc }>(
-    "SELECT id, data FROM content_revisions WHERE status = 'published' ORDER BY published_at DESC LIMIT 1",
+  const rows = await d.query<{ id: number; data: ContentDoc; published_at: string | Date | null }>(
+    "SELECT id, data, published_at FROM content_revisions WHERE status = 'published' ORDER BY published_at DESC LIMIT 1",
   );
-  return rows[0] ? { revisionId: rows[0].id, content: asJson<ContentDoc>(rows[0].data) } : { revisionId: 0, content: DEFAULT_CONTENT };
+  return rows[0]
+    ? { revisionId: rows[0].id, content: applyContentPatches(asJson<ContentDoc>(rows[0].data), rows[0].published_at) }
+    : { revisionId: 0, content: DEFAULT_CONTENT };
 }
 
 /** 편집 중인 초안 (없으면 최신 발행본을 복사해 시작) */
@@ -32,7 +38,8 @@ export async function getDraft(): Promise<{ draft: RevisionMeta | null; content:
   );
   if (rows[0]) {
     const { data, ...meta } = rows[0];
-    return { draft: meta, content: asJson<ContentDoc>(data) };
+    // 패치 이전에 저장된 초안에도 반영 → 그대로 발행해도 예전 문구가 되살아나지 않음
+    return { draft: meta, content: applyContentPatches(asJson<ContentDoc>(data), meta.updated_at) };
   }
   return { draft: null, content: (await getPublished()).content };
 }
@@ -76,9 +83,13 @@ export async function publishDraft(note: string): Promise<{ ok: true; id: number
 /** 이전 버전을 초안으로 불러오기 (발행은 별도로) */
 export async function restoreToDraft(id: number) {
   const d = await db();
-  const rows = await d.query<{ data: ContentDoc }>("SELECT data FROM content_revisions WHERE id = $1", [id]);
+  const rows = await d.query<{ data: ContentDoc; updated_at: string | Date }>(
+    "SELECT data, updated_at FROM content_revisions WHERE id = $1",
+    [id],
+  );
   if (!rows[0]) throw new Error("버전을 찾을 수 없습니다.");
-  await saveDraft(asJson<ContentDoc>(rows[0].data));
+  // 예전 버전을 불러와도 그 이후의 콘텐츠 패치는 유지
+  await saveDraft(applyContentPatches(asJson<ContentDoc>(rows[0].data), rows[0].updated_at));
 }
 
 export async function listRevisions(): Promise<RevisionMeta[]> {

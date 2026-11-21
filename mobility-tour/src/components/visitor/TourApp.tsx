@@ -84,6 +84,13 @@ export function TourApp() {
     }
   }, []);
 
+  // 설치된 앱(전체 화면)에서는 화면 방향 고정 시도: 휴대폰은 세로, 태블릿은 가로 (지원하지 않으면 CSS 안내로 대체)
+  useEffect(() => {
+    const phone = Math.min(window.screen.width, window.screen.height) < 600;
+    const o = window.screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
+    o?.lock?.(phone ? "portrait" : "landscape").catch(() => {});
+  }, []);
+
   useEffect(() => {
     setDeviceId(getDeviceId());
     loadContent();
@@ -290,7 +297,7 @@ export function TourApp() {
             onTapObject={onTapObject}
             onTapEmpty={closeApproach}
           />
-          {focusId ? (
+          {focusId && (
             <ApproachCard
               key={focusId}
               exhibit={exhibits[focusId]}
@@ -299,23 +306,6 @@ export function TourApp() {
               onContinue={() => enterDetail(focusId)}
               onClose={closeApproach}
             />
-          ) : (
-            /* 세로 화면: 사진 아래 남는 공간에 전시물 목록 (사진을 밀지 않고도 바로 고를 수 있게) */
-            <nav className="map-list" aria-label={t(UI.tapExhibit)}>
-              {MAP_OBJECTS.map((o) => (
-                <button key={o.id} className="next-card" onClick={() => showApproach(o.id, true)}>
-                  <span className="next-icon" aria-hidden>
-                    {exhibits[o.id].icon}
-                  </span>
-                  <span>
-                    <strong>{t(exhibits[o.id].name)}</strong>
-                  </span>
-                  <span className={`map-list-status ${completed.has(o.id) ? "done" : ""}`} aria-hidden>
-                    {completed.has(o.id) ? "✓" : "›"}
-                  </span>
-                </button>
-              ))}
-            </nav>
           )}
         </main>
       )}
@@ -336,11 +326,16 @@ export function TourApp() {
         />
       )}
 
-      {/* 휴대폰 가로 화면: 세로 전용 앱이므로 돌려 달라는 안내 (CSS로 가로 폰에서만 표시) */}
-      <div className="rotate-hint" role="alert">
+      {/* 화면 방향 안내 (CSS로 해당 기기·방향에서만 표시): 휴대폰은 세로 전용, 태블릿은 가로 전용 */}
+      <div className="rotate-hint to-portrait" role="alert">
         <span className="rotate-icon" aria-hidden>📱</span>
         <p lang="ko">{UI.rotate.ko}</p>
         <p lang="en">{UI.rotate.en}</p>
+      </div>
+      <div className="rotate-hint to-landscape" role="alert">
+        <span className="rotate-icon" aria-hidden>📱</span>
+        <p lang="ko">{UI.rotateLandscape.ko}</p>
+        <p lang="en">{UI.rotateLandscape.en}</p>
       </div>
 
       {confirmEnd && (

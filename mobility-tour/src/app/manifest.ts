@@ -10,7 +10,8 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     display: "fullscreen",
     display_override: ["fullscreen", "standalone"],
-    orientation: "portrait",
+    // 휴대폰은 세로, 태블릿은 가로 전용 → 기기별로 앱에서 고정 시도 (TourApp), 매니페스트는 제한 없음
+    orientation: "any",
     background_color: "#EAF4FA",
     theme_color: "#00448B",
     lang: "ko",

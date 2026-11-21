@@ -424,65 +424,28 @@ input, textarea, select { font: inherit; }
 .scene-edge-btn > span { font-size: 1.4rem; font-weight: 700; line-height: 1; color: var(--c-2985); }
 .scene-edge-btn:active { transform: scale(0.96); }
 
-/* 지도 아래 전시물 목록: 세로 화면에서만 표시 */
-.map-list { display: none; }
-.map-list-status { margin-left: auto; font-size: 1.5rem; font-weight: 700; color: var(--c-2985); }
-.map-list-status.done { color: var(--c-319); }
-
-/* ───────── 세로 화면 (기본 사용 방향: 세로 태블릿·휴대폰) ─────────
- * 위 규칙들은 가로 화면(데스크톱 미리보기 등) 기준이고, 세로에서는 여기서 위아래로 쌓습니다. */
-@media (orientation: portrait) {
-  .tour main {
-    padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
-    gap: 14px;
-  }
-  .topbar { flex-wrap: wrap; row-gap: 12px; }
-  .topbar-right { margin-left: auto; }
-  /* Visitors: 방문객 블록을 위아래로 쌓고 패널 안에서 스크롤 */
-  .visitor-blocks { flex-direction: column; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-  .visitor-block { flex: none; overflow: visible; }
-  .visitor-add { flex: none; min-height: 72px; }
-  /* Map: 위 안내 → 교육장 사진(좌우로 밀어 보기) → 전시물 목록 또는 Approach 카드 */
-  .tour main.map { padding: 0 0 max(16px, env(safe-area-inset-bottom)); gap: 0; }
-  .map-shade { display: none; }
-  .map .topbar { padding: max(16px, env(safe-area-inset-top)) 20px 14px; }
-  .map-heading { flex: 1 1 260px; color: var(--c-301); text-shadow: none; }
-  .map-title { color: var(--fg-2); opacity: 1; }
-  .scene-frame { position: relative; inset: auto; flex: none; height: min(90vw, 62%); }
-  .scene-wrap {
-    justify-content: flex-start; overflow-x: auto; overflow-y: hidden;
-    overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
-  }
-  .scene-wrap::-webkit-scrollbar { display: none; }
-  /* 사진은 높이에 맞춤 → 화면보다 넓은 부분은 좌우로 밀어서 봄 */
-  .scene { width: auto; height: 100%; }
-  .map-list { display: grid; gap: 10px; padding: 16px 20px 0; min-height: 0; overflow-y: auto; }
-  .approach-card,
-  .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom {
-    position: relative; left: auto; top: auto; bottom: auto; transform: none;
-    width: auto; margin: 16px 20px 0; min-height: 0; overflow-y: auto;
-  }
-  /* Exhibit: 진행 단계는 둘째 줄 전체 폭, 그림 위 · 안내 패널 아래 */
-  .exhibit .progress { order: 2; flex: 1 1 100%; justify-content: space-between; }
-  .exhibit-body, .exhibit-body.mural-mode { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 34%) minmax(0, 1fr); gap: 14px; }
-  .exhibit-body.mural-mode { grid-template-rows: auto minmax(0, 1fr); }
-  .hero-name { margin-top: 10px; }
-}
-
-/* ───────── 휴대폰 가로: 세로로 돌려 달라는 안내 ───────── */
+/* ───────── 화면 방향 안내: 휴대폰은 세로 전용, 태블릿은 가로 전용 ───────── */
 .rotate-hint { display: none; }
-@media (orientation: landscape) and (max-height: 500px) {
-  .rotate-hint {
-    position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 6px; padding: 24px; text-align: center; background: #eaf4fa; color: var(--c-301);
-  }
+@media (orientation: landscape) and (max-height: 500px), (orientation: portrait) and (min-width: 600px) {
   .rotate-hint p { margin: 0; font-weight: 650; font-size: 1.1rem; line-height: 1.5; }
   .rotate-hint p + p { font-weight: 500; font-size: 0.95rem; color: var(--fg-2); }
-  .rotate-icon { font-size: 3rem; margin-bottom: 10px; animation: rotate-phone 2.4s ease-in-out infinite; }
-  @keyframes rotate-phone { 0%, 30% { transform: rotate(-90deg); } 60%, 100% { transform: rotate(0); } }
+  .rotate-icon { font-size: 3rem; margin-bottom: 10px; animation: rotate-device 2.4s ease-in-out infinite; }
+  .to-portrait .rotate-icon { animation-direction: reverse; }
+  @keyframes rotate-device { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .rotate-hint.to-portrait { display: flex; }
+}
+@media (orientation: portrait) and (min-width: 600px) {
+  .rotate-hint.to-landscape { display: flex; }
+}
+.rotate-hint.to-portrait, .rotate-hint.to-landscape {
+  position: fixed; inset: 0; z-index: 100; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 24px; text-align: center; background: #eaf4fa; color: var(--c-301);
 }
 
-/* ───────── 세로 휴대폰 (폭이 좁은 화면) ───────── */
+/* ───────── 세로 휴대폰 ─────────
+ * 위 규칙들은 가로 태블릿 기준이고, 휴대폰(세로 전용)은 여기서 위아래로 쌓습니다. */
 @media (orientation: portrait) and (max-width: 599px) {
   :root { --touch: 42px; }
   body { font-size: 15px; }
@@ -490,8 +453,8 @@ input, textarea, select { font: inherit; }
     padding: max(10px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
     gap: 10px;
   }
-  .topbar { gap: 8px; row-gap: 8px; }
-  .topbar-right { gap: 6px; }
+  .topbar { flex-wrap: wrap; gap: 8px; }
+  .topbar-right { margin-left: auto; gap: 6px; }
   .title-chip { font-size: 1.1rem; }
   .eyebrow { font-size: 0.82rem; margin-bottom: 4px; }
   .btn { padding: 6px 14px; font-size: 0.95rem; border-radius: 8px; }
@@ -504,7 +467,10 @@ input, textarea, select { font: inherit; }
   .start-card { padding: 32px 22px; gap: 16px; }
   .start-card h1 { font-size: 1.8rem; }
   .start-card .lead { font-size: 1rem; line-height: 1.55; }
-  /* Visitors */
+  /* Visitors: 방문객 블록을 위아래로 쌓고 패널 안에서 스크롤 */
+  .visitor-blocks { flex-direction: column; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .visitor-block { flex: none; overflow: visible; }
+  .visitor-add { flex: none; }
   .visitors-panel { padding: 12px; }
   .visitors-panel > .muted { margin: 0 0 10px; font-size: 0.88rem; }
   .visitor-blocks { gap: 10px; }
@@ -516,7 +482,15 @@ input, textarea, select { font: inherit; }
   .chip { min-height: 40px; padding: 6px 12px; font-size: 0.9rem; }
   .visitor-add { min-height: 56px; font-size: 1rem; }
   .visitors-actions { gap: 8px; }
-  /* Map */
+  /* Map: 사진을 화면 높이에 맞춰 전체에 채우고, 넘치는 좌우는 밀어서(스와이프·드래그) 둘러보기 */
+  .tour main.map { padding: 0; }
+  .map-heading { flex: 1 1 260px; }
+  .scene-wrap {
+    justify-content: flex-start; overflow-x: auto; overflow-y: hidden;
+    overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .scene-wrap::-webkit-scrollbar { display: none; }
+  .scene { width: auto; height: 100%; }
   .map .topbar { padding: max(10px, env(safe-area-inset-top)) 14px 10px; }
   .map-title { font-size: 0.8rem; }
   .map-hint { font-size: 1.15rem; }
@@ -524,24 +498,20 @@ input, textarea, select { font: inherit; }
   .marker-dot::before { inset: 6px; }
   .scene-marker { transform: translate(-50%, -21px); gap: 4px; }
   .marker-tap { font-size: 0.68rem; padding: 3px 9px; }
-  /* 지도를 화면 전체에 채우고 좌우로 밀어서 둘러보기: 안내는 사진 위 어두운 그라데이션에 흰 글씨 */
-  .scene-frame { position: absolute; inset: 0; height: auto; }
-  .map-shade { display: block; height: 190px; }
-  .map-heading { color: #fff; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
-  .map-title { color: #fff; opacity: 0.85; }
-  .map-list { display: none; }
+  .map-shade { height: 190px; }
   /* Approach 카드는 사진 위에 띄움: 선택한 전시물을 가리지 않는 쪽(위·아래)에 */
   .approach-card,
   .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom {
     position: absolute; left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right));
-    margin: 0; padding: 18px 18px 16px; max-height: 46%;
+    width: auto; transform: none; padding: 18px 18px 16px; max-height: 46%; overflow-y: auto;
   }
   .approach-card.at-right, .approach-card.at-bottom { top: auto; bottom: max(12px, env(safe-area-inset-bottom)); }
   .approach-card.at-top { top: calc(max(10px, env(safe-area-inset-top)) + 134px); bottom: auto; }
   .approach-card h2 { font-size: 1.3rem; margin-bottom: 6px; }
   .approach-body { font-size: 0.98rem; line-height: 1.6; margin-bottom: 14px; }
   .approach-close { top: 8px; right: 8px; width: 38px; height: 38px; font-size: 0.95rem; }
-  /* Exhibit: 진행 단계는 숫자만 (현재 단계만 이름 표시) */
+  /* Exhibit: 진행 단계는 둘째 줄 전체 폭에 숫자만 (현재 단계만 이름), 그림 위 · 안내 패널 아래 */
+  .exhibit .progress { order: 2; flex: 1 1 100%; justify-content: space-between; }
   .exhibit .topbar > .btn { padding: 6px 10px; }
   .progress { gap: 2px; padding: 3px; min-width: 0; }
   .step { min-height: 36px; padding: 3px; gap: 6px; }
@@ -549,7 +519,7 @@ input, textarea, select { font: inherit; }
   .step .step-label { display: none; }
   .step.current { padding-right: 10px; }
   .step.current .step-label { display: inline; font-size: 0.88rem; }
-  .exhibit-body, .exhibit-body.mural-mode { gap: 10px; grid-template-rows: minmax(0, 30%) minmax(0, 1fr); }
+  .exhibit-body, .exhibit-body.mural-mode { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 30%) minmax(0, 1fr); gap: 10px; }
   .exhibit-body.mural-mode { grid-template-rows: auto minmax(0, 1fr); }
   .hero-name { margin-top: 6px; font-size: 0.95rem; max-width: 100%; }
   .credit { font-size: 0.78rem; }

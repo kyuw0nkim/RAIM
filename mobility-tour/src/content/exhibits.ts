@@ -174,10 +174,7 @@ export const EXHIBITS: Record<ExhibitId, Exhibit> = {
       },
       engage: {
         title: { ko: "작가가 그린 미래", en: "The Artist's Future" },
-        body: {
-          ko: "벽화의 일부 장면은 영상으로도 재현해 두었으니, 함께 보러 가 볼까요?",
-          en: "Some scenes from the mural have also been recreated as videos. Shall we go and watch them together?",
-        },
+        body: { ko: "", en: "" },
         question: {
           ko: "작가는 미래의 이동 수단을 어떤 모습으로 상상했을까요?",
           en: "How did the artist imagine the vehicles of the future?",

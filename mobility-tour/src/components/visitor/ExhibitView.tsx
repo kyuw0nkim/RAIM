@@ -394,7 +394,7 @@ function PhotoSpotlight({ image, lang }: { image: StageImage; lang: Locale }) {
   );
 }
 
-/** 질문 목록: 여러 개면 번호 + 구분선, 하나면 한 줄 */
+/** 질문 목록: 여러 개면 순서 없이 각각 상자에, 하나면 한 줄 */
 function Questions({ text, small }: { text: string; small?: boolean }) {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   if (!lines.length) return null;
@@ -402,16 +402,11 @@ function Questions({ text, small }: { text: string; small?: boolean }) {
   if (!lines.some((l) => /[?？]$/.test(l))) return <p className="plain-desc">{lines.join(" ")}</p>;
   if (lines.length === 1) return <p className={`question ${small ? "small" : ""}`}>{lines[0]}</p>;
   return (
-    <ol className={`question-list ${small ? "small" : ""}`}>
+    <ul className={`question-list ${small ? "small" : ""}`}>
       {lines.map((q, i) => (
-        <li key={i}>
-          <span className="q-num" aria-hidden>
-            {i + 1}
-          </span>
-          <span>{q}</span>
-        </li>
+        <li key={i}>{q}</li>
       ))}
-    </ol>
+    </ul>
   );
 }
 

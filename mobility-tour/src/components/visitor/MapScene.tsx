@@ -60,6 +60,7 @@ export function MapScene({
   onTapObject: (id: ExhibitId) => void;
   onTapEmpty: () => void;
 }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const masks = useRef<Partial<Record<ExhibitId, AlphaMask>>>({});
   const [pressed, setPressed] = useState<ExhibitId | null>(null);
@@ -73,6 +74,17 @@ export function MapScene({
         .catch(() => {}),
     );
   }, []);
+
+  // 세로 화면: 사진이 화면보다 넓으면 좌우로 밀어 볼 수 있음.
+  // 처음에는 Tap 표시들이 모두 보이도록, 전시물을 고르면 그 전시물이 가운데 오도록 이동
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const scene = sceneRef.current;
+    if (!wrap || !scene || scene.offsetWidth <= wrap.clientWidth) return;
+    const xs = (focused ? MAP_OBJECTS.filter((o) => o.id === focused) : MAP_OBJECTS).map((o) => o.marker.x);
+    const center = ((Math.min(...xs) + Math.max(...xs)) / 2 / 100) * scene.offsetWidth;
+    wrap.scrollTo({ left: center - wrap.clientWidth / 2, behavior: focused ? "smooth" : "auto" });
+  }, [focused]);
 
   /** 화면 좌표 → 위에 있는 전시물부터 불투명 픽셀 검사 (선택된 전시물이 가장 위) */
   const hitTest = (clientX: number, clientY: number): ExhibitId | null => {
@@ -114,7 +126,7 @@ export function MapScene({
   const box = (o: MapObject) => ({ left: `${o.x}%`, top: `${o.y}%`, width: `${o.w}%`, height: `${o.h}%` });
 
   return (
-    <div className="scene-wrap">
+    <div className="scene-wrap" ref={wrapRef}>
       <div
         ref={sceneRef}
         className={`scene ${focused ? "has-focus" : ""}`}

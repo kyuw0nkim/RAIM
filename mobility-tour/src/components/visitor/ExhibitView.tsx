@@ -248,7 +248,7 @@ export function ExhibitView({
                     <Questions text={t(hs.desc)} small />
                   </div>
                 ) : (
-                  <p className="hotspot-empty">👈 {t(UI.tapRing)}</p>
+                  <p className="hotspot-empty">👆 {t(UI.tapRing)}</p>
                 )}
               </>
             )}

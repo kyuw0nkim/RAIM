@@ -406,14 +406,54 @@ input, textarea, select { font: inherit; }
 .modal-actions { display: flex; justify-content: center; gap: 12px; margin-top: 18px; }
 .countdown { font-size: 1.6rem; color: var(--c-2985); }
 
-/* 세로 화면(예외): 위아래로 쌓기 */
-@media (orientation: portrait) and (max-width: 900px) {
-  .exhibit-body, .exhibit-body.mural-mode { grid-template-columns: 1fr; grid-template-rows: 30% 1fr; }
+/* 지도 아래 전시물 목록: 세로 화면에서만 표시 */
+.map-list { display: none; }
+.map-list-status { margin-left: auto; font-size: 1.5rem; font-weight: 700; color: var(--c-2985); }
+.map-list-status.done { color: var(--c-319); }
+
+/* ───────── 세로 화면 (기본 사용 방향: 세로 태블릿·휴대폰) ─────────
+ * 위 규칙들은 가로 화면(데스크톱 미리보기 등) 기준이고, 세로에서는 여기서 위아래로 쌓습니다. */
+@media (orientation: portrait) {
+  .tour main {
+    padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+    gap: 14px;
+  }
+  .topbar { flex-wrap: wrap; row-gap: 12px; }
+  .topbar-right { margin-left: auto; }
+  /* Visitors: 방문객 블록을 위아래로 쌓고 패널 안에서 스크롤 */
+  .visitor-blocks { flex-direction: column; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .visitor-block { flex: none; overflow: visible; }
+  .visitor-add { flex: none; min-height: 72px; }
+  /* Map: 위 안내 → 교육장 사진(좌우로 밀어 보기) → 전시물 목록 또는 Approach 카드 */
+  .tour main.map { padding: 0 0 max(16px, env(safe-area-inset-bottom)); gap: 0; }
+  .map-shade { display: none; }
+  .map .topbar { padding: max(16px, env(safe-area-inset-top)) 20px 14px; }
+  .map-heading { flex: 1 1 260px; color: var(--c-301); text-shadow: none; }
+  .map-title { color: var(--fg-2); opacity: 1; }
+  .scene-wrap {
+    position: relative; inset: auto; flex: none; height: min(90vw, 62%);
+    justify-content: flex-start; overflow-x: auto; overflow-y: hidden;
+    overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .scene-wrap::-webkit-scrollbar { display: none; }
+  /* 사진은 높이에 맞춤 → 화면보다 넓은 부분은 좌우로 밀어서 봄 */
+  .scene { width: auto; height: 100%; }
+  .map-list { display: grid; gap: 10px; padding: 16px 20px 0; min-height: 0; overflow-y: auto; }
+  .approach-card,
+  .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom {
+    position: relative; left: auto; top: auto; bottom: auto; transform: none;
+    width: auto; margin: 16px 20px 0; min-height: 0; overflow-y: auto;
+  }
+  /* Exhibit: 진행 단계는 둘째 줄 전체 폭, 그림 위 · 안내 패널 아래 */
+  .exhibit .progress { order: 2; flex: 1 1 100%; justify-content: space-between; }
+  .exhibit-body, .exhibit-body.mural-mode { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 34%) minmax(0, 1fr); gap: 14px; }
+  .exhibit-body.mural-mode { grid-template-rows: auto minmax(0, 1fr); }
+  .hero-name { margin-top: 10px; }
 }
 
-/* ───────── 휴대폰 세로: 가로로 돌려 달라는 안내 ───────── */
+/* ───────── 휴대폰 가로: 세로로 돌려 달라는 안내 ───────── */
 .rotate-hint { display: none; }
-@media (orientation: portrait) and (max-width: 599px) {
+@media (orientation: landscape) and (max-height: 500px) {
   .rotate-hint {
     position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 6px; padding: 24px; text-align: center; background: #eaf4fa; color: var(--c-301);
@@ -421,121 +461,105 @@ input, textarea, select { font: inherit; }
   .rotate-hint p { margin: 0; font-weight: 650; font-size: 1.1rem; line-height: 1.5; }
   .rotate-hint p + p { font-weight: 500; font-size: 0.95rem; color: var(--fg-2); }
   .rotate-icon { font-size: 3rem; margin-bottom: 10px; animation: rotate-phone 2.4s ease-in-out infinite; }
-  @keyframes rotate-phone { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+  @keyframes rotate-phone { 0%, 30% { transform: rotate(-90deg); } 60%, 100% { transform: rotate(0); } }
 }
 
-/* ───────── 가로 휴대폰 (높이가 낮은 화면) ───────── */
-@media (orientation: landscape) and (max-height: 500px) {
-  :root { --touch: 40px; }
-  body { font-size: 14px; }
+/* ───────── 세로 휴대폰 (폭이 좁은 화면) ───────── */
+@media (orientation: portrait) and (max-width: 599px) {
+  :root { --touch: 42px; }
+  body { font-size: 15px; }
   .tour main {
-    padding: 8px max(14px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
-    gap: 8px;
+    padding: max(10px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+    gap: 10px;
   }
-  .topbar { gap: 8px; }
+  .topbar { gap: 8px; row-gap: 8px; }
   .topbar-right { gap: 6px; }
-  .title-chip { font-size: 1.05rem; }
-  .eyebrow { font-size: 0.8rem; margin-bottom: 4px; }
-  .btn { padding: 6px 14px; font-size: 0.92rem; border-radius: 8px; }
-  .btn.lg { min-height: 42px; padding: 8px 18px; font-size: 0.95rem; }
-  .btn.xl { min-height: 48px; padding: 10px 28px; font-size: 1.05rem; }
+  .title-chip { font-size: 1.1rem; }
+  .eyebrow { font-size: 0.82rem; margin-bottom: 4px; }
+  .btn { padding: 6px 14px; font-size: 0.95rem; border-radius: 8px; }
+  .btn.lg { min-height: 46px; padding: 8px 18px; font-size: 1rem; }
+  .btn.xl { min-height: 54px; padding: 10px 30px; font-size: 1.1rem; }
   .lang-toggle { padding: 3px; }
-  .lang-toggle button { min-height: 34px; min-width: 64px; font-size: 0.85rem; }
-  .version-tag { right: max(12px, env(safe-area-inset-right)); bottom: 6px; font-size: 0.7rem; }
-
-  /* Start: 카드가 화면보다 크면 스크롤 */
-  .tour main.start { overflow-y: auto; justify-content: safe center; }
-  .start-card { padding: 20px 28px; gap: 12px; max-width: 520px; }
-  .start-card h1 { font-size: 1.6rem; }
-  .start-card .lead { font-size: 0.95rem; line-height: 1.5; }
-
+  .lang-toggle button { min-height: 36px; min-width: 68px; font-size: 0.88rem; }
+  .version-tag { right: max(12px, env(safe-area-inset-right)); bottom: max(8px, env(safe-area-inset-bottom)); font-size: 0.7rem; }
+  /* Start */
+  .start-card { padding: 32px 22px; gap: 16px; }
+  .start-card h1 { font-size: 1.8rem; }
+  .start-card .lead { font-size: 1rem; line-height: 1.55; }
   /* Visitors */
-  .visitors-panel { padding: 10px 12px; }
-  .visitors-panel > .muted { margin: 0 0 8px; font-size: 0.85rem; }
-  /* 블록 안쪽 스크롤 대신 패널 전체를 위아래로 스크롤 (항목이 숨겨지지 않게) */
-  .visitor-blocks { gap: 10px; overflow-y: auto; align-items: flex-start; -webkit-overflow-scrolling: touch; }
-  .visitor-block { flex-basis: 290px; padding: 10px 12px; overflow: visible; }
-  .visitor-add { align-self: stretch; min-height: 120px; }
-  .visitor-head { font-size: 0.95rem; margin-bottom: 2px; }
+  .visitors-panel { padding: 12px; }
+  .visitors-panel > .muted { margin: 0 0 10px; font-size: 0.88rem; }
+  .visitor-blocks { gap: 10px; }
+  .visitor-block { padding: 12px 14px; }
+  .visitor-head { font-size: 1rem; margin-bottom: 2px; }
   .field { margin-top: 8px; }
-  .field-label { font-size: 0.82rem; margin-bottom: 5px; }
+  .field-label { font-size: 0.85rem; margin-bottom: 6px; }
   .chips { gap: 6px; }
-  .chip { min-height: 38px; padding: 6px 12px; font-size: 0.88rem; }
-  .visitor-add { flex-basis: 130px; font-size: 0.95rem; }
+  .chip { min-height: 40px; padding: 6px 12px; font-size: 0.9rem; }
+  .visitor-add { min-height: 56px; font-size: 1rem; }
   .visitors-actions { gap: 8px; }
-
   /* Map */
-  .map .topbar { padding: 8px max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left)); }
-  .map-shade { height: 96px; }
-  .map-title { font-size: 0.75rem; }
-  .map-hint { font-size: 1.05rem; }
-  .marker-dot { width: 40px; height: 40px; border-width: 3px; font-size: 1rem; }
+  .map .topbar { padding: max(10px, env(safe-area-inset-top)) 14px 10px; }
+  .map-title { font-size: 0.8rem; }
+  .map-hint { font-size: 1.15rem; }
+  .marker-dot { width: 42px; height: 42px; border-width: 3px; font-size: 1rem; }
   .marker-dot::before { inset: 6px; }
-  .scene-marker { transform: translate(-50%, -20px); gap: 4px; }
-  .marker-tap { font-size: 0.66rem; padding: 3px 9px; }
-  /* Approach 카드: 위·아래에 둘 공간이 없으므로 전시물 반대편 옆에 */
+  .scene-marker { transform: translate(-50%, -21px); gap: 4px; }
+  .marker-tap { font-size: 0.68rem; padding: 3px 9px; }
+  .map-list { padding: 12px 14px 0; gap: 8px; }
   .approach-card,
-  .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom {
-    top: 50%; bottom: auto; transform: translateY(-50%);
-    width: min(340px, 46vw); max-height: calc(100% - 16px); overflow-y: auto; padding: 16px 18px 14px;
-  }
-  .approach-card.side-left { left: max(10px, env(safe-area-inset-left)); right: auto; }
-  .approach-card.side-right { right: max(10px, env(safe-area-inset-right)); left: auto; }
-  .approach-card h2 { font-size: 1.2rem; margin-bottom: 6px; }
-  .approach-body { font-size: 0.92rem; line-height: 1.55; margin-bottom: 12px; }
-  .approach-close { top: 8px; right: 8px; width: 36px; height: 36px; font-size: 0.95rem; }
-
+  .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom { margin: 12px 14px 0; padding: 18px 18px 16px; }
+  .approach-card h2 { font-size: 1.3rem; margin-bottom: 6px; }
+  .approach-body { font-size: 0.98rem; line-height: 1.6; margin-bottom: 14px; }
+  .approach-close { top: 8px; right: 8px; width: 38px; height: 38px; font-size: 0.95rem; }
   /* Exhibit: 진행 단계는 숫자만 (현재 단계만 이름 표시) */
   .exhibit .topbar > .btn { padding: 6px 10px; }
   .progress { gap: 2px; padding: 3px; min-width: 0; }
-  .step { min-height: 34px; padding: 3px; gap: 6px; }
-  .step .dot { width: 26px; height: 26px; font-size: 0.78rem; }
+  .step { min-height: 36px; padding: 3px; gap: 6px; }
+  .step .dot { width: 28px; height: 28px; font-size: 0.8rem; }
   .step .step-label { display: none; }
   .step.current { padding-right: 10px; }
-  .step.current .step-label { display: inline; font-size: 0.85rem; }
-  .exhibit-body,
-  .exhibit-body.mural-mode { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); grid-template-rows: none; gap: 10px; }
-  .exhibit-body.mural-mode { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
-  .hero-name { margin-top: 6px; font-size: 0.9rem; max-width: 100%; }
-  .credit { font-size: 0.75rem; }
-  .stage-scroll { padding: 14px 16px 8px; }
-  .stage-scroll h1 { font-size: 1.3rem; margin-bottom: 8px; }
-  .stage-scroll .body { font-size: 0.95rem; line-height: 1.6; margin-bottom: 10px; }
-  .question, .question-list li { font-size: 0.98rem; }
+  .step.current .step-label { display: inline; font-size: 0.88rem; }
+  .exhibit-body, .exhibit-body.mural-mode { gap: 10px; grid-template-rows: minmax(0, 30%) minmax(0, 1fr); }
+  .exhibit-body.mural-mode { grid-template-rows: auto minmax(0, 1fr); }
+  .hero-name { margin-top: 6px; font-size: 0.95rem; max-width: 100%; }
+  .credit { font-size: 0.78rem; }
+  .stage-scroll { padding: 16px 16px 8px; }
+  .stage-scroll h1 { font-size: 1.4rem; margin-bottom: 8px; }
+  .stage-scroll .body { font-size: 1rem; line-height: 1.6; margin-bottom: 12px; }
+  .question, .question-list li { font-size: 1rem; }
   .question-list { gap: 8px; }
   .question-list li { padding: 10px 12px; }
-  .question.small, .question-list.small li, .plain-desc, .hint p, .hotspot-info p { font-size: 0.9rem; }
-  .btn.hint-btn { min-height: 40px; padding: 6px 14px; font-size: 0.9rem; }
-  .stage-actions { padding: 8px 12px 10px; gap: 8px; }
+  .question.small, .question-list.small li, .plain-desc, .hint p, .hotspot-info p { font-size: 0.95rem; }
+  .btn.hint-btn { min-height: 42px; padding: 6px 14px; font-size: 0.92rem; }
+  .stage-actions { padding: 10px 12px 12px; gap: 8px; }
   .stage-actions .btn { white-space: normal; text-align: center; line-height: 1.25; }
   .stage-actions .btn.ghost { white-space: nowrap; flex-shrink: 0; }
-  .faqs summary { min-height: 44px; padding: 10px 40px 10px 14px; font-size: 0.92rem; }
+  .faqs summary { min-height: 46px; padding: 10px 40px 10px 14px; font-size: 0.95rem; }
   .faqs summary::after { right: 14px; }
-  .faqs details p { padding: 0 14px 12px; font-size: 0.9rem; }
+  .faqs details p { padding: 0 14px 12px; font-size: 0.92rem; }
   .quiz { gap: 8px; }
-  .quiz-q { font-size: 1.02rem; }
-  .quiz-option { min-height: 44px; padding: 8px 12px; font-size: 0.92rem; gap: 10px; }
-  .quiz-option .opt-key { width: 26px; height: 26px; font-size: 0.8rem; }
-  .score { font-size: 0.98rem; }
-  .hotspot { width: 36px; height: 36px; margin: -18px 0 0 -18px; border-width: 4px; }
+  .quiz-q { font-size: 1.08rem; }
+  .quiz-option { min-height: 48px; padding: 8px 12px; font-size: 0.95rem; gap: 10px; }
+  .quiz-option .opt-key { width: 28px; height: 28px; font-size: 0.82rem; }
+  .score { font-size: 1rem; }
+  .hotspot { width: 34px; height: 34px; margin: -17px 0 0 -17px; border-width: 4px; }
   .hotspot-info { padding: 10px 12px; }
-  .hotspot-info strong { font-size: 1.02rem; }
-  .hotspot-empty { padding: 10px 12px; font-size: 0.88rem; }
-  .bonus-q { font-size: 0.98rem; }
+  .hotspot-info strong { font-size: 1.05rem; }
+  .hotspot-empty { padding: 10px 12px; font-size: 0.9rem; }
+  .bonus-q { font-size: 1rem; }
   .next-grid { grid-template-columns: 1fr; gap: 8px; }
   .next-card { min-height: 60px; padding: 8px 12px; }
   .next-icon { font-size: 1.6rem; }
-  .levels-title { font-size: 0.9rem; margin-bottom: 6px; }
+  .levels-title { font-size: 0.92rem; margin-bottom: 6px; }
   .lv { padding: 6px 2px; gap: 3px; }
-  .lv b { font-size: 1.1rem; }
-  .lv span, .lg, .lg small { font-size: 0.64rem; hyphens: auto; overflow-wrap: break-word; }
-
+  .lv b { font-size: 1.15rem; }
+  .lv span, .lg, .lg small { font-size: 0.66rem; hyphens: auto; overflow-wrap: break-word; }
   /* Modal */
-  .modal { padding: 18px 20px; max-height: calc(100% - 24px); overflow-y: auto; }
-  .modal p { font-size: 0.98rem; }
-  .modal-actions { margin-top: 10px; }
+  .modal { padding: 20px 20px; max-height: calc(100% - 24px); overflow-y: auto; }
+  .modal p { font-size: 1rem; }
+  .modal-actions { margin-top: 12px; }
 }
-
 /* ───────── Admin ───────── */
 .admin { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; background: #f3f7fa; }
 .admin-side { background: #fff; border-right: 1px solid #e1e8ee; padding: 20px 14px; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 0; height: 100vh; }

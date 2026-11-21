@@ -10,15 +10,12 @@ import type { Exhibit, Locale } from "@/content/types";
 export function ApproachCard({
   exhibit,
   placement,
-  side,
   lang,
   onContinue,
   onClose,
 }: {
   exhibit: Exhibit;
   placement: "right" | "top" | "bottom";
-  /** 높이가 낮은 화면(가로 휴대폰)에서는 전시물 반대편 옆에 붙임 */
-  side: "left" | "right";
   lang: Locale;
   onContinue: () => void;
   onClose: () => void;
@@ -26,7 +23,7 @@ export function ApproachCard({
   const t = (l: Record<Locale, string>) => l[lang];
   const stage = exhibit.stages.approach;
   return (
-    <section className={`glass approach-card at-${placement} side-${side}`} role="dialog" aria-label={t(exhibit.name)}>
+    <section className={`glass approach-card at-${placement}`} role="dialog" aria-label={t(exhibit.name)}>
       <button className="approach-close" onClick={onClose} aria-label={t(UI.close)}>
         ✕
       </button>

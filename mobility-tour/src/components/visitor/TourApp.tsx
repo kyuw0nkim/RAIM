@@ -228,10 +228,8 @@ export function TourApp() {
 
   return (
     <div className="tour" key={sessionKey} lang={lang}>
-      {/* 지도 화면 외에는 교육장 사진을 흐리게 깔아 패널 가독성 확보 */}
-      {screen !== "map" && (
-        <div className="room-bg" style={{ backgroundImage: `url(${ROOM.src})` }} aria-hidden />
-      )}
+      {/* 교육장 사진을 흐리게 깔아 패널 가독성 확보 (지도 화면에서는 사진 위아래 빈 곳의 배경) */}
+      <div className="room-bg" style={{ backgroundImage: `url(${ROOM.src})` }} aria-hidden />
 
       {screen === "start" && (
         <main className="start">
@@ -292,16 +290,32 @@ export function TourApp() {
             onTapObject={onTapObject}
             onTapEmpty={closeApproach}
           />
-          {focusId && (
+          {focusId ? (
             <ApproachCard
               key={focusId}
               exhibit={exhibits[focusId]}
               placement={MAP_OBJECTS.find((o) => o.id === focusId)!.card}
-              side={MAP_OBJECTS.find((o) => o.id === focusId)!.marker.x > 50 ? "left" : "right"}
               lang={lang}
               onContinue={() => enterDetail(focusId)}
               onClose={closeApproach}
             />
+          ) : (
+            /* 세로 화면: 사진 아래 남는 공간에 전시물 목록 (사진을 밀지 않고도 바로 고를 수 있게) */
+            <nav className="map-list" aria-label={t(UI.tapExhibit)}>
+              {MAP_OBJECTS.map((o) => (
+                <button key={o.id} className="next-card" onClick={() => showApproach(o.id, true)}>
+                  <span className="next-icon" aria-hidden>
+                    {exhibits[o.id].icon}
+                  </span>
+                  <span>
+                    <strong>{t(exhibits[o.id].name)}</strong>
+                  </span>
+                  <span className={`map-list-status ${completed.has(o.id) ? "done" : ""}`} aria-hidden>
+                    {completed.has(o.id) ? "✓" : "›"}
+                  </span>
+                </button>
+              ))}
+            </nav>
           )}
         </main>
       )}
@@ -322,7 +336,7 @@ export function TourApp() {
         />
       )}
 
-      {/* 휴대폰 세로 화면: 가로 전용 앱이므로 돌려 달라는 안내 (CSS로 세로 폰에서만 표시) */}
+      {/* 휴대폰 가로 화면: 세로 전용 앱이므로 돌려 달라는 안내 (CSS로 가로 폰에서만 표시) */}
       <div className="rotate-hint" role="alert">
         <span className="rotate-icon" aria-hidden>📱</span>
         <p lang="ko">{UI.rotate.ko}</p>

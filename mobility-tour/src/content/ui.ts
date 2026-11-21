@@ -23,7 +23,7 @@ export const UI = {
   age: { ko: "연령대", en: "Age Group" },
   tapExhibit: { ko: "전시물을 누르고, 실제 전시물 앞으로 가 보세요.", en: "Tap an exhibit, then go see the real thing." },
   tap: { ko: "터치", en: "Tap" },
-  rotate: { ko: "휴대폰을 가로로 돌려 주세요", en: "Please rotate your phone to landscape" },
+  rotate: { ko: "휴대폰을 세로로 돌려 주세요", en: "Please rotate your phone to portrait" },
   tapRing: { ko: "원을 하나 누른 뒤, 벽화에서 찾아보세요.", en: "Tap a ring, then find it on the mural." },
   showWhole: { ko: "전체 벽화 보기", en: "Show whole mural" },
   findOnWall: { ko: "찾을 수 있나요?", en: "Can you find it?" },

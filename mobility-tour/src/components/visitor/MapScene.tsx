@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent, type PointerEvent } from "react";
 import { EXHIBIT_IMAGE, MAP_OBJECTS, ROOM, type MapObject } from "@/content/map";
 import type { Exhibit, ExhibitId, Locale } from "@/content/types";
 import { UI } from "@/content/ui";
@@ -75,16 +75,74 @@ export function MapScene({
     );
   }, []);
 
-  // 세로 화면: 사진이 화면보다 넓으면 좌우로 밀어 볼 수 있음.
-  // 처음에는 Tap 표시들이 모두 보이도록, 전시물을 고르면 그 전시물이 가운데 오도록 이동
+  /** 화면 밖(왼쪽·오른쪽)에 있는 전시물 — 가장자리 안내 표시용 */
+  const [offscreen, setOffscreen] = useState<{ left: ExhibitId[]; right: ExhibitId[] }>({ left: [], right: [] });
+
+  const updateOffscreen = useCallback(() => {
+    const wrap = wrapRef.current;
+    const scene = sceneRef.current;
+    if (!wrap || !scene) return;
+    const left: ExhibitId[] = [];
+    const right: ExhibitId[] = [];
+    for (const o of MAP_OBJECTS) {
+      const x = (o.marker.x / 100) * scene.offsetWidth - wrap.scrollLeft;
+      if (x < 24) left.push(o.id);
+      else if (x > wrap.clientWidth - 24) right.push(o.id);
+    }
+    setOffscreen((prev) =>
+      prev.left.join() === left.join() && prev.right.join() === right.join() ? prev : { left, right },
+    );
+  }, []);
+
+  /** 해당 전시물의 Tap 표시가 화면 가운데 오도록 사진을 좌우로 이동 */
+  const scrollToX = (percents: number[], smooth: boolean) => {
+    const wrap = wrapRef.current;
+    const scene = sceneRef.current;
+    if (!wrap || !scene) return;
+    const center = ((Math.min(...percents) + Math.max(...percents)) / 2 / 100) * scene.offsetWidth;
+    wrap.scrollTo({ left: center - wrap.clientWidth / 2, behavior: smooth ? "smooth" : "auto" });
+  };
+
+  // 세로 화면: 사진이 화면보다 넓으면 좌우로 밀어(스와이프·드래그) 볼 수 있음.
+  // 처음에는 Tap 표시가 모두 들어가면 모두, 아니면 가운데 전시물 기준으로 / 전시물을 고르면 그 전시물을 가운데로
   useEffect(() => {
     const wrap = wrapRef.current;
     const scene = sceneRef.current;
-    if (!wrap || !scene || scene.offsetWidth <= wrap.clientWidth) return;
-    const xs = (focused ? MAP_OBJECTS.filter((o) => o.id === focused) : MAP_OBJECTS).map((o) => o.marker.x);
-    const center = ((Math.min(...xs) + Math.max(...xs)) / 2 / 100) * scene.offsetWidth;
-    wrap.scrollTo({ left: center - wrap.clientWidth / 2, behavior: focused ? "smooth" : "auto" });
-  }, [focused]);
+    if (!wrap || !scene) return;
+    if (scene.offsetWidth > wrap.clientWidth) {
+      if (focused) scrollToX([MAP_OBJECTS.find((o) => o.id === focused)!.marker.x], true);
+      else {
+        const xs = MAP_OBJECTS.map((o) => o.marker.x).sort((a, b) => a - b);
+        const fitsAll = ((xs[xs.length - 1] - xs[0]) / 100) * scene.offsetWidth < wrap.clientWidth - 120;
+        scrollToX(fitsAll ? xs : [xs[Math.floor(xs.length / 2)]], false);
+      }
+    }
+    updateOffscreen();
+  }, [focused, updateOffscreen]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateOffscreen);
+    return () => window.removeEventListener("resize", updateOffscreen);
+  }, [updateOffscreen]);
+
+  // 마우스 드래그로도 좌우 이동 (터치는 브라우저 기본 스크롤 사용). 끌었으면 뒤따르는 클릭은 무시
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const dragged = useRef(false);
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse" || !wrapRef.current) return;
+    drag.current = { x: e.clientX, left: wrapRef.current.scrollLeft, moved: false };
+    dragged.current = false;
+  };
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    if (!d || !wrapRef.current) return;
+    if (Math.abs(e.clientX - d.x) > 6) d.moved = true;
+    if (d.moved) wrapRef.current.scrollLeft = d.left - (e.clientX - d.x);
+  };
+  const onPointerUp = () => {
+    dragged.current = !!drag.current?.moved;
+    drag.current = null;
+  };
 
   /** 화면 좌표 → 위에 있는 전시물부터 불투명 픽셀 검사 (선택된 전시물이 가장 위) */
   const hitTest = (clientX: number, clientY: number): ExhibitId | null => {
@@ -125,59 +183,95 @@ export function MapScene({
 
   const box = (o: MapObject) => ({ left: `${o.x}%`, top: `${o.y}%`, width: `${o.w}%`, height: `${o.h}%` });
 
-  return (
-    <div className="scene-wrap" ref={wrapRef}>
-      <div
-        ref={sceneRef}
-        className={`scene ${focused ? "has-focus" : ""}`}
-        style={{ aspectRatio: `${ROOM.width} / ${ROOM.height}` }}
-        onClick={onSceneClick}
-      >
-        <img className="scene-bg" src={ROOM.src} alt="" draggable={false} fetchPriority="high" />
-
-        {MAP_OBJECTS.map((o, i) => (
-          <div
-            key={o.id}
-            className={`scene-object ${o.grounded ? "grounded" : ""} ${pressed === o.id ? "pressed" : ""} ${
-              focused === o.id ? "focused" : ""
-            }`}
-            style={box(o)}
+  const edge = (side: "left" | "right") =>
+    !focused &&
+    offscreen[side].length > 0 && (
+      <div className={`scene-edge ${side}`}>
+        {offscreen[side].map((id) => (
+          <button
+            key={id}
+            className="scene-edge-btn"
+            onClick={() => scrollToX([MAP_OBJECTS.find((o) => o.id === id)!.marker.x], true)}
           >
-            {/* 강조 효과: 윤곽을 따라 빛나는 레이어 (opacity만 애니메이션 → 태블릿 부담 적음) */}
-            <img
-              className="object-glow"
-              src={EXHIBIT_IMAGE[o.id].src}
-              alt=""
-              draggable={false}
-              style={{ animationDelay: `${i * 0.8}s` }}
-            />
-            <img className="object-img" src={EXHIBIT_IMAGE[o.id].src} alt="" draggable={false} />
-          </div>
+            {side === "left" && <span aria-hidden>‹</span>}
+            {exhibits[id].icon} {exhibits[id].name[lang]}
+            {side === "right" && <span aria-hidden>›</span>}
+          </button>
         ))}
-
-        {/* 선택한 전시물 외에는 어둡게 */}
-        <div className="scene-dim" aria-hidden />
-
-        {/* "여기를 누르세요" 표시: 물체 위에 빛나는 원 + 이름 + Tap */}
-        {!focused &&
-          MAP_OBJECTS.map((o) => (
-            <button
-              key={`marker-${o.id}`}
-              className={`scene-marker ${completed.has(o.id) ? "done" : ""}`}
-              style={{ left: `${o.marker.x}%`, top: `${o.marker.y}%` }}
-              aria-label={exhibits[o.id].name[lang]}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!pressed) select(o.id);
-              }}
-            >
-              <span className="marker-dot" aria-hidden>
-                {completed.has(o.id) ? "✓" : ""}
-              </span>
-              <span className="marker-tap">{UI.tap[lang]}</span>
-            </button>
-          ))}
       </div>
+    );
+
+  return (
+    <div className="scene-frame">
+      <div
+        className="scene-wrap"
+        ref={wrapRef}
+        onScroll={updateOffscreen}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+        onClickCapture={(e) => {
+          if (dragged.current) {
+            e.stopPropagation();
+            dragged.current = false;
+          }
+        }}
+      >
+        <div
+          ref={sceneRef}
+          className={`scene ${focused ? "has-focus" : ""}`}
+          style={{ aspectRatio: `${ROOM.width} / ${ROOM.height}` }}
+          onClick={onSceneClick}
+        >
+          <img className="scene-bg" src={ROOM.src} alt="" draggable={false} fetchPriority="high" />
+
+          {MAP_OBJECTS.map((o, i) => (
+            <div
+              key={o.id}
+              className={`scene-object ${o.grounded ? "grounded" : ""} ${pressed === o.id ? "pressed" : ""} ${
+                focused === o.id ? "focused" : ""
+              }`}
+              style={box(o)}
+            >
+              {/* 강조 효과: 윤곽을 따라 빛나는 레이어 (opacity만 애니메이션 → 태블릿 부담 적음) */}
+              <img
+                className="object-glow"
+                src={EXHIBIT_IMAGE[o.id].src}
+                alt=""
+                draggable={false}
+                style={{ animationDelay: `${i * 0.8}s` }}
+              />
+              <img className="object-img" src={EXHIBIT_IMAGE[o.id].src} alt="" draggable={false} />
+            </div>
+          ))}
+
+          {/* 선택한 전시물 외에는 어둡게 */}
+          <div className="scene-dim" aria-hidden />
+
+          {/* "여기를 누르세요" 표시: 물체 위에 빛나는 원 + 이름 + Tap */}
+          {!focused &&
+            MAP_OBJECTS.map((o) => (
+              <button
+                key={`marker-${o.id}`}
+                className={`scene-marker ${completed.has(o.id) ? "done" : ""}`}
+                style={{ left: `${o.marker.x}%`, top: `${o.marker.y}%` }}
+                aria-label={exhibits[o.id].name[lang]}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!pressed) select(o.id);
+                }}
+              >
+                <span className="marker-dot" aria-hidden>
+                  {completed.has(o.id) ? "✓" : ""}
+                </span>
+                <span className="marker-tap">{UI.tap[lang]}</span>
+              </button>
+            ))}
+        </div>
+      </div>
+      {edge("left")}
+      {edge("right")}
     </div>
   );
 }

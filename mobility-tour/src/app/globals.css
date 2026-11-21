@@ -154,6 +154,7 @@ input, textarea, select { font: inherit; }
 .map-title { font-size: 0.95rem; font-weight: 600; opacity: 0.85; }
 .map-hint { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; transition: opacity 0.2s; }
 .map-hint.hidden { opacity: 0; }
+.scene-frame { position: absolute; inset: 0; }
 .scene-wrap {
   position: absolute; inset: 0; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
@@ -406,6 +407,23 @@ input, textarea, select { font: inherit; }
 .modal-actions { display: flex; justify-content: center; gap: 12px; margin-top: 18px; }
 .countdown { font-size: 1.6rem; color: var(--c-2985); }
 
+/* 사진이 화면보다 넓을 때: 화면 밖 전시물을 가장자리에 표시 (누르면 그쪽으로 이동) */
+.scene-edge {
+  position: absolute; top: 50%; z-index: 2; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+}
+.scene-edge.left { left: max(10px, env(safe-area-inset-left)); align-items: flex-start; }
+.scene-edge.right { right: max(10px, env(safe-area-inset-right)); align-items: flex-end; }
+.scene-edge-btn {
+  pointer-events: auto; display: inline-flex; align-items: center; gap: 6px;
+  min-height: var(--touch); max-width: 46vw; padding: 8px 14px; border: 0; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92); color: var(--c-301); font-weight: 650; font-size: 0.9rem; line-height: 1.25; text-align: left;
+  box-shadow: 0 0 10px 2px rgba(150, 205, 255, 0.6), 0 4px 14px rgba(0, 40, 90, 0.22);
+  touch-action: manipulation;
+}
+.scene-edge-btn > span { font-size: 1.4rem; font-weight: 700; line-height: 1; color: var(--c-2985); }
+.scene-edge-btn:active { transform: scale(0.96); }
+
 /* 지도 아래 전시물 목록: 세로 화면에서만 표시 */
 .map-list { display: none; }
 .map-list-status { margin-left: auto; font-size: 1.5rem; font-weight: 700; color: var(--c-2985); }
@@ -430,8 +448,8 @@ input, textarea, select { font: inherit; }
   .map .topbar { padding: max(16px, env(safe-area-inset-top)) 20px 14px; }
   .map-heading { flex: 1 1 260px; color: var(--c-301); text-shadow: none; }
   .map-title { color: var(--fg-2); opacity: 1; }
+  .scene-frame { position: relative; inset: auto; flex: none; height: min(90vw, 62%); }
   .scene-wrap {
-    position: relative; inset: auto; flex: none; height: min(90vw, 62%);
     justify-content: flex-start; overflow-x: auto; overflow-y: hidden;
     overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
   }
@@ -506,9 +524,20 @@ input, textarea, select { font: inherit; }
   .marker-dot::before { inset: 6px; }
   .scene-marker { transform: translate(-50%, -21px); gap: 4px; }
   .marker-tap { font-size: 0.68rem; padding: 3px 9px; }
-  .map-list { padding: 12px 14px 0; gap: 8px; }
+  /* 지도를 화면 전체에 채우고 좌우로 밀어서 둘러보기: 안내는 사진 위 어두운 그라데이션에 흰 글씨 */
+  .scene-frame { position: absolute; inset: 0; height: auto; }
+  .map-shade { display: block; height: 190px; }
+  .map-heading { color: #fff; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35); }
+  .map-title { color: #fff; opacity: 0.85; }
+  .map-list { display: none; }
+  /* Approach 카드는 사진 위에 띄움: 선택한 전시물을 가리지 않는 쪽(위·아래)에 */
   .approach-card,
-  .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom { margin: 12px 14px 0; padding: 18px 18px 16px; }
+  .approach-card.at-right, .approach-card.at-top, .approach-card.at-bottom {
+    position: absolute; left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right));
+    margin: 0; padding: 18px 18px 16px; max-height: 46%;
+  }
+  .approach-card.at-right, .approach-card.at-bottom { top: auto; bottom: max(12px, env(safe-area-inset-bottom)); }
+  .approach-card.at-top { top: calc(max(10px, env(safe-area-inset-top)) + 134px); bottom: auto; }
   .approach-card h2 { font-size: 1.3rem; margin-bottom: 6px; }
   .approach-body { font-size: 0.98rem; line-height: 1.6; margin-bottom: 14px; }
   .approach-close { top: 8px; right: 8px; width: 38px; height: 38px; font-size: 0.95rem; }
